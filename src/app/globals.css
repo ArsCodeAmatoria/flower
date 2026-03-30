@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-title: var(--font-title);
+  --font-cinematic: var(--font-cinematic);
+  --font-screenplay: var(--font-screenplay);
+  --font-credits: var(--font-credits);
+  --font-credits-ornate: var(--font-credits-ornate);
+}
+
+/* ─── Animations ─────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes waveBar {
+  from { transform: scaleY(0.2); }
+  to   { transform: scaleY(1); }
+}
+
+@keyframes titleReveal {
+  0%   { opacity: 0; letter-spacing: 0.5em; }
+  100% { opacity: 1; letter-spacing: 0.12em; }
+}
+
+@keyframes filmGrain {
+  0%   { transform: translate(0,    0); }
+  20%  { transform: translate(-4%,  8%); }
+  40%  { transform: translate(6%,  -3%); }
+  60%  { transform: translate(-2%, 10%); }
+  80%  { transform: translate(8%,   2%); }
+  100% { transform: translate(0,    0); }
+}
+
+/* ─── Film grain overlay ──────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 400px 400px;
+  mix-blend-mode: overlay;
+  animation: filmGrain 0.45s steps(1) infinite;
+}
+
+/* ─── Base ────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+/* ─── Slideshow ───────────────────────────────────── */
+
+.slideshow-container {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.slideshow-container::-webkit-scrollbar { display: none; }
+
+.slideshow-container > section {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* ─── Section heading rule ────────────────────────── */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-cinematic);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.section-heading::before,
+.section-heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.35), transparent);
+}
