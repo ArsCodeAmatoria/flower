@@ -1,20 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { characters } from "@/data/characters";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
 import { songs } from "@/data/songs";
 import { CharacterPublicProfile } from "@/sections/characters/CharacterPublicProfile";
+import { CharacterIdentityHeader } from "@/sections/characters/CharacterIdentityChrome";
 import { cn } from "@/lib/utils";
-
-const mono = "var(--font-industrial)";
 
 export function generateStaticParams() {
   return characters.map((c) => ({ id: c.id }));
-}
-
-function fileRef(characterId: string, fileIndex: number) {
-  return `FLW-${String(fileIndex + 1).padStart(3, "0")}-${characterId.toUpperCase().replace(/-/g, "").slice(0, 8)}`;
 }
 
 export async function generateMetadata({
@@ -41,191 +37,145 @@ export default async function CharacterPage({
   const prev = index > 0 ? characters[index - 1] : null;
   const next = index < characters.length - 1 ? characters[index + 1] : null;
   const characterSongs = songs.filter((s) => character.songIds.includes(s.id));
-  const ref = fileRef(character.id, index);
 
   return (
-    <div
-      className={cn(
-        "character-file-shell relative flex h-[100dvh] min-h-[100dvh] w-screen flex-col overflow-hidden text-white md:flex-row",
-      )}
-    >
-      <div className="pointer-events-none absolute inset-0 character-file-scanlines opacity-[0.35]" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80" aria-hidden />
-
-      {/* Left — full viewport height portrait */}
-      <div className="relative h-[100dvh] min-h-0 w-[32%] min-w-[140px] max-w-[min(42vw,520px)] shrink-0 border-r border-white/15 bg-[#050505]">
-        <div className="absolute left-2 top-2 z-10 text-[8px] uppercase tracking-[0.22em] text-[#8eb9a8]/75 sm:left-3 sm:top-3 sm:text-[9px]" style={{ fontFamily: mono }}>
-          Fig. 1 — visual ref
-        </div>
-        <div className="absolute inset-0">
-          <Image
-            src={character.image}
-            alt={character.name}
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 35vw, 42vw"
-            priority
-          />
-        </div>
-        {/* Registration corners */}
-        {(
-          [
-            "left-2 top-7 h-5 w-5 border-l border-t sm:top-9 sm:h-6 sm:w-6",
-            "right-2 top-7 h-5 w-5 border-r border-t sm:top-9 sm:h-6 sm:w-6",
-            "bottom-6 left-2 h-5 w-5 border-b border-l sm:bottom-8 sm:h-6 sm:w-6",
-            "bottom-6 right-2 h-5 w-5 border-b border-r sm:bottom-8 sm:h-6 sm:w-6",
-          ] as const
-        ).map((spec, i) => (
-          <div
-            key={i}
-            className={cn("pointer-events-none absolute border-white/35", spec)}
-            aria-hidden
-          />
-        ))}
-        <p
-          className="absolute bottom-3 left-4 right-4 truncate text-[8px] uppercase tracking-[0.2em] text-white/30"
-          style={{ fontFamily: mono }}
-        >
-          hash · {ref.slice(0, 16)}…
-        </p>
+    <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-black text-white">
+      {/* Portrait — matches Characters slide */}
+      <div className="relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden bg-black">
+        <Image
+          src={character.image}
+          alt={character.name}
+          fill
+          className="object-cover object-center"
+          sizes="40vw"
+          priority
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/85" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
 
-      {/* Center — fixed height, no scroll */}
-      <div className="relative flex h-[100dvh] min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-white/10 md:border-r">
-        <header className="shrink-0 border-b border-white/12 px-3 py-2.5 sm:px-5 sm:py-3">
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <div className="min-w-0 space-y-0.5">
-              <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/50 sm:text-[10px] sm:tracking-[0.28em]" style={{ fontFamily: mono }}>
-                Flower productions // personnel file
-              </p>
-              <p className="hidden text-[8px] uppercase tracking-[0.15em] text-[#8eb9a8]/65 sm:block sm:text-[9px]" style={{ fontFamily: mono }}>
-                session · synthetic display · not for distribution
-              </p>
-            </div>
+      {/* Copy + profile */}
+      <div
+        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pl-8 pr-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] md:pl-10 md:pr-6 xl:pl-12 xl:pr-10"
+        key={character.id}
+      >
+        <div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.32em] text-white/45 transition-colors hover:text-white"
+            style={{ fontFamily: "var(--font-cinematic)" }}
+          >
+            <ArrowLeft className="size-3 shrink-0 opacity-70" aria-hidden />
+            Home
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/#characters"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55 transition-all hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
+              style={{ fontFamily: "var(--font-cinematic)" }}
+            >
+              Slideshow
+            </Link>
             <Link
               href="/"
-              className="shrink-0 border border-white/20 bg-black/50 px-2 py-1.5 text-[9px] uppercase tracking-[0.18em] text-white/60 transition-colors hover:border-white/40 hover:text-white sm:px-3 sm:text-[10px]"
-              style={{ fontFamily: mono }}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55 transition-all hover:border-amber-200/30 hover:bg-white/[0.08] hover:text-white"
+              style={{ fontFamily: "var(--font-cinematic)" }}
             >
-              ← exit
+              Flower
             </Link>
           </div>
-          <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-white/[0.07] pt-2 sm:mt-3 sm:gap-x-6 sm:pt-3">
-            <div>
-              <p className="text-[9px] uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: mono }}>
-                file ref
-              </p>
-              <p className="mt-0.5 text-[11px] text-[#8eb9a8]" style={{ fontFamily: mono }}>
-                {ref}
-              </p>
-            </div>
-            <div>
-              <p className="text-[9px] uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: mono }}>
-                index
-              </p>
-              <p className="mt-0.5 tabular-nums text-[11px] text-white/70" style={{ fontFamily: mono }}>
-                {String(index + 1).padStart(2, "0")} / {String(characters.length).padStart(2, "0")}
-              </p>
-            </div>
-            <div className="min-w-0 flex-1 sm:min-w-48">
-              <p className="text-[8px] uppercase tracking-[0.2em] text-white/35 sm:text-[9px]" style={{ fontFamily: mono }}>
-                designation
-              </p>
-              <p className="mt-0.5 text-[9px] uppercase leading-snug tracking-[0.1em] text-white/50 sm:text-[10px] sm:tracking-[0.12em]" style={{ fontFamily: mono }}>
-                {character.role}
-              </p>
-            </div>
-          </div>
-        </header>
+        </div>
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-3 pb-2 pt-2 sm:px-5 sm:pt-3">
-          <h1
-            className="mb-1 text-[clamp(1.25rem,3.5vw,2.25rem)] font-semibold uppercase leading-none tracking-[0.08em] text-white sm:mb-2"
-            style={{ fontFamily: mono }}
-          >
-            {character.name}
-          </h1>
-          <blockquote
-            className="mb-2 line-clamp-2 max-w-2xl border-l-2 border-[#8eb9a8]/45 pl-2.5 text-[10px] italic leading-snug text-white/50 sm:mb-3 sm:pl-3 sm:text-[11px]"
-            style={{ fontFamily: "var(--font-screenplay)" }}
-          >
-            {dossier.identityOneLiner}
-          </blockquote>
+        <p
+          className="mb-3 shrink-0 text-xs text-white/30"
+          style={{ fontFamily: "var(--font-screenplay)" }}
+        >
+          {String(index + 1).padStart(2, "0")} / {String(characters.length).padStart(2, "0")}
+        </p>
 
-          <div className="min-h-0 flex-1 overflow-hidden">
-            <CharacterPublicProfile
+        <div className="shrink-0 border-b border-white/10 pb-5">
+          <CharacterIdentityHeader
+            name={character.name}
+            role={character.role}
+            dossier={dossier}
+            heading="h1"
+            uppercaseTitle={false}
+          />
+        </div>
+
+        <div
+          className="min-h-0 flex-1 overflow-y-auto pr-2 pt-5"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <CharacterPublicProfile
             description={character.description}
             traits={character.personalityTraits}
             dossier={dossier}
             characterSongs={characterSongs}
-              profileVariant="industrial"
-            />
-          </div>
+            profileVariant="feature"
+          />
         </div>
 
         <nav
-          className="flex shrink-0 items-center justify-between gap-2 border-t border-white/12 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5"
-          aria-label="Previous and next subject"
+          className="mt-3 flex shrink-0 items-stretch gap-2 border-t border-white/10 pt-4"
+          aria-label="Previous and next character"
         >
           <div className="min-w-0 flex-1">
             {prev ? (
               <Link
                 href={`/characters/${prev.id}`}
-                className="group flex max-w-sm items-center gap-3 border border-white/15 bg-black/30 py-2 pl-2 pr-3 transition-colors hover:border-white/30"
-                style={{ fontFamily: mono }}
+                className="group flex h-full min-h-[3rem] items-center gap-3 rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 transition-all hover:border-amber-200/25 hover:bg-white/[0.06]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
               >
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden border border-white/10">
-                  <Image src={prev.image} alt="" fill className="object-cover object-center" sizes="40px" />
-                </div>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/30 text-white/70 transition-colors group-hover:border-white/30 group-hover:text-white">
+                  <ChevronLeft className="size-4 stroke-[1.5]" aria-hidden />
+                </span>
                 <div className="min-w-0 text-left">
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-[#8eb9a8]/70">prev_subject</p>
-                  <p className="truncate text-[11px] uppercase tracking-[0.08em] text-white/80 group-hover:text-white">
-                    {prev.name}
-                  </p>
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-amber-200/45">Previous</p>
+                  <p className="truncate text-sm font-medium tracking-wide text-white/90">{prev.name}</p>
                 </div>
               </Link>
-            ) : null}
+            ) : (
+              <span className="block min-h-[3rem]" aria-hidden />
+            )}
           </div>
-          <div className="min-w-0 flex-1 text-right">
+          <div className="min-w-0 flex-1">
             {next ? (
               <Link
                 href={`/characters/${next.id}`}
-                className="group ml-auto flex max-w-sm items-center justify-end gap-3 border border-white/15 bg-black/30 py-2 pl-3 pr-2 transition-colors hover:border-white/30"
-                style={{ fontFamily: mono }}
+                className="group flex h-full min-h-[3rem] items-center justify-end gap-3 rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 text-right transition-all hover:border-amber-200/25 hover:bg-white/[0.06]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 <div className="min-w-0 text-right">
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-[#8eb9a8]/70">next_subject</p>
-                  <p className="truncate text-[11px] uppercase tracking-[0.08em] text-white/80 group-hover:text-white">
-                    {next.name}
-                  </p>
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-amber-200/45">Next</p>
+                  <p className="truncate text-sm font-medium tracking-wide text-white/90">{next.name}</p>
                 </div>
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden border border-white/10">
-                  <Image src={next.image} alt="" fill className="object-cover object-center" sizes="40px" />
-                </div>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/30 text-white/70 transition-colors group-hover:border-white/30 group-hover:text-white">
+                  <ChevronRight className="size-4 stroke-[1.5]" aria-hidden />
+                </span>
               </Link>
             ) : null}
           </div>
         </nav>
-
-        <p
-          className="shrink-0 border-t border-white/10 px-3 py-1 text-center text-[7px] uppercase tracking-[0.3em] text-white/25 sm:px-5 sm:text-[8px] sm:tracking-[0.35em]"
-          style={{ fontFamily: mono }}
-        >
-          // end excerpt · flower high continuity
-        </p>
       </div>
 
-      {/* Right — manifest */}
-      <aside className="flex h-[100dvh] w-48 shrink-0 flex-col overflow-hidden border-l border-white/10 bg-black/40 sm:w-52 xl:w-56">
-        <div className="shrink-0 border-b border-white/10 px-3 py-2.5 pt-10 sm:px-4 sm:pt-12">
-          <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-white/50" style={{ fontFamily: mono }}>
-            active manifest
-          </p>
-          <p className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[#8eb9a8]/60" style={{ fontFamily: mono }}>
-            roster · ordered
+      {/* Cast — same language as home Characters slide */}
+      <aside
+        className="flex w-52 shrink-0 flex-col overflow-hidden border-l border-white/5 bg-black/40 sm:w-56"
+        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
+      >
+        <div className="shrink-0 px-3 pb-3 pl-3 pr-4 pt-[max(3.5rem,env(safe-area-inset-top,0px))] sm:pt-20">
+          <p
+            className="text-[10px] uppercase tracking-[0.3em] text-white/40"
+            style={{ fontFamily: "var(--font-cinematic)" }}
+          >
+            Cast
           </p>
         </div>
-        <div className="flex min-h-0 flex-1 flex-col gap-px overflow-y-auto overflow-x-hidden" style={{ scrollbarWidth: "none" }}>
+        <div
+          className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto pb-4 pl-2 pr-4"
+          style={{ scrollbarWidth: "none" }}
+        >
           {characters.map((c, i) => {
             const active = c.id === character.id;
             return (
@@ -233,32 +183,47 @@ export default async function CharacterPage({
                 key={c.id}
                 href={`/characters/${c.id}`}
                 className={cn(
-                  "group flex items-center gap-3 px-4 py-2.5 transition-colors",
+                  "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200",
                   active
-                    ? "bg-[#8eb9a8]/10 text-white"
-                    : "text-white/65 hover:bg-white/[0.04] hover:text-white",
+                    ? "bg-white/12 text-white ring-1 ring-amber-200/20"
+                    : "text-white/85 hover:bg-white/[0.06] hover:text-white",
                 )}
-                style={{ fontFamily: mono }}
               >
-                <span className="w-7 shrink-0 tabular-nums text-[10px] text-[#8eb9a8]/55">
+                <span
+                  className="w-6 shrink-0 tabular-nums text-[10px] text-white/35"
+                  style={{ fontFamily: "var(--font-screenplay)" }}
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div className="relative h-9 w-9 shrink-0 overflow-hidden border border-white/15">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-white/10">
                   <Image
                     src={c.image}
                     alt=""
                     fill
-                    className="object-cover object-center opacity-90 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0"
-                    sizes="36px"
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                    sizes="40px"
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className={cn("truncate text-[11px] uppercase tracking-[0.06em]", active && "text-white")}>
+                  <p
+                    className="truncate text-xs font-medium leading-tight"
+                    style={{ fontFamily: "var(--font-cinematic)" }}
+                  >
                     {c.name}
                   </p>
-                  <p className="mt-0.5 truncate text-[9px] uppercase tracking-[0.06em] text-white/40">{c.role}</p>
+                  <p
+                    className="mt-0.5 truncate text-[10px] text-white/65"
+                    style={{ fontFamily: "var(--font-screenplay)" }}
+                  >
+                    {c.role}
+                  </p>
                 </div>
-                {active ? <span className="h-1.5 w-1.5 shrink-0 bg-[#8eb9a8]" aria-hidden /> : null}
+                {active ? (
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-200/70"
+                    aria-hidden
+                  />
+                ) : null}
               </Link>
             );
           })}

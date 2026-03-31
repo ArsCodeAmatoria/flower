@@ -129,33 +129,12 @@ body {
   scroll-snap-stop: always;
 }
 
-/* Characters: portrait runs full viewport height (behind floating pill nav) */
+/* Title + Characters: full viewport; content clears nav via its own padding */
+.slideshow-container > section#title,
 .slideshow-container > section#characters {
   padding-bottom: 0;
   height: 100dvh;
   min-height: 100dvh;
-}
-
-/* ─── Character file (industrial script / dossier UI) ─ */
-
-.character-file-shell {
-  background-color: #060606;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: -1px -1px;
-}
-
-.character-file-scanlines {
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.12) 2px,
-    rgba(0, 0, 0, 0.12) 3px
-  );
 }
 
 /* ─── Section heading rule ────────────────────────── */
