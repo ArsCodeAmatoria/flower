@@ -8,9 +8,9 @@
 
 ## Logline
 
-On her first day at a beauty-obsessed high school, a scentless teen discovers she can awaken the hidden light in others—but when a manipulator twists the truth and turns her against the one person who believed in her, she must reclaim that truth to restore a fading world.
+A scentless flower girl in a world of hue and perfume finds her difference isn’t tragic, but magic.
 
-**Core idea:** Rose doesn’t bloom—she helps the world remember how.
+**Core idea:** She stops trying to belong—and helps everyone else remember they already do.
 
 ## Creative team
 
@@ -30,8 +30,7 @@ This repo is the **interactive project site**: a horizontal “slide” experien
 
 Sections include:
 
-- **Title** — hero and featured song player  
-- **About** — theme, world, structure, craft references (Save the Cat, McKee-style checks)  
+- **Title** — hero, logline, and featured song player  
 - **Characters** — dossiers and arcs  
 - **Script** — draft workspace with metadata and writing-rule sidebars  
 - **Lyrics** — songs tied to cast  

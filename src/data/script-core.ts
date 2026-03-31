@@ -23,49 +23,114 @@ export interface ScriptPage {
   isBible?: boolean;
 }
 
-/** ~55 lines per page (industry standard). Estimates formatted screenplay lines per element. */
-function estLines(el: ScriptElement): number {
-  const len = el.text.length;
+/** Standard screenplay page = 55 lines, including blank separator lines. */
+export const LINES_PER_SCREENPLAY_PAGE = 55;
+
+/**
+ * Line budget per element as printed on a script page: one row = one line,
+ * including trailing blank lines after blocks (industry spacing).
+ * Metadata is not counted (title page / production notes convention).
+ */
+export function countElementScreenplayLines(el: ScriptElement): number {
+  if (el.type === "metadata") return 0;
+
+  const spaceAfterBlock = 1;
+
   switch (el.type) {
     case "scene":
-      return 2;
-    case "action":
-      return Math.max(1, Math.ceil(len / 58));
-    case "dialogue":
-      return Math.max(1, Math.ceil(len / 38));
+      return 1 + spaceAfterBlock;
+    case "action": {
+      const lines = el.text
+        .split("\n")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+      return Math.max(1, lines.length) + spaceAfterBlock;
+    }
     case "character":
+      return 1;
     case "parenthetical":
       return 1;
-    case "metadata":
+    case "dialogue": {
+      const lines = el.text
+        .split("\n")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+      return Math.max(1, lines.length) + spaceAfterBlock;
+    }
     case "fade":
     case "transition":
+      return 1 + spaceAfterBlock;
     default:
-      return 1;
+      return 1 + spaceAfterBlock;
   }
 }
 
-/** Cumulative screenplay page where each beat starts (1-based). [0]=1, [1]=start of beat 2, etc. */
+/** Cumulative screenplay page where each script block starts (1-based). */
 export function getScriptPageStarts(pages: ScriptPage[]): number[] {
-  const LINES_PER_PAGE = 55;
   const starts: number[] = [];
   let acc = 0;
   for (const p of pages) {
-    starts.push(Math.floor(acc / LINES_PER_PAGE) + 1);
+    starts.push(Math.floor(acc / LINES_PER_SCREENPLAY_PAGE) + 1);
     if (!p.isBible) {
-      for (const el of p.elements) acc += estLines(el);
+      for (const el of p.elements) acc += countElementScreenplayLines(el);
     }
   }
-  starts.push(Math.floor(acc / LINES_PER_PAGE) + 1); // end sentinel
+  starts.push(Math.floor(acc / LINES_PER_SCREENPLAY_PAGE) + 1);
   return starts;
 }
 
-/** Total estimated screenplay pages (industry format). */
+/** Total screenplay pages from accumulated line count. */
 export function getTotalScreenplayPages(pages: ScriptPage[]): number {
-  const LINES_PER_PAGE = 55;
   let acc = 0;
   for (const p of pages) {
     if (p.isBible) continue;
-    for (const el of p.elements) acc += estLines(el);
+    for (const el of p.elements) acc += countElementScreenplayLines(el);
   }
-  return Math.max(1, Math.ceil(acc / LINES_PER_PAGE));
+  return Math.max(1, Math.ceil(acc / LINES_PER_SCREENPLAY_PAGE));
+}
+
+/** Total counted lines (e.g. for debug). */
+export function getTotalScreenplayLineCount(pages: ScriptPage[]): number {
+  let acc = 0;
+  for (const p of pages) {
+    if (p.isBible) continue;
+    for (const el of p.elements) acc += countElementScreenplayLines(el);
+  }
+  return acc;
+}
+
+/**
+ * Document-ordered scene numbers: each `type: "scene"` slug is one scene.
+ * `current` is the index of the first scene heading on `pages[pageIndex]`;
+ * if that page has none, uses the most recent scene from earlier pages.
+ */
+export function getSceneCountStats(
+  pages: ScriptPage[],
+  pageIndex: number,
+): { current: number; total: number } {
+  let total = 0;
+  const firstOnPage: number[] = [];
+  for (let pi = 0; pi < pages.length; pi++) {
+    let first = 0;
+    for (const el of pages[pi].elements) {
+      if (el.type === "scene") {
+        total += 1;
+        if (first === 0) first = total;
+      }
+    }
+    firstOnPage[pi] = first;
+  }
+  let current = firstOnPage[pageIndex] ?? 0;
+  if (current === 0) {
+    for (let i = pageIndex - 1; i >= 0; i--) {
+      if (firstOnPage[i]) {
+        current = firstOnPage[i];
+        break;
+      }
+    }
+  }
+  return {
+    current: total === 0 ? 0 : current || 1,
+    total,
+  };
 }

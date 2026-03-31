@@ -1,15 +1,21 @@
 /**
  * Screenplay + shared types/utilities.
  *
- * - `script-draft1.ts` — canonical page data (source for Draft 2 after metadata injection).
- * - Draft 1 is not edit-tracked in git here; the in-app “archived draft” tab was removed so this file
- *   stays the single screenplay source. Keep an offline snapshot of any archive you need.
+ * Active pages: `script-beat-pages.ts` (15 beats). Full draft replaces scaffold data.
+ * Beat spine: `flower-beats-final.ts` (shown under Script → Structure).
  *
- * Run `npm run script-index` to regenerate SCRIPT_INDEX.md (update the script if needed).
+ * Run `npm run script-index` to regenerate SCRIPT_INDEX.md.
  */
 
 export type { ScriptElement, ScriptElementType, ScriptPage } from "./script-core";
-export { getScriptPageStarts, getTotalScreenplayPages } from "./script-core";
+export {
+  countElementScreenplayLines,
+  getSceneCountStats,
+  getScriptPageStarts,
+  getTotalScreenplayLineCount,
+  getTotalScreenplayPages,
+  LINES_PER_SCREENPLAY_PAGE,
+} from "./script-core";
 
 export type { ScriptMetadataIndex, SceneMetaBlock } from "@/lib/script-metadata";
 export {
@@ -32,12 +38,8 @@ export {
   type CurrentContext,
 } from "@/lib/script-parser";
 
-import { pageLabelsDraft2, scriptPagesDraft2 } from "./script-draft2";
+import { pageLabelsBeatScaffold, scriptPagesBeatScaffold } from "./script-beat-pages";
 
-/** Low-level screenplay pages (no Draft 2 `[[metadata]]` preamble). Used by `script-draft2`. */
-export { pageLabelsDraft1, scriptPagesDraft1 } from "./script-draft1";
-export { pageLabelsDraft2, scriptPagesDraft2 } from "./script-draft2";
-
-/** Default: working script with metadata (Characters, Sets, Credits, About, Script UI). */
-export const scriptPages = scriptPagesDraft2;
-export const pageLabels = pageLabelsDraft2;
+/** One block per beat; lines counted at 55/page incl. spacing (see script-core). */
+export const scriptPages = scriptPagesBeatScaffold;
+export const pageLabels = pageLabelsBeatScaffold;

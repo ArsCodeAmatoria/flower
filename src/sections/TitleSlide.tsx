@@ -10,6 +10,9 @@ const heroSong = songs.find((s) => s.id === "see-it-my-way")!;
 const creator = crew[0];
 const coWriter = crew.find((m) => m.id === "leigh-akin");
 
+const FLOWER_LOGLINE =
+  "A scentless flower girl in a world of hue and perfume finds her difference isn’t tragic, but magic.";
+
 export function TitleSlide() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -44,7 +47,7 @@ export function TitleSlide() {
   return (
     <section
       id="title"
-      className="relative flex h-screen w-screen shrink-0 flex-col items-center justify-center overflow-hidden bg-black"
+      className="relative flex h-full min-h-0 w-screen shrink-0 flex-col items-center justify-center overflow-y-auto overflow-x-hidden bg-black"
     >
       {/* Radial vignette */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)]" />
@@ -79,12 +82,23 @@ export function TitleSlide() {
         To flower is to become
       </p>
 
+      <p
+        className="relative z-10 mx-auto mt-8 max-w-md px-6 text-center text-[13px] leading-relaxed text-white/62"
+        style={{
+          fontFamily: "var(--font-screenplay)",
+          animation: "fadeIn 1.8s ease both",
+          animationDelay: "1s",
+        }}
+      >
+        {FLOWER_LOGLINE}
+      </p>
+
       {/* Credits line */}
       <div
         className="relative z-10 mt-10 flex flex-col items-center gap-1"
         style={{
           animation: "fadeIn 1.8s ease both",
-          animationDelay: "1.2s",
+          animationDelay: "1.35s",
         }}
       >
         <p
@@ -122,7 +136,7 @@ export function TitleSlide() {
         className="relative z-10 mt-10 flex items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-5 py-3 backdrop-blur-md"
         style={{
           animation: "fadeIn 1.8s ease both",
-          animationDelay: "1.5s",
+          animationDelay: "1.65s",
         }}
       >
         {/* Waveform bars */}

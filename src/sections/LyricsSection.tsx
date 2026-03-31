@@ -58,8 +58,7 @@ export function LyricsSection({ openCharacter }: Props) {
       {/* ── Header ───────────────────────────────────────────── */}
       <div className="mb-5 flex shrink-0 items-center justify-between px-8">
         <h1
-          className="section-heading flex-1 text-2xl"
-          style={{ fontFamily: "var(--font-cinematic)" }}
+          className="section-heading flex-1 text-3xl"
         >
           Lyrics
         </h1>

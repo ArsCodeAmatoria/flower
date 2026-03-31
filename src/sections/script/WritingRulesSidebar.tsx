@@ -108,7 +108,7 @@ export function WritingRulesSidebar({ scriptAnchors }: { scriptAnchors?: ScriptM
 
       <Section id="story_structure_rules" title="Story structure" defaultOpen>
         <p className="mb-2 text-[9px] text-white/40">Save the Cat — what each beat must do + target pages.</p>
-        <div className="flex max-h-[min(40vh,320px)] flex-col gap-2 overflow-y-auto pr-1" style={{ scrollbarWidth: "thin" }}>
+        <div className="flex max-h-[min(40vh,320px)] flex-col gap-2 overflow-y-auto pr-1" style={{ scrollbarWidth: "none" }}>
           {saveTheCatBeats.map((b) => (
             <div key={b.id} className="rounded-lg border border-white/8 bg-black/30 px-2.5 py-2">
               <p className="text-[10px] font-semibold text-white/90" style={{ fontFamily: "var(--font-cinematic)" }}>

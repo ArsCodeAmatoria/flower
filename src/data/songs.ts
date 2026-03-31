@@ -19,7 +19,7 @@ export const songs: Song[] = [
       "Daisy teaches survival through conformity—the polite pressure to bloom the way the hall expects.",
     placement: "Early Act One — conformity pedagogy",
     styleNotes: "Bright, instructional, slightly claustrophobic.",
-    image: "/characters/daisy.png",
+    image: "/characters/daisy1.png",
     writtenBy: "Leigh Akin",
     audioSrc: "/songs/JUST FIT IN.wav",
   },

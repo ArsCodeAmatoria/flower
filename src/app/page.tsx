@@ -6,7 +6,6 @@ import { CharactersSection } from "@/sections/CharactersSection";
 import { ScriptSection } from "@/sections/ScriptSection";
 import { LyricsSection } from "@/sections/LyricsSection";
 import { CreditsSection } from "@/sections/CreditsSection";
-import { AboutSection } from "@/sections/AboutSection";
 import { FloatingLinks } from "@/components/FloatingLinks";
 import { CharacterModal } from "@/components/CharacterModal";
 
@@ -65,7 +64,6 @@ function HomeInner() {
         style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
       >
         <TitleSlide />
-        <AboutSection openCharacter={openCharacter} />
         <CharactersSection openCharacter={openCharacter} />
         <ScriptSection openCharacter={openCharacter} />
         <LyricsSection openCharacter={openCharacter} />

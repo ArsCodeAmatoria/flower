@@ -185,7 +185,7 @@ export function ProgressSidebar({
                       >
                         <span className="truncate text-white/60">{r.beatId}</span>
                         <span className="shrink-0 text-white/45">
-                          {r.completeSceneCount > 0 ? "✓ complete" : "open"} ({r.sceneCount})
+                          {r.completeSceneCount > 0 ? "complete" : "open"} ({r.sceneCount})
                         </span>
                       </li>
                     ))}
@@ -295,12 +295,12 @@ export function ProgressSidebar({
               {characterArcProgressDraft2.map((row) => (
                 <tr key={row.character} className="border-t border-white/8">
                   <td className="py-1 pr-1 text-white/80">{row.character}</td>
-                  <td className="text-center">{row.intro ? "✓" : "·"}</td>
-                  <td className="text-center">{row.objective ? "✓" : "·"}</td>
-                  <td className="text-center">{row.flaw ? "✓" : "·"}</td>
-                  <td className="text-center">{row.pressure ? "✓" : "·"}</td>
-                  <td className="text-center">{row.turn ? "✓" : "·"}</td>
-                  <td className="text-center">{row.resolved ? "✓" : "·"}</td>
+                  <td className="text-center">{row.intro ? "Y" : "–"}</td>
+                  <td className="text-center">{row.objective ? "Y" : "–"}</td>
+                  <td className="text-center">{row.flaw ? "Y" : "–"}</td>
+                  <td className="text-center">{row.pressure ? "Y" : "–"}</td>
+                  <td className="text-center">{row.turn ? "Y" : "–"}</td>
+                  <td className="text-center">{row.resolved ? "Y" : "–"}</td>
                 </tr>
               ))}
             </tbody>

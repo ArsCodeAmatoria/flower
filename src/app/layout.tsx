@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Cinzel, Cinzel_Decorative, Cormorant_Garamond, Courier_Prime, Style_Script } from "next/font/google";
+import {
+  Cinzel,
+  Cinzel_Decorative,
+  Cormorant_Garamond,
+  Courier_Prime,
+  IBM_Plex_Mono,
+  Style_Script,
+} from "next/font/google";
 import "./globals.css";
 
 const styleScript = Style_Script({
@@ -33,10 +40,17 @@ const cinzelDecorative = Cinzel_Decorative({
   weight: "400",
 });
 
+/** Industrial / technical readouts (personnel files, script addenda). */
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-industrial",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
 export const metadata: Metadata = {
   title: "FLOWER — Animated musical feature",
   description:
-    "FLOWER: created by Lynne Tapper, co-written by Leigh Akin, songs by Leigh Akin — an animated musical about presence and belonging.",
+    "Animated musical — a scentless flower girl in a world of hue and perfume discovers her difference is magic. Lynne Tapper, Leigh Akin.",
 };
 
 export default function RootLayout({
@@ -47,7 +61,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${styleScript.variable} ${cinzel.variable} ${courierPrime.variable} ${cormorantCredits.variable} ${cinzelDecorative.variable}`}
+      className={`${styleScript.variable} ${cinzel.variable} ${courierPrime.variable} ${cormorantCredits.variable} ${cinzelDecorative.variable} ${ibmPlexMono.variable}`}
     >
       <body className="bg-black text-white antialiased">{children}</body>
     </html>

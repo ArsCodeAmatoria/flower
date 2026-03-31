@@ -48,20 +48,20 @@ export function CharactersSection({ openCharacter }: Props) {
   return (
     <section
       id="characters"
-      className="relative flex h-screen min-h-0 w-screen shrink-0 overflow-hidden bg-black"
+      className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-black"
     >
       {/* Portrait — left half */}
       <button
         type="button"
         onClick={() => openCharacter(character.id)}
-        className="group relative h-full w-[40%] shrink-0 overflow-hidden"
+        className="group relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden bg-black"
       >
         <Image
           key={character.id}
           src={character.image}
           alt={character.name}
           fill
-          className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
           sizes="40vw"
           style={{ animation: "fadeIn 0.4s ease-out both" }}
         />
@@ -76,7 +76,7 @@ export function CharactersSection({ openCharacter }: Props) {
       {/* Details — right: identity fixed, sellable bio scrolls */}
       <div
         key={character.id}
-        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pl-10 pr-6 py-10 xl:pl-12 xl:pr-10"
+        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pb-[var(--floating-nav-clearance)] pl-10 pr-6 pt-10 xl:pl-12 xl:pr-10"
         style={{ animation: "fadeIn 0.35s ease-out both" }}
       >
         <p
@@ -127,7 +127,7 @@ export function CharactersSection({ openCharacter }: Props) {
       </button>
 
       {/* Cast sidebar — FLOWER roster */}
-      <div className="flex w-56 shrink-0 flex-col overflow-hidden border-l border-white/5 bg-black/40">
+      <div className="flex w-56 shrink-0 flex-col overflow-hidden border-l border-white/5 bg-black/40 pb-[var(--floating-nav-clearance)]">
         <div className="shrink-0 px-3 pb-3 pl-3 pr-4 pt-20">
           <p
             className="text-[10px] uppercase tracking-[0.3em] text-white/40"
@@ -137,8 +137,8 @@ export function CharactersSection({ openCharacter }: Props) {
           </p>
         </div>
         <div
-          className="flex flex-1 flex-col gap-0.5 overflow-y-auto pb-24 pl-2 pr-4"
-          style={{ scrollbarWidth: "thin" }}
+          className="flex flex-1 flex-col gap-0.5 overflow-y-auto pb-4 pl-2 pr-4"
+          style={{ scrollbarWidth: "none" }}
         >
           {characters.map((c, i) => {
             const active = i === index;

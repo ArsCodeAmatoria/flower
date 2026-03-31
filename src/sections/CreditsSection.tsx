@@ -65,11 +65,11 @@ function CreditCardLabel({ children }: { children: ReactNode }) {
       <div className="mb-3 flex w-full max-w-xs items-center justify-center gap-3">
         <span className="h-px min-w-[2rem] flex-1 bg-linear-to-l from-amber-200/35 to-transparent" aria-hidden />
         <span
-          className="shrink-0 text-lg leading-none text-amber-200/50"
+          className="shrink-0 px-1 text-[10px] leading-none tracking-[0.4em] text-amber-200/45"
           style={{ fontFamily: "var(--font-credits-ornate)" }}
           aria-hidden
         >
-          ❦
+          ···
         </span>
         <span className="h-px min-w-[2rem] flex-1 bg-linear-to-r from-amber-200/35 to-transparent" aria-hidden />
       </div>
@@ -386,7 +386,7 @@ export function CreditsSection() {
   return (
     <section
       id="credits"
-      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-[#030304] pt-14 pb-4"
+      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-[#030304] pt-14 pb-0"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_42%,rgba(180,140,70,0.07)_0%,transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.88)_100%)]" />
@@ -395,9 +395,7 @@ export function CreditsSection() {
         <p className="text-[9px] uppercase tracking-[0.45em] text-amber-200/45" style={{ fontFamily: "var(--font-cinematic)" }}>
           End credits
         </p>
-        <h1 className="section-heading mt-1 text-2xl text-white" style={{ fontFamily: "var(--font-cinematic)" }}>
-          Credits
-        </h1>
+        <h1 className="section-heading mt-1 text-3xl text-white">Credits</h1>
         <p
           className="mt-2 text-[10px] text-white/40 md:hidden"
           style={{ fontFamily: "var(--font-screenplay)" }}
@@ -451,7 +449,7 @@ export function CreditsSection() {
           ) : (
             <div
               className="min-h-[36vh] flex-1 overflow-y-auto rounded-sm border border-amber-200/12 bg-[#050608] px-4 py-5 sm:px-6"
-              style={{ scrollbarWidth: "thin" }}
+              style={{ scrollbarWidth: "none" }}
             >
               <p className="mb-6 text-[11px] text-white/50" style={{ fontFamily: "var(--font-screenplay)" }}>
                 Reduced motion: static list. Play below for {creditsSong.title}.
@@ -526,7 +524,14 @@ export function CreditsSection() {
         </aside>
       </div>
 
-      <div className="relative shrink-0 px-4 pb-5 pt-3 sm:px-6 lg:px-8">
+      {/* Pad below player by floating nav offset + pill height so controls stay clear of the bar */}
+      <div
+        className="relative shrink-0 px-4 pt-3 sm:px-6 lg:px-8"
+        style={{
+          paddingBottom:
+            "calc(max(1.25rem, env(safe-area-inset-bottom, 0px) + 4.25rem) + 4.5rem + 0.5rem)",
+        }}
+      >
         <div className="mx-auto flex max-w-4xl items-center gap-4 rounded-sm border border-amber-200/18 bg-black/70 px-5 py-3.5 shadow-[0_8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md">
           <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-sm ring-1 ring-amber-200/25">
             <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="44px" />

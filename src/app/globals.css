@@ -68,7 +68,43 @@ body {
   color: #fff;
 }
 
+/* Structure view: custom disclosure (chevron in summaries) */
+.structure-details-view details > summary {
+  list-style: none;
+}
+.structure-details-view details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Scroll still works; bars hidden (Firefox, legacy Edge, WebKit) */
+.overflow-auto,
+.overflow-scroll,
+.overflow-x-auto,
+.overflow-x-scroll,
+.overflow-y-auto,
+.overflow-y-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-scroll::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-y-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* ─── Slideshow ───────────────────────────────────── */
+
+:root {
+  /* Bottom inset for fixed pill nav: matches FloatingLinks `bottom` + bar height + gap */
+  --floating-nav-clearance: calc(
+    max(1.25rem, env(safe-area-inset-bottom, 0px) + 4.25rem) + 3.75rem
+  );
+}
 
 .slideshow-container {
   display: flex;
@@ -84,11 +120,42 @@ body {
 
 .slideshow-container > section {
   flex: 0 0 100vw;
+  box-sizing: border-box;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  padding-bottom: var(--floating-nav-clearance);
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+/* Characters: portrait runs full viewport height (behind floating pill nav) */
+.slideshow-container > section#characters {
+  padding-bottom: 0;
+  height: 100dvh;
+  min-height: 100dvh;
+}
+
+/* ─── Character file (industrial script / dossier UI) ─ */
+
+.character-file-shell {
+  background-color: #060606;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+.character-file-scanlines {
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 3px
+  );
 }
 
 /* ─── Section heading rule ────────────────────────── */
@@ -97,10 +164,10 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: var(--font-cinematic);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--font-title);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: white;
 }
 
