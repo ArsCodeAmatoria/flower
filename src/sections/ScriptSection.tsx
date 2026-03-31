@@ -18,13 +18,13 @@ export function ScriptSection({ openCharacter: _oc }: Props) {
   return (
     <section
       id="script"
-      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-black pt-14"
+      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-zinc-50 pt-14"
     >
       <div className="mb-3 flex shrink-0 flex-wrap items-center justify-between gap-3 px-8 pt-3">
         <h1 className="section-heading text-3xl">Script</h1>
         <div className="flex flex-wrap items-center gap-3">
           <div
-            className="flex rounded-full border border-white/12 bg-white/[0.04] p-0.5"
+            className="flex rounded-full border border-zinc-200 bg-zinc-50 p-0.5"
             role="tablist"
             aria-label="Script view"
           >
@@ -36,8 +36,8 @@ export function ScriptSection({ openCharacter: _oc }: Props) {
               className={cn(
                 "rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.15em] transition-colors",
                 view === "structure"
-                  ? "bg-white/14 text-white"
-                  : "text-white/45 hover:text-white/75",
+                  ? "bg-red-100 text-zinc-900"
+                  : "text-zinc-500 hover:text-zinc-800",
               )}
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
@@ -51,8 +51,8 @@ export function ScriptSection({ openCharacter: _oc }: Props) {
               className={cn(
                 "rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.15em] transition-colors",
                 view === "script"
-                  ? "bg-white/14 text-white"
-                  : "text-white/45 hover:text-white/75",
+                  ? "bg-red-100 text-zinc-900"
+                  : "text-zinc-500 hover:text-zinc-800",
               )}
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
@@ -60,7 +60,7 @@ export function ScriptSection({ openCharacter: _oc }: Props) {
             </button>
           </div>
           <p
-            className="max-w-[12rem] text-right text-[10px] font-medium uppercase tracking-[0.18em] text-white/40 sm:max-w-md"
+            className="max-w-[12rem] text-right text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500 sm:max-w-md"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             {view === "structure" ? "15 beats · final" : "Screenplay scaffold"}

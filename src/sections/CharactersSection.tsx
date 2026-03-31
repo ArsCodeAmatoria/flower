@@ -48,13 +48,13 @@ export function CharactersSection({ openCharacter }: Props) {
   return (
     <section
       id="characters"
-      className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-black"
+      className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50"
     >
       {/* Portrait — left half */}
       <button
         type="button"
         onClick={() => openCharacter(character.id)}
-        className="group relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden bg-black"
+        className="group relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden border-r border-zinc-200 bg-zinc-100"
       >
         <Image
           key={character.id}
@@ -65,28 +65,27 @@ export function CharactersSection({ openCharacter }: Props) {
           sizes="40vw"
           style={{ animation: "fadeIn 0.4s ease-out both" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {/* No white blend into portrait — hard edge at column boundary */}
 
-        <div className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/40 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
-          <ArrowUpRight className="size-4 text-white" />
+        <div className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white/90 opacity-0 shadow-md backdrop-blur-sm transition-opacity group-hover:opacity-100">
+          <ArrowUpRight className="size-4 text-red-700" />
         </div>
       </button>
 
       {/* Details — right: identity fixed, sellable bio scrolls */}
       <div
         key={character.id}
-        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pb-[var(--floating-nav-clearance)] pl-10 pr-6 pt-10 xl:pl-12 xl:pr-10"
+        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-zinc-50 pb-[var(--floating-nav-clearance)] pl-10 pr-6 pt-10 xl:pl-12 xl:pr-10"
         style={{ animation: "fadeIn 0.35s ease-out both" }}
       >
         <p
-          className="mb-4 shrink-0 text-xs text-white/30"
+          className="mb-4 shrink-0 text-xs text-zinc-400"
           style={{ fontFamily: "var(--font-screenplay)" }}
         >
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </p>
 
-        <div className="shrink-0 border-b border-white/10 pb-5">
+        <div className="shrink-0 border-b border-zinc-200 pb-5">
           <CharacterIdentityHeader name={character.name} role={character.role} dossier={dossier} heading="h2" />
         </div>
 
@@ -104,7 +103,7 @@ export function CharactersSection({ openCharacter }: Props) {
           <button
             type="button"
             onClick={() => openCharacter(character.id)}
-            className="group/link mt-6 inline-flex w-fit items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+            className="group/link mt-6 inline-flex w-fit items-center gap-2 text-sm text-red-700 transition-colors hover:text-red-900"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             <span className="uppercase tracking-widest">Open full profile view</span>
@@ -119,7 +118,7 @@ export function CharactersSection({ openCharacter }: Props) {
         disabled={index === 0}
         aria-label="Previous character"
         className={cn(
-          "absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur-sm transition-all hover:border-white/40",
+          "absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-zinc-200 bg-white/90 text-zinc-800 shadow-md backdrop-blur-sm transition-all hover:border-red-300 hover:bg-red-50",
           "disabled:pointer-events-none disabled:opacity-0"
         )}
       >
@@ -127,10 +126,10 @@ export function CharactersSection({ openCharacter }: Props) {
       </button>
 
       {/* Cast sidebar — FLOWER roster */}
-      <div className="flex w-56 shrink-0 flex-col overflow-hidden border-l border-white/5 bg-black/40 pb-[var(--floating-nav-clearance)]">
+      <div className="flex w-56 shrink-0 flex-col overflow-hidden border-l border-zinc-200 bg-white/80 pb-[var(--floating-nav-clearance)] backdrop-blur-sm">
         <div className="shrink-0 px-3 pb-3 pl-3 pr-4 pt-20">
           <p
-            className="text-[10px] uppercase tracking-[0.3em] text-white/40"
+            className="text-[10px] uppercase tracking-[0.3em] text-zinc-500"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             Cast
@@ -153,11 +152,11 @@ export function CharactersSection({ openCharacter }: Props) {
                 className={cn(
                   "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200",
                   active
-                    ? "bg-white/12 text-white"
-                    : "text-white/85 hover:bg-white/6 hover:text-white"
+                    ? "bg-red-50 text-zinc-900 ring-1 ring-red-200"
+                    : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
                 )}
               >
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-zinc-200/80">
                   <Image
                     src={c.image}
                     alt={c.name}
@@ -174,7 +173,7 @@ export function CharactersSection({ openCharacter }: Props) {
                     {c.name}
                   </p>
                   <p
-                    className="mt-0.5 truncate text-[10px] text-white/70"
+                    className="mt-0.5 truncate text-[10px] text-zinc-600"
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
                     {c.role}

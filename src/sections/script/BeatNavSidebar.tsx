@@ -34,11 +34,11 @@ export function BeatNavSidebar({
 
   return (
     <nav
-      className="flex w-[300px] shrink-0 flex-col overflow-y-auto border-r border-white/10 py-2 pl-4 pr-3 pb-24 sm:w-[320px]"
+      className="flex w-[300px] shrink-0 flex-col overflow-y-auto border-r border-zinc-200 py-2 pl-4 pr-3 pb-24 sm:w-[320px]"
       aria-label="Acts and beats"
     >
       <p
-        className="sticky top-0 z-1 mb-3 bg-black py-1 text-[10px] uppercase tracking-[0.22em] text-amber-200/75"
+        className="sticky top-0 z-1 mb-3 bg-zinc-50 py-1 text-[10px] uppercase tracking-[0.22em] text-red-800"
         style={{ fontFamily: "var(--font-cinematic)" }}
       >
         Navigate
@@ -49,32 +49,32 @@ export function BeatNavSidebar({
         const actBeatObjs = beats.map((b) => b.beat);
         const { scenes: actScenes, pages: actPages } = aggregateBeatExpectations(actBeatObjs);
         return (
-          <div key={act.label} className="mb-1 border-b border-white/6 pb-2 last:border-0">
+          <div key={act.label} className="mb-1 border-b border-zinc-200 pb-2 last:border-0">
             <button
               type="button"
               onClick={() => setOpenActs((s) => ({ ...s, [act.label]: !open }))}
-              className="flex w-full items-start gap-2 py-2 pr-0.5 text-left transition-colors hover:text-white/95"
+              className="flex w-full items-start gap-2 py-2 pr-0.5 text-left transition-colors hover:text-zinc-900/95"
               style={{ fontFamily: "var(--font-cinematic)" }}
               aria-expanded={open}
             >
               <ChevronDown
-                className={cn("mt-1 size-3.5 shrink-0 text-white/50 transition-transform", !open && "-rotate-90")}
+                className={cn("mt-1 size-3.5 shrink-0 text-zinc-500 transition-transform", !open && "-rotate-90")}
               />
               <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-medium uppercase leading-snug tracking-[0.1em] text-white/82">
+                <span className="block text-[11px] font-medium uppercase leading-snug tracking-[0.1em] text-zinc-800">
                   {act.label}
                 </span>
                 <span
-                  className="mt-1 block text-[11px] leading-snug text-white/58"
+                  className="mt-1 block text-[11px] leading-snug text-zinc-600"
                   style={{ fontFamily: "var(--font-screenplay)" }}
                 >
                   <span className="block tabular-nums">{formatSceneExpectation(actScenes)}</span>
-                  <span className="block tabular-nums text-white/50">{formatPageExpectation(actPages)}</span>
+                  <span className="block tabular-nums text-zinc-500">{formatPageExpectation(actPages)}</span>
                 </span>
               </span>
             </button>
             {open && (
-              <ul className="mt-1 space-y-1 border-l border-white/12 pl-3">
+              <ul className="mt-1 space-y-1 border-l border-zinc-200 pl-3">
                 {beats.map(({ beat, pageIndex }) => {
                   const active = pageIndex === activePageIndex;
                   const beatPages = expectedScreenplayPagesFromScenes(beat.expectedScenes);
@@ -86,25 +86,25 @@ export function BeatNavSidebar({
                         className={cn(
                           "w-full rounded-md px-2 py-2 text-left transition-colors",
                           active
-                            ? "bg-amber-200/12 text-amber-100 ring-1 ring-amber-200/20"
-                            : "text-white/65 hover:bg-white/6 hover:text-white/90",
+                            ? "bg-red-100 text-red-950 ring-1 ring-red-300"
+                            : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
                         )}
                         style={{ fontFamily: "var(--font-screenplay)" }}
                       >
                         <span className="block text-[12px] leading-snug">
-                          <span className="tabular-nums text-white/45">{String(beat.num).padStart(2, "0")}</span>{" "}
-                          <span className={cn("font-medium", active ? "text-amber-50" : "text-white/92")}>
+                          <span className="tabular-nums text-zinc-500">{String(beat.num).padStart(2, "0")}</span>{" "}
+                          <span className={cn("font-medium", active ? "text-red-950" : "text-zinc-900")}>
                             {beat.title}
                           </span>
                         </span>
                         <span
                           className={cn(
                             "mt-1.5 flex flex-col gap-0.5 text-[10px] tabular-nums leading-normal",
-                            active ? "text-amber-200/85" : "text-white/50",
+                            active ? "text-red-800" : "text-zinc-500",
                           )}
                         >
                           <span>{formatSceneExpectation(beat.expectedScenes)}</span>
-                          <span className={active ? "text-amber-200/70" : "text-white/42"}>
+                          <span className={active ? "text-red-700" : "text-zinc-400"}>
                             {formatPageExpectation(beatPages)}
                           </span>
                         </span>

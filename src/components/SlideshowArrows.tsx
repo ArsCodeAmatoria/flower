@@ -29,8 +29,8 @@ export function SlideshowArrows({
         className={cn(
           "fixed left-5 top-1/2 z-[1001] -translate-y-1/2 rounded-full transition-all duration-200",
           "flex h-12 w-12 items-center justify-center",
-          "border border-white/15 bg-black/60 text-white backdrop-blur-md",
-          "hover:border-white/40 hover:bg-white/12",
+          "border border-zinc-300 bg-white/90 text-zinc-800 backdrop-blur-md",
+          "hover:border-zinc-400 hover:bg-zinc-100",
           "disabled:pointer-events-none disabled:opacity-20"
         )}
       >
@@ -45,8 +45,8 @@ export function SlideshowArrows({
         className={cn(
           "fixed right-5 top-1/2 z-[1001] -translate-y-1/2 rounded-full transition-all duration-200",
           "flex h-12 w-12 items-center justify-center",
-          "border border-white/15 bg-black/60 text-white backdrop-blur-md",
-          "hover:border-white/40 hover:bg-white/12",
+          "border border-zinc-300 bg-white/90 text-zinc-800 backdrop-blur-md",
+          "hover:border-zinc-400 hover:bg-zinc-100",
           "disabled:pointer-events-none disabled:opacity-20"
         )}
       >
@@ -55,7 +55,7 @@ export function SlideshowArrows({
 
       {/* Slide counter */}
       <div
-        className="fixed bottom-8 right-8 z-[1001] text-[11px] text-white/30"
+        className="fixed bottom-8 right-8 z-[1001] text-[11px] text-zinc-400"
         style={{ fontFamily: "var(--font-screenplay)" }}
       >
         {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}

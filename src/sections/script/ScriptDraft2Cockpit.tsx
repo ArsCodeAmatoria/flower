@@ -74,43 +74,43 @@ export function ScriptDraft2Cockpit({
     <div className="flex min-h-0 w-full flex-1 overflow-hidden">
       <BeatNavSidebar activePageIndex={page} onSelectBeat={goToBeat} />
       <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
-        <div className="shrink-0 border-b border-white/10 bg-black/50 px-4 py-2">
+        <div className="shrink-0 border-b border-zinc-200 bg-zinc-50/95 px-4 py-2">
           <div
-            className="mx-auto flex max-w-xl flex-wrap items-center gap-x-4 gap-y-1 text-[9px] text-white/55"
+            className="mx-auto flex max-w-xl flex-wrap items-center gap-x-4 gap-y-1 text-[9px] text-zinc-600"
             style={{ fontFamily: "var(--font-screenplay)" }}
           >
             <span>
-              <span className="text-white/35">Beat </span>
-              <span className="tabular-nums text-white/80">{String(page + 1).padStart(2, "0")}</span>
-              <span className="text-white/35"> / {String(total).padStart(2, "0")}</span>
+              <span className="text-zinc-400">Beat </span>
+              <span className="tabular-nums text-zinc-800">{String(page + 1).padStart(2, "0")}</span>
+              <span className="text-zinc-400"> / {String(total).padStart(2, "0")}</span>
             </span>
             {sceneCount.total > 0 ? (
               <>
-                <span className="text-white/25">|</span>
+                <span className="text-zinc-400">|</span>
                 <span>
-                  <span className="text-white/35">Scene </span>
-                  <span className="tabular-nums text-white/80">{String(sceneCount.current).padStart(2, "0")}</span>
-                  <span className="text-white/35"> / {String(sceneCount.total).padStart(2, "0")}</span>
+                  <span className="text-zinc-400">Scene </span>
+                  <span className="tabular-nums text-zinc-800">{String(sceneCount.current).padStart(2, "0")}</span>
+                  <span className="text-zinc-400"> / {String(sceneCount.total).padStart(2, "0")}</span>
                 </span>
               </>
             ) : null}
-            <span className="text-white/25">|</span>
+            <span className="text-zinc-400">|</span>
             <span>
-              <span className="text-white/35">p. </span>
-              <span className="tabular-nums text-white/80">{String(currentScreenplayPage).padStart(2, "0")}</span>
-              <span className="text-white/35"> / ~{String(totalScreenplayPages).padStart(2, "0")}</span>
+              <span className="text-zinc-400">p. </span>
+              <span className="tabular-nums text-zinc-800">{String(currentScreenplayPage).padStart(2, "0")}</span>
+              <span className="text-zinc-400"> / ~{String(totalScreenplayPages).padStart(2, "0")}</span>
             </span>
-            <span className="text-white/25">|</span>
-            <span className="text-white/35">55 lines / page</span>
+            <span className="text-zinc-400">|</span>
+            <span className="text-zinc-400">55 lines / page</span>
             {scriptTime && (
               <>
-                <span className="text-white/25">|</span>
-                <span className="text-amber-200/60">{scriptTime.label}</span>
+                <span className="text-zinc-400">|</span>
+                <span className="text-red-700">{scriptTime.label}</span>
               </>
             )}
           </div>
           <p
-            className="mx-auto mt-1 max-w-xl line-clamp-2 text-[10px] leading-snug text-white/70"
+            className="mx-auto mt-1 max-w-xl line-clamp-2 text-[10px] leading-snug text-zinc-700"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             {sceneTitle}
@@ -121,7 +121,7 @@ export function ScriptDraft2Cockpit({
           className="relative flex-1 overflow-y-auto pb-24"
           style={{ scrollbarWidth: "none" }}
         >
-          <div className="pointer-events-none absolute left-[calc(50%-20rem)] top-0 bottom-0 w-px bg-white/8" />
+          <div className="pointer-events-none absolute left-[calc(50%-20rem)] top-0 bottom-0 w-px bg-zinc-50" />
           <div className="mx-auto max-w-xl px-4 py-6 pb-16">
             <ScreenplayLetterhead draftLabel="Beat scaffold" />
             {pages.map((p, idx) => {
@@ -136,15 +136,15 @@ export function ScriptDraft2Cockpit({
                 className="mb-1 scroll-mt-20"
               >
                 {structure ? (
-                  <div className="mb-4 border-l-2 border-amber-200/30 pl-3">
+                  <div className="mb-4 border-l-2 border-red-400/70 pl-3">
                     <p
-                      className="text-[9px] uppercase tracking-[0.2em] text-amber-200/55"
+                      className="text-[9px] uppercase tracking-[0.2em] text-red-800"
                       style={{ fontFamily: "var(--font-cinematic)" }}
                     >
                       {structure.actLabel}
                     </p>
                     <p
-                      className="mt-1 text-[12px] font-medium tracking-[0.06em] text-white/92"
+                      className="mt-1 text-[12px] font-medium tracking-[0.06em] text-zinc-900"
                       style={{ fontFamily: "var(--font-cinematic)" }}
                     >
                       Beat {String(structure.beat.num).padStart(2, "0")} — {structure.beat.title}
@@ -152,22 +152,22 @@ export function ScriptDraft2Cockpit({
                   </div>
                 ) : null}
                 <div className="mb-5 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-zinc-100" />
                   <span
                     className={cn(
                       "rounded-full border px-2.5 py-0.5 text-[10px] tabular-nums",
                       p.isBible
-                        ? "border-white/20 bg-white/10 text-white/70"
-                        : "border-white/15 bg-white/6 text-white/55",
+                        ? "border-zinc-300 bg-zinc-100 text-zinc-700"
+                        : "border-zinc-300 bg-zinc-100 text-zinc-600",
                     )}
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
                     {p.isBible ? p.id.replace("bible-", "§") : `p.${String(scriptPageStarts[idx] ?? idx + 1).padStart(2, "0")}`}
                   </span>
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-zinc-100" />
                 </div>
                 {p.isBible ? (
-                  <div className="mb-12 space-y-4 rounded-2xl border border-white/8 bg-white/3 px-8 py-8">
+                  <div className="mb-12 space-y-4 rounded-2xl border border-zinc-200/90 bg-white/3 px-8 py-8">
                     {p.elements
                       .filter((el) => el.type !== "metadata")
                       .map((el, i) => {
@@ -175,18 +175,18 @@ export function ScriptDraft2Cockpit({
                           return (
                             <p
                               key={i}
-                              className="pt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-white/55"
+                              className="pt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600"
                               style={{ fontFamily: "var(--font-cinematic)" }}
                             >
                               {el.text}
                             </p>
                           );
-                        if (el.type === "fade") return <div key={i} className="my-2 h-px w-full bg-white/8" />;
+                        if (el.type === "fade") return <div key={i} className="my-2 h-px w-full bg-zinc-50" />;
                         if (el.type === "character")
                           return (
                             <p
                               key={i}
-                              className="mt-4 text-xs font-semibold uppercase tracking-widest text-white/80"
+                              className="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-800"
                               style={{ fontFamily: "var(--font-cinematic)" }}
                             >
                               {el.text}
@@ -196,14 +196,14 @@ export function ScriptDraft2Cockpit({
                           return (
                             <p
                               key={i}
-                              className="ml-6 text-sm italic leading-relaxed text-white/70"
+                              className="ml-6 text-sm italic leading-relaxed text-zinc-700"
                               style={{ fontFamily: "var(--font-screenplay)" }}
                             >
                               &ldquo;{el.text}&rdquo;
                             </p>
                           );
                         return (
-                          <p key={i} className="text-sm leading-relaxed text-white/60" style={{ fontFamily: "var(--font-screenplay)" }}>
+                          <p key={i} className="text-sm leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
                             {el.text}
                           </p>
                         );
@@ -216,7 +216,7 @@ export function ScriptDraft2Cockpit({
                       .map((el, i) => (
                         <div key={i} className="flex items-baseline gap-3">
                           <span
-                            className="w-8 shrink-0 select-none text-right text-[10px] tabular-nums text-white/25"
+                            className="w-8 shrink-0 select-none text-right text-[10px] tabular-nums text-zinc-400"
                             title={`${p.id} visible line ${i + 1}`}
                           >
                             {i + 1}

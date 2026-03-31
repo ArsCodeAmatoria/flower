@@ -4,6 +4,7 @@ import {
   Cinzel_Decorative,
   Cormorant_Garamond,
   Courier_Prime,
+  Dancing_Script,
   IBM_Plex_Mono,
   Style_Script,
 } from "next/font/google";
@@ -13,6 +14,13 @@ const styleScript = Style_Script({
   variable: "--font-title",
   subsets: ["latin"],
   weight: "400",
+});
+
+/** Bolder script for hero wordmark when PNG logo is unavailable */
+const logoScript = Dancing_Script({
+  variable: "--font-logo-script",
+  subsets: ["latin"],
+  weight: "700",
 });
 
 const cinzel = Cinzel({
@@ -61,9 +69,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${styleScript.variable} ${cinzel.variable} ${courierPrime.variable} ${cormorantCredits.variable} ${cinzelDecorative.variable} ${ibmPlexMono.variable}`}
+      className={`${styleScript.variable} ${logoScript.variable} ${cinzel.variable} ${courierPrime.variable} ${cormorantCredits.variable} ${cinzelDecorative.variable} ${ibmPlexMono.variable}`}
     >
-      <body className="bg-black text-white antialiased">{children}</body>
+      <body className="bg-[var(--background)] text-[var(--foreground)] antialiased">{children}</body>
     </html>
   );
 }

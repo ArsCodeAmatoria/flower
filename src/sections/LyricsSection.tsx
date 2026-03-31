@@ -53,7 +53,7 @@ export function LyricsSection({ openCharacter }: Props) {
   return (
     <section
       id="lyrics"
-      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-black pt-14 pb-20"
+      className="relative flex h-screen w-screen shrink-0 flex-col overflow-hidden bg-zinc-50 pt-14 pb-20"
     >
       {/* ── Header ───────────────────────────────────────────── */}
       <div className="mb-5 flex shrink-0 items-center justify-between px-8">
@@ -63,7 +63,7 @@ export function LyricsSection({ openCharacter }: Props) {
           Lyrics
         </h1>
         <span
-          className="text-[11px] text-white/25"
+          className="text-[11px] text-zinc-400"
           style={{ fontFamily: "var(--font-screenplay)" }}
         >
           {String(songs.findIndex((s) => s.id === selectedId) + 1).padStart(2, "0")} /{" "}
@@ -79,7 +79,7 @@ export function LyricsSection({ openCharacter }: Props) {
           style={{ scrollbarWidth: "none" }}
         >
           <p
-            className="mb-3 text-[9px] uppercase tracking-[0.3em] text-white/50"
+            className="mb-3 text-[9px] uppercase tracking-[0.3em] text-zinc-500"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             <Music2 className="mb-0.5 mr-1 inline size-2.5" />
@@ -96,8 +96,8 @@ export function LyricsSection({ openCharacter }: Props) {
                   className={cn(
                     "group flex items-center gap-3 rounded-xl px-2.5 py-2 text-left transition-all duration-200",
                     active
-                      ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white/90"
+                      ? "bg-zinc-100 text-zinc-900"
+                      : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
                   )}
                 >
                   <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg">
@@ -109,7 +109,7 @@ export function LyricsSection({ openCharacter }: Props) {
                       sizes="36px"
                     />
                     {active && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-50/95">
                         <span className="flex items-end gap-px" style={{ height: "10px" }}>
                           {[0, 1, 2].map((b) => (
                             <span
@@ -137,7 +137,7 @@ export function LyricsSection({ openCharacter }: Props) {
                       {s.title}
                     </p>
                     <p
-                      className="mt-0.5 truncate text-[9px] text-white/60"
+                      className="mt-0.5 truncate text-[9px] text-zinc-600"
                       style={{ fontFamily: "var(--font-screenplay)" }}
                     >
                       {s.singers}
@@ -170,13 +170,13 @@ export function LyricsSection({ openCharacter }: Props) {
               </div>
               <div>
                 <h2
-                  className="text-3xl font-extrabold uppercase leading-none text-white"
+                  className="text-3xl font-extrabold uppercase leading-none text-zinc-900"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   {song.title}
                 </h2>
                 <p
-                  className="mt-1.5 flex items-center gap-1.5 text-xs text-white/65"
+                  className="mt-1.5 flex items-center gap-1.5 text-xs text-zinc-600"
                   style={{ fontFamily: "var(--font-screenplay)" }}
                 >
                   <Mic2 className="size-3" />
@@ -184,7 +184,7 @@ export function LyricsSection({ openCharacter }: Props) {
                 </p>
                 {song.writtenBy && (
                   <p
-                    className="mt-0.5 text-[10px] text-white/35"
+                    className="mt-0.5 text-[10px] text-zinc-400"
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
                     Written by {song.writtenBy}
@@ -200,8 +200,8 @@ export function LyricsSection({ openCharacter }: Props) {
               className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-200",
                 isPlaying
-                  ? "border-white/40 bg-white/15 text-white"
-                  : "border-white/20 bg-white/5 text-white/60 hover:border-white/35 hover:bg-white/12 hover:text-white"
+                  ? "border-zinc-400 bg-red-100 text-zinc-900"
+                  : "border-zinc-300 bg-zinc-50 text-zinc-600 hover:border-zinc-400 hover:bg-zinc-100 hover:text-zinc-900"
               )}
               aria-label={isPlaying ? "Pause" : "Play"}
             >
@@ -214,7 +214,7 @@ export function LyricsSection({ openCharacter }: Props) {
           </div>
 
           {/* Divider */}
-          <div className="mb-6 h-px w-full shrink-0 bg-white/10 pr-6" />
+          <div className="mb-6 h-px w-full shrink-0 bg-zinc-100 pr-6" />
 
           {/* Lyrics scroll area */}
           <div
@@ -234,7 +234,7 @@ export function LyricsSection({ openCharacter }: Props) {
                     return (
                       <p
                         key={i}
-                        className="mb-2 mt-5 text-[10px] uppercase tracking-[0.3em] text-white/40"
+                        className="mb-2 mt-5 text-[10px] uppercase tracking-[0.3em] text-zinc-500"
                         style={{ fontFamily: "var(--font-cinematic)" }}
                       >
                         {line.text.replace(/^\[|\]$/g, "")}
@@ -243,7 +243,7 @@ export function LyricsSection({ openCharacter }: Props) {
                   return (
                     <p
                       key={i}
-                      className="text-[15px] leading-relaxed text-white/90"
+                      className="text-[15px] leading-relaxed text-zinc-900"
                       style={{ fontFamily: "var(--font-screenplay)" }}
                     >
                       {line.text}
@@ -252,7 +252,7 @@ export function LyricsSection({ openCharacter }: Props) {
                 })}
               </div>
             ) : (
-              <p className="text-sm italic text-white/30" style={{ fontFamily: "var(--font-screenplay)" }}>
+              <p className="text-sm italic text-zinc-400" style={{ fontFamily: "var(--font-screenplay)" }}>
                 {song.description === "Instrumental." ? "Instrumental" : "Lyrics not available."}
               </p>
             )}
@@ -261,13 +261,13 @@ export function LyricsSection({ openCharacter }: Props) {
 
         {/* ── Right: Singer / cast sidebar ─────────────────────── */}
         <div
-          className="mr-8 flex w-52 shrink-0 flex-col gap-5 overflow-y-auto rounded-2xl border border-white/8 p-4 pb-20"
+          className="mr-8 flex w-52 shrink-0 flex-col gap-5 overflow-y-auto rounded-2xl border border-zinc-200/90 p-4 pb-20"
           style={{ background: "rgba(255,255,255,0.03)", scrollbarWidth: "none" }}
         >
           {/* Singers */}
           <div>
             <p
-              className="mb-3 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.28em] text-white/55"
+              className="mb-3 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               <Users className="size-2.5" />
@@ -280,7 +280,7 @@ export function LyricsSection({ openCharacter }: Props) {
                     key={c.id}
                     type="button"
                     onClick={() => openCharacter(c.id)}
-                    className="group flex items-center gap-2.5 rounded-xl p-1.5 text-left transition-colors hover:bg-white/6"
+                    className="group flex items-center gap-2.5 rounded-xl p-1.5 text-left transition-colors hover:bg-zinc-100"
                   >
                     <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg">
                       <Image
@@ -293,13 +293,13 @@ export function LyricsSection({ openCharacter }: Props) {
                     </div>
                     <div className="min-w-0">
                       <p
-                        className="truncate text-[11px] font-medium text-white/85 group-hover:text-white"
+                        className="truncate text-[11px] font-medium text-zinc-800 group-hover:text-zinc-900"
                         style={{ fontFamily: "var(--font-cinematic)" }}
                       >
                         {c.name}
                       </p>
                       <p
-                        className="mt-0.5 truncate text-[9px] text-white/60"
+                        className="mt-0.5 truncate text-[9px] text-zinc-600"
                         style={{ fontFamily: "var(--font-screenplay)" }}
                       >
                         {c.role}
@@ -310,7 +310,7 @@ export function LyricsSection({ openCharacter }: Props) {
               </div>
             ) : (
               <p
-                className="text-[10px] text-white/55"
+                className="text-[10px] text-zinc-600"
                 style={{ fontFamily: "var(--font-screenplay)" }}
               >
                 Full ensemble
@@ -319,7 +319,7 @@ export function LyricsSection({ openCharacter }: Props) {
           </div>
 
           {/* Divider */}
-          <div className="h-px w-full bg-white/8" />
+          <div className="h-px w-full bg-zinc-50" />
 
           {/* Other songs by same singers */}
           {(() => {
@@ -332,7 +332,7 @@ export function LyricsSection({ openCharacter }: Props) {
             return (
               <div>
                 <p
-                  className="mb-3 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                  className="mb-3 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   <Music2 className="size-2.5" />
@@ -344,7 +344,7 @@ export function LyricsSection({ openCharacter }: Props) {
                       key={s.id}
                       type="button"
                       onClick={() => selectSong(s.id)}
-                      className="group flex items-center gap-2.5 rounded-xl p-1.5 text-left transition-colors hover:bg-white/6"
+                      className="group flex items-center gap-2.5 rounded-xl p-1.5 text-left transition-colors hover:bg-zinc-100"
                     >
                       <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
                         <Image
@@ -357,13 +357,13 @@ export function LyricsSection({ openCharacter }: Props) {
                       </div>
                       <div className="min-w-0">
                         <p
-                          className="truncate text-[10px] font-medium text-white/80 group-hover:text-white"
+                          className="truncate text-[10px] font-medium text-zinc-800 group-hover:text-zinc-900"
                           style={{ fontFamily: "var(--font-cinematic)" }}
                         >
                           {s.title}
                         </p>
                         <p
-                          className="mt-0.5 truncate text-[9px] text-white/55"
+                          className="mt-0.5 truncate text-[9px] text-zinc-600"
                           style={{ fontFamily: "var(--font-screenplay)" }}
                         >
                           {s.singers}
@@ -381,25 +381,25 @@ export function LyricsSection({ openCharacter }: Props) {
             const writer = crew.find((m) => m.name === song.writtenBy);
             return (
               <div>
-                <div className="h-px w-full bg-white/8 mb-5" />
+                <div className="h-px w-full bg-zinc-50 mb-5" />
                 <p
-                  className="mb-3 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                  className="mb-3 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   Written By
                 </p>
                 <div className="flex items-center gap-2.5 rounded-xl p-1.5">
                   {writer && (
-                    <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20">
+                    <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-zinc-300">
                       <Image src={writer.image} alt={writer.name} fill className="object-cover object-top" sizes="36px" />
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-[11px] font-medium text-white/85" style={{ fontFamily: "var(--font-cinematic)" }}>
+                    <p className="truncate text-[11px] font-medium text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
                       {song.writtenBy}
                     </p>
                     {writer && (
-                      <p className="mt-0.5 truncate text-[9px] text-white/50" style={{ fontFamily: "var(--font-screenplay)" }}>
+                      <p className="mt-0.5 truncate text-[9px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
                         {writer.role}
                       </p>
                     )}

@@ -32,7 +32,7 @@ export function ScriptLine({
     case "transition":
       return (
         <p
-          className={cn("text-sm uppercase text-white/50", type === "transition" && "text-right")}
+          className={cn("text-sm uppercase text-zinc-500", type === "transition" && "text-right")}
           style={{ ...base, letterSpacing: "0.05em" }}
         >
           {text}
@@ -40,27 +40,27 @@ export function ScriptLine({
       );
     case "scene":
       return (
-        <p className="text-sm font-bold uppercase text-white" style={{ ...base, letterSpacing: "0.05em" }}>
+        <p className="text-sm font-bold uppercase text-zinc-900" style={{ ...base, letterSpacing: "0.05em" }}>
           {text}
         </p>
       );
     case "action":
-      return <p className="text-sm text-white/80" style={base}>{text}</p>;
+      return <p className="text-sm text-zinc-800" style={base}>{text}</p>;
     case "character":
       return (
-        <p className="pt-1 text-sm font-bold uppercase text-white" style={{ ...base, paddingLeft: "35%" }}>
+        <p className="pt-1 text-sm font-bold uppercase text-zinc-900" style={{ ...base, paddingLeft: "35%" }}>
           {text}
         </p>
       );
     case "parenthetical":
       return (
-        <p className="text-sm italic text-white/60" style={{ ...base, paddingLeft: "30%" }}>
+        <p className="text-sm italic text-zinc-600" style={{ ...base, paddingLeft: "30%" }}>
           {text}
         </p>
       );
     case "dialogue":
       return (
-        <p className="pb-1 text-sm text-white/90" style={{ ...base, paddingLeft: "20%", paddingRight: "20%" }}>
+        <p className="pb-1 text-sm text-zinc-900" style={{ ...base, paddingLeft: "20%", paddingRight: "20%" }}>
           {text}
         </p>
       );
@@ -71,46 +71,46 @@ export function ScriptLine({
 
 export function ScreenplayLetterhead({ draftLabel }: { draftLabel: string }) {
   return (
-    <div className="mb-10 border-b border-white/8 pb-10 text-center">
+    <div className="mb-10 border-b border-zinc-200/90 pb-10 text-center">
       <p
-        className="mb-1 text-[9px] uppercase tracking-[0.5em] text-white/30"
+        className="mb-1 text-[9px] uppercase tracking-[0.5em] text-zinc-400"
         style={{ fontFamily: "var(--font-cinematic)" }}
       >
         Feature Film — Original Screenplay
       </p>
       <h2
-        className="mb-1 text-4xl tracking-wide text-white/80"
+        className="mb-1 text-4xl tracking-wide text-zinc-800"
         style={{ fontFamily: "var(--font-title)" }}
       >
         Flower
       </h2>
       <p
-        className="mb-6 text-[10px] uppercase tracking-[0.35em] text-white/30"
+        className="mb-6 text-[10px] uppercase tracking-[0.35em] text-zinc-400"
         style={{ fontFamily: "var(--font-cinematic)" }}
       >
         Animated musical feature
       </p>
-      <div className="mx-auto mb-6 h-px w-12 bg-white/15" />
+      <div className="mx-auto mb-6 h-px w-12 bg-red-100" />
       <p
-        className="text-[11px] text-white/45"
+        className="text-[11px] text-zinc-500"
         style={{ fontFamily: "var(--font-screenplay)" }}
       >
         Created by Lynne Tapper
       </p>
       <p
-        className="mt-1 text-[11px] text-white/45"
+        className="mt-1 text-[11px] text-zinc-500"
         style={{ fontFamily: "var(--font-screenplay)" }}
       >
         Co-written by Leigh Akin
       </p>
       <p
-        className="mt-1 text-[11px] text-white/45"
+        className="mt-1 text-[11px] text-zinc-500"
         style={{ fontFamily: "var(--font-screenplay)" }}
       >
         Songs by Leigh Akin
       </p>
       <p
-        className="mt-4 text-[9px] uppercase tracking-[0.3em] text-white/20"
+        className="mt-4 text-[9px] uppercase tracking-[0.3em] text-zinc-400"
         style={{ fontFamily: "var(--font-cinematic)" }}
       >
         {draftLabel} — {new Date().getFullYear()}

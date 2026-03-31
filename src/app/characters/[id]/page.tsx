@@ -39,9 +39,9 @@ export default async function CharacterPage({
   const characterSongs = songs.filter((s) => character.songIds.includes(s.id));
 
   return (
-    <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-black text-white">
+    <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50 text-zinc-900">
       {/* Portrait — matches Characters slide */}
-      <div className="relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden bg-black">
+      <div className="relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden border-r border-zinc-200 bg-zinc-100">
         <Image
           src={character.image}
           alt={character.name}
@@ -50,19 +50,17 @@ export default async function CharacterPage({
           sizes="40vw"
           priority
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/85" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
 
       {/* Copy + profile */}
       <div
-        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pl-8 pr-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] md:pl-10 md:pr-6 xl:pl-12 xl:pr-10"
+        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-zinc-50 pl-8 pr-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] md:pl-10 md:pr-6 xl:pl-12 xl:pr-10"
         key={character.id}
       >
-        <div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-zinc-200 pb-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.32em] text-white/45 transition-colors hover:text-white"
+            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.32em] text-zinc-500 transition-colors hover:text-zinc-900"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             <ArrowLeft className="size-3 shrink-0 opacity-70" aria-hidden />
@@ -71,14 +69,14 @@ export default async function CharacterPage({
           <div className="flex items-center gap-2">
             <Link
               href="/#characters"
-              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55 transition-all hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
+              className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-900"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               Slideshow
             </Link>
             <Link
               href="/"
-              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55 transition-all hover:border-amber-200/30 hover:bg-white/[0.08] hover:text-white"
+              className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-900"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               Flower
@@ -87,13 +85,13 @@ export default async function CharacterPage({
         </div>
 
         <p
-          className="mb-3 shrink-0 text-xs text-white/30"
+          className="mb-3 shrink-0 text-xs text-zinc-400"
           style={{ fontFamily: "var(--font-screenplay)" }}
         >
           {String(index + 1).padStart(2, "0")} / {String(characters.length).padStart(2, "0")}
         </p>
 
-        <div className="shrink-0 border-b border-white/10 pb-5">
+        <div className="shrink-0 border-b border-zinc-200 pb-5">
           <CharacterIdentityHeader
             name={character.name}
             role={character.role}
@@ -117,22 +115,22 @@ export default async function CharacterPage({
         </div>
 
         <nav
-          className="mt-3 flex shrink-0 items-stretch gap-2 border-t border-white/10 pt-4"
+          className="mt-3 flex shrink-0 items-stretch gap-2 border-t border-zinc-200 pt-4"
           aria-label="Previous and next character"
         >
           <div className="min-w-0 flex-1">
             {prev ? (
               <Link
                 href={`/characters/${prev.id}`}
-                className="group flex h-full min-h-[3rem] items-center gap-3 rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 transition-all hover:border-amber-200/25 hover:bg-white/[0.06]"
+                className="group flex h-full min-h-[3rem] items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 transition-all hover:border-red-300 hover:bg-red-50/80"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/30 text-white/70 transition-colors group-hover:border-white/30 group-hover:text-white">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors group-hover:border-red-400 group-hover:text-red-900">
                   <ChevronLeft className="size-4 stroke-[1.5]" aria-hidden />
                 </span>
                 <div className="min-w-0 text-left">
-                  <p className="text-[9px] uppercase tracking-[0.22em] text-amber-200/45">Previous</p>
-                  <p className="truncate text-sm font-medium tracking-wide text-white/90">{prev.name}</p>
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-red-700">Previous</p>
+                  <p className="truncate text-sm font-medium tracking-wide text-zinc-900">{prev.name}</p>
                 </div>
               </Link>
             ) : (
@@ -143,14 +141,14 @@ export default async function CharacterPage({
             {next ? (
               <Link
                 href={`/characters/${next.id}`}
-                className="group flex h-full min-h-[3rem] items-center justify-end gap-3 rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 text-right transition-all hover:border-amber-200/25 hover:bg-white/[0.06]"
+                className="group flex h-full min-h-[3rem] items-center justify-end gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-right transition-all hover:border-red-300 hover:bg-red-50/80"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 <div className="min-w-0 text-right">
-                  <p className="text-[9px] uppercase tracking-[0.22em] text-amber-200/45">Next</p>
-                  <p className="truncate text-sm font-medium tracking-wide text-white/90">{next.name}</p>
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-red-700">Next</p>
+                  <p className="truncate text-sm font-medium tracking-wide text-zinc-900">{next.name}</p>
                 </div>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/30 text-white/70 transition-colors group-hover:border-white/30 group-hover:text-white">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors group-hover:border-red-400 group-hover:text-red-900">
                   <ChevronRight className="size-4 stroke-[1.5]" aria-hidden />
                 </span>
               </Link>
@@ -161,12 +159,12 @@ export default async function CharacterPage({
 
       {/* Cast — same language as home Characters slide */}
       <aside
-        className="flex w-52 shrink-0 flex-col overflow-hidden border-l border-white/5 bg-black/40 sm:w-56"
+        className="flex w-52 shrink-0 flex-col overflow-hidden border-l border-zinc-200 bg-white/90 backdrop-blur-sm sm:w-56"
         style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
       >
         <div className="shrink-0 px-3 pb-3 pl-3 pr-4 pt-[max(3.5rem,env(safe-area-inset-top,0px))] sm:pt-20">
           <p
-            className="text-[10px] uppercase tracking-[0.3em] text-white/40"
+            className="text-[10px] uppercase tracking-[0.3em] text-zinc-500"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             Cast
@@ -185,17 +183,17 @@ export default async function CharacterPage({
                 className={cn(
                   "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200",
                   active
-                    ? "bg-white/12 text-white ring-1 ring-amber-200/20"
-                    : "text-white/85 hover:bg-white/[0.06] hover:text-white",
+                    ? "bg-red-50 text-zinc-900 ring-1 ring-red-200"
+                    : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900",
                 )}
               >
                 <span
-                  className="w-6 shrink-0 tabular-nums text-[10px] text-white/35"
+                  className="w-6 shrink-0 tabular-nums text-[10px] text-zinc-400"
                   style={{ fontFamily: "var(--font-screenplay)" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-white/10">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-zinc-200">
                   <Image
                     src={c.image}
                     alt=""
@@ -212,7 +210,7 @@ export default async function CharacterPage({
                     {c.name}
                   </p>
                   <p
-                    className="mt-0.5 truncate text-[10px] text-white/65"
+                    className="mt-0.5 truncate text-[10px] text-zinc-600"
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
                     {c.role}
@@ -220,7 +218,7 @@ export default async function CharacterPage({
                 </div>
                 {active ? (
                   <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-200/70"
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
                     aria-hidden
                   />
                 ) : null}

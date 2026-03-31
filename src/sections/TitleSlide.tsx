@@ -54,7 +54,7 @@ export function TitleSlide() {
   return (
     <section
       id="title"
-      className="relative h-full min-h-0 w-screen shrink-0 overflow-hidden bg-black"
+      className="relative h-full min-h-0 w-screen shrink-0 overflow-hidden bg-zinc-50"
     >
       {/* Full-screen key art */}
       <div className="absolute inset-0">
@@ -68,13 +68,13 @@ export function TitleSlide() {
         />
       </div>
 
-      {/* Readability: grade over photo */}
+      {/* Light scrim — balance: art still reads, type a bit clearer (not a full wash) */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_72%_65%_at_50%_45%,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.5)_45%,rgba(0,0,0,0.88)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_82%_75%_at_50%_45%,rgba(255,255,255,0.38)_0%,rgba(255,255,255,0.14)_42%,rgba(255,255,255,0.52)_100%)]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/70"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/22 via-white/8 to-white/58"
         aria-hidden
       />
 
@@ -88,24 +88,26 @@ export function TitleSlide() {
       >
         <div className="mx-auto grid w-full max-w-6xl flex-1 grid-cols-1 content-center gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,24rem)_minmax(0,1fr)] lg:gap-x-10 lg:gap-y-5 xl:gap-x-14">
           <p
-            className="order-1 text-center text-[10px] uppercase tracking-[0.38em] text-white/82 lg:col-span-3 lg:mb-1 sm:text-xs sm:tracking-[0.45em]"
+            className="order-1 text-center text-[10px] uppercase tracking-[0.38em] text-neutral-950 lg:col-span-3 lg:mb-1 sm:text-xs sm:tracking-[0.45em]"
             style={{
               fontFamily: "var(--font-cinematic)",
               animation: "fadeIn 1.4s ease both",
               animationDelay: "0.25s",
-              textShadow: "0 1px 14px rgba(0,0,0,0.85)",
+              textShadow:
+                "0 0 16px rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.18)",
             }}
           >
             To flower is to become
           </p>
 
           <p
-            className="order-3 max-w-md justify-self-center px-2 text-center text-[12px] leading-relaxed text-white/88 sm:text-[13px] lg:order-none lg:col-start-1 lg:row-start-2 lg:max-w-sm lg:justify-self-end lg:self-center lg:pr-4 lg:text-right xl:pr-6"
+            className="order-3 max-w-md justify-self-center px-2 text-center text-[12px] font-medium leading-relaxed text-neutral-950 sm:text-[13px] lg:order-none lg:col-start-1 lg:row-start-2 lg:max-w-sm lg:justify-self-end lg:self-center lg:pr-4 lg:text-right xl:pr-6"
             style={{
               fontFamily: "var(--font-screenplay)",
               animation: "fadeIn 1.5s ease both",
               animationDelay: "0.55s",
-              textShadow: "0 1px 14px rgba(0,0,0,0.88)",
+              textShadow:
+                "0 0 14px rgba(255,255,255,0.88), 0 1px 2px rgba(0,0,0,0.2)",
             }}
           >
             {FLOWER_LOGLINE}
@@ -122,22 +124,22 @@ export function TitleSlide() {
                   alt="Flower"
                   fill
                   priority
-                  className="object-contain drop-shadow-[0_6px_48px_rgba(0,0,0,0.85)]"
+                  className="object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
                   sizes="(max-width: 1024px) 88vw, 22rem"
                   onError={() => setLogoFailed(true)}
                 />
               </div>
             ) : (
               <h1
-                className="select-none text-center leading-[0.92] text-white"
+                className="select-none text-center leading-[0.92] text-neutral-950"
                 style={{
-                  fontFamily: "var(--font-title)",
+                  fontFamily: "var(--font-logo-script)",
                   fontSize: "clamp(3.75rem, 16vw, 11rem)",
-                  fontWeight: 400,
-                  letterSpacing: "0.02em",
+                  fontWeight: 700,
+                  letterSpacing: "0.01em",
                   textShadow:
-                    "0 0 100px rgba(255,255,255,0.14), 0 3px 0 rgba(255,255,255,0.12), 0 8px 36px rgba(0,0,0,0.65), 0 18px 52px rgba(0,0,0,0.55)",
-                  WebkitTextStroke: "0.35px rgba(255,255,255,0.35)",
+                    "0 0 20px rgba(255,255,255,0.85), 0 2px 8px rgba(0,0,0,0.12)",
+                  WebkitTextStroke: "0.5px rgba(255,255,255,0.35)",
                 }}
               >
                 Flower
@@ -150,17 +152,17 @@ export function TitleSlide() {
             style={{
               animation: "fadeIn 1.6s ease both",
               animationDelay: "0.75s",
-              textShadow: "0 1px 12px rgba(0,0,0,0.85)",
+              textShadow: "0 0 12px rgba(255,255,255,0.85), 0 1px 2px rgba(0,0,0,0.12)",
             }}
           >
             <p
-              className="text-[10px] uppercase tracking-[0.28em] text-white/58 sm:text-[11px] sm:tracking-[0.3em]"
+              className="text-[10px] uppercase tracking-[0.28em] text-neutral-950 sm:text-[11px] sm:tracking-[0.3em]"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               {creator.name}
             </p>
             <p
-              className="text-[9px] uppercase tracking-[0.22em] text-white/48 sm:text-[10px] sm:tracking-[0.25em]"
+              className="text-[9px] uppercase tracking-[0.22em] text-neutral-900 sm:text-[10px] sm:tracking-[0.25em]"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               {creator.role}
@@ -168,13 +170,13 @@ export function TitleSlide() {
             {coWriter && (
               <>
                 <p
-                  className="mt-2 text-[8px] uppercase tracking-[0.24em] text-white/42 sm:mt-2.5 sm:text-[9px] sm:tracking-[0.28em]"
+                  className="mt-2 text-[8px] uppercase tracking-[0.24em] text-neutral-900 sm:mt-2.5 sm:text-[9px] sm:tracking-[0.28em]"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   Co-written by {coWriter.name}
                 </p>
                 <p
-                  className="mt-1 text-[8px] uppercase tracking-[0.2em] text-white/36 sm:text-[9px]"
+                  className="mt-1 text-[8px] uppercase tracking-[0.2em] text-neutral-800 sm:text-[9px]"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   Songs by {coWriter.name}
@@ -184,7 +186,7 @@ export function TitleSlide() {
           </div>
 
         <div
-          className="order-5 justify-self-center lg:col-span-3 lg:row-start-3 mt-1 flex max-w-[min(100%,24rem)] items-center gap-3 rounded-2xl border border-white/18 bg-black/35 px-4 py-3 backdrop-blur-md sm:gap-4 sm:px-5"
+          className="order-5 justify-self-center lg:col-span-3 lg:row-start-3 mt-1 flex max-w-[min(100%,24rem)] items-center gap-3 rounded-2xl border border-zinc-200/90 bg-white/85 px-4 py-3 shadow-md shadow-zinc-900/5 backdrop-blur-md sm:gap-4 sm:px-5"
           style={{
             animation: "fadeIn 1.6s ease both",
             animationDelay: "1.25s",
@@ -196,7 +198,7 @@ export function TitleSlide() {
                 key={b}
                 className={cn(
                   "flex-1 rounded-sm transition-colors duration-300",
-                  playing ? "bg-white/60" : "bg-white/22"
+                  playing ? "bg-red-600" : "bg-zinc-300"
                 )}
                 style={{
                   height: `${30 + Math.round(Math.abs(Math.sin(b * 0.7)) * 70)}%`,
@@ -210,13 +212,13 @@ export function TitleSlide() {
 
           <div className="min-w-0 flex-1 text-left">
             <p
-              className="truncate text-[11px] font-semibold text-white/90 sm:text-xs"
+              className="truncate text-[11px] font-semibold text-neutral-950 sm:text-xs"
               style={{ fontFamily: "var(--font-cinematic)" }}
             >
               {heroSong.title}
             </p>
             <p
-              className="text-[9px] text-white/50 sm:text-[10px]"
+              className="text-[9px] text-neutral-900 sm:text-[10px]"
               style={{ fontFamily: "var(--font-screenplay)" }}
             >
               {heroSong.singers}
@@ -227,7 +229,7 @@ export function TitleSlide() {
             type="button"
             onClick={replay}
             aria-label="Replay"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/55 transition-all hover:border-white/35 hover:bg-white/15 hover:text-white"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-600 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-800"
           >
             <RotateCcw className="size-3" />
           </button>
@@ -239,8 +241,8 @@ export function TitleSlide() {
             className={cn(
               "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-200",
               playing
-                ? "border-white/50 bg-white text-black"
-                : "border-white/35 bg-white/15 text-white hover:border-white/55 hover:bg-white/25"
+                ? "border-red-700 bg-red-700 text-white"
+                : "border-red-500/50 bg-red-50 text-red-800 hover:border-red-500 hover:bg-red-100"
             )}
           >
             {playing ? (
@@ -263,14 +265,14 @@ export function TitleSlide() {
           <div
             key={i}
             className={cn(
-              "pointer-events-none absolute z-[5] h-7 w-7 opacity-25 sm:h-8 sm:w-8",
+              "pointer-events-none absolute z-[5] h-7 w-7 opacity-35 sm:h-8 sm:w-8",
               pos,
             )}
             style={{
-              borderTop: i < 2 ? "1px solid white" : "none",
-              borderBottom: i >= 2 ? "1px solid white" : "none",
-              borderLeft: i % 2 === 0 ? "1px solid white" : "none",
-              borderRight: i % 2 === 1 ? "1px solid white" : "none",
+              borderTop: i < 2 ? "1px solid rgba(24,24,27,0.2)" : "none",
+              borderBottom: i >= 2 ? "1px solid rgba(24,24,27,0.2)" : "none",
+              borderLeft: i % 2 === 0 ? "1px solid rgba(24,24,27,0.2)" : "none",
+              borderRight: i % 2 === 1 ? "1px solid rgba(24,24,27,0.2)" : "none",
             }}
           />
         ))}

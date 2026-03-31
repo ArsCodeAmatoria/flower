@@ -9,7 +9,7 @@ import { CreditsSection } from "@/sections/CreditsSection";
 import { FloatingLinks } from "@/components/FloatingLinks";
 import { CharacterModal } from "@/components/CharacterModal";
 
-const SLIDE_COUNT = 6;
+const SLIDE_COUNT = 5;
 
 function HomeInner() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,13 +79,13 @@ function HomeInner() {
         >
           <div className="text-right">
             <div
-              className="leading-none text-white"
+              className="leading-none text-zinc-900"
               style={{ fontFamily: "var(--font-title)", fontSize: "1.85rem", letterSpacing: "0.02em" }}
             >
               Flower
             </div>
             <div
-              className="mt-0.5 text-white/50 uppercase tracking-[0.22em]"
+              className="mt-0.5 text-zinc-500 uppercase tracking-[0.22em]"
               style={{ fontFamily: "var(--font-cinematic)", fontSize: "0.55rem" }}
             >
               To flower is to become

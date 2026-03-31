@@ -20,15 +20,15 @@ interface ScreenplayBlockProps {
 export function ScreenplayBlock({ lines, className }: ScreenplayBlockProps) {
   return (
     <div
-      className={cn("font-screenplay space-y-4 text-left text-white", className)}
+      className={cn("font-screenplay space-y-4 text-left text-zinc-900", className)}
       style={{ fontFamily: "var(--font-screenplay), monospace" }}
     >
       {lines.map(({ character, line }, i) => (
         <div key={i} className="space-y-1">
-          <div className="text-sm font-bold uppercase tracking-widest text-white/90">
+          <div className="text-sm font-bold uppercase tracking-widest text-zinc-900">
             {character}
           </div>
-          <p className="max-w-prose pl-4 text-sm leading-relaxed text-white/95">
+          <p className="max-w-prose pl-4 text-sm leading-relaxed text-zinc-900">
             {line}
           </p>
         </div>

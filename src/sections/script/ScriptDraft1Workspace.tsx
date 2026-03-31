@@ -109,8 +109,8 @@ export function ScriptDraft1Workspace({
                 className={cn(
                   "mb-2 flex items-center gap-2 text-left transition-colors",
                   page >= act.start && page <= act.end
-                    ? "text-white"
-                    : "text-white/55 hover:text-white/80"
+                    ? "text-zinc-900"
+                    : "text-zinc-600 hover:text-zinc-800"
                 )}
               >
                 <span
@@ -129,7 +129,7 @@ export function ScriptDraft1Workspace({
                   act.sections.map((sec) => (
                     <div key={sec.label} className="mb-2">
                       <div
-                        className="mb-1 px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] text-white/35"
+                        className="mb-1 px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] text-zinc-400"
                         style={{ fontFamily: "var(--font-cinematic)" }}
                       >
                         {sec.label}
@@ -146,12 +146,12 @@ export function ScriptDraft1Workspace({
                             className={cn(
                               "group flex items-start gap-2 rounded-lg px-2 py-1 text-left transition-all duration-150",
                               isActive
-                                ? "bg-white/10 text-white"
-                                : "text-white/60 hover:bg-white/5 hover:text-white/85"
+                                ? "bg-zinc-100 text-zinc-900"
+                                : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800"
                             )}
                           >
                             <span
-                              className="mt-0.5 shrink-0 text-[9px] tabular-nums text-white/40"
+                              className="mt-0.5 shrink-0 text-[9px] tabular-nums text-zinc-500"
                               style={{ fontFamily: "var(--font-screenplay)" }}
                             >
                               {String(scriptPageStarts[idx] ?? idx + 1).padStart(2, "0")}
@@ -180,12 +180,12 @@ export function ScriptDraft1Workspace({
                         className={cn(
                           "group flex items-start gap-2 rounded-lg px-2 py-1 text-left transition-all duration-150",
                           isActive
-                            ? "bg-white/10 text-white"
-                            : "text-white/60 hover:bg-white/5 hover:text-white/85"
+                            ? "bg-zinc-100 text-zinc-900"
+                            : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800"
                         )}
                       >
                         <span
-                          className="mt-0.5 shrink-0 text-[9px] tabular-nums text-white/40"
+                          className="mt-0.5 shrink-0 text-[9px] tabular-nums text-zinc-500"
                           style={{ fontFamily: "var(--font-screenplay)" }}
                         >
                           {String(scriptPageStarts[idx] ?? idx + 1).padStart(2, "0")}
@@ -212,7 +212,7 @@ export function ScriptDraft1Workspace({
           style={{ scrollbarWidth: "none" }}
         >
           {/* Left margin rule */}
-          <div className="pointer-events-none absolute left-[calc(50%-20rem)] top-0 bottom-0 w-px bg-white/8" />
+          <div className="pointer-events-none absolute left-[calc(50%-20rem)] top-0 bottom-0 w-px bg-zinc-50" />
 
           <div className="mx-auto max-w-xl px-4 py-6 pb-16">
 
@@ -227,47 +227,47 @@ export function ScriptDraft1Workspace({
               >
                 {/* Page separator + number (screenplay format) */}
                 <div className="mb-5 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-zinc-100" />
                   <span
                     className={cn(
                       "rounded-full border px-2.5 py-0.5 text-[10px] tabular-nums",
                       p.isBible
-                        ? "border-white/20 bg-white/10 text-white/70"
-                        : "border-white/15 bg-white/6 text-white/55"
+                        ? "border-zinc-300 bg-zinc-100 text-zinc-700"
+                        : "border-zinc-300 bg-zinc-100 text-zinc-600"
                     )}
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
                     {p.isBible ? p.id.replace("bible-", "§") : String(scriptPageStarts[idx] ?? idx + 1)}
                   </span>
-                  <div className="h-px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-zinc-100" />
                 </div>
 
                 {/* Page content */}
                 {p.isBible ? (
-                  <div className="mb-12 rounded-2xl border border-white/8 bg-white/3 px-8 py-8 space-y-4">
+                  <div className="mb-12 rounded-2xl border border-zinc-200/90 bg-white/3 px-8 py-8 space-y-4">
                     {p.elements
                       .filter((el) => el.type !== "metadata")
                       .map((el, i) => {
                       if (el.type === "scene") return (
-                        <p key={i} className="pt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-white/55" style={{ fontFamily: "var(--font-cinematic)" }}>
+                        <p key={i} className="pt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600" style={{ fontFamily: "var(--font-cinematic)" }}>
                           {el.text}
                         </p>
                       );
                       if (el.type === "fade") return (
-                        <div key={i} className="my-2 h-px w-full bg-white/8" />
+                        <div key={i} className="my-2 h-px w-full bg-zinc-50" />
                       );
                       if (el.type === "character") return (
-                        <p key={i} className="mt-4 text-xs font-semibold uppercase tracking-widest text-white/80" style={{ fontFamily: "var(--font-cinematic)" }}>
+                        <p key={i} className="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
                           {el.text}
                         </p>
                       );
                       if (el.type === "dialogue") return (
-                        <p key={i} className="ml-6 text-sm italic leading-relaxed text-white/70" style={{ fontFamily: "var(--font-screenplay)" }}>
+                        <p key={i} className="ml-6 text-sm italic leading-relaxed text-zinc-700" style={{ fontFamily: "var(--font-screenplay)" }}>
                           "{el.text}"
                         </p>
                       );
                       return (
-                        <p key={i} className="text-sm leading-relaxed text-white/60" style={{ fontFamily: "var(--font-screenplay)" }}>
+                        <p key={i} className="text-sm leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
                           {el.text}
                         </p>
                       );
@@ -280,7 +280,7 @@ export function ScriptDraft1Workspace({
                       .map((el, i) => (
                       <div key={i} className="flex gap-3 items-baseline">
                         <span
-                          className="w-8 shrink-0 text-right text-[10px] tabular-nums text-white/25 select-none"
+                          className="w-8 shrink-0 text-right text-[10px] tabular-nums text-zinc-400 select-none"
                           title={`${p.id} visible line ${i + 1}`}
                         >
                           {i + 1}
@@ -299,21 +299,21 @@ export function ScriptDraft1Workspace({
 
         {/* ── Right: Contextual sidebar ───────────────────────── */}
         <div
-          className="flex w-56 shrink-0 flex-col gap-5 overflow-y-auto rounded-2xl border border-white/8 p-4 pb-20 mr-8"
+          className="flex w-56 shrink-0 flex-col gap-5 overflow-y-auto rounded-2xl border border-zinc-200/90 p-4 pb-20 mr-8"
           style={{ background: "rgba(255,255,255,0.03)", scrollbarWidth: "none" }}
         >
           {/* Download script PDF */}
           <a
             href="/pdf/fish-script.pdf"
             download="FLOWER-Script.pdf"
-            className="group flex items-center gap-2.5 rounded-xl border border-white/15 px-3 py-2.5 transition-all hover:border-white/30 hover:bg-white/8"
+            className="group flex items-center gap-2.5 rounded-xl border border-zinc-300 px-3 py-2.5 transition-all hover:border-red-300 hover:bg-zinc-100"
           >
-            <Download className="size-3.5 shrink-0 text-white/60 transition-colors group-hover:text-white" />
+            <Download className="size-3.5 shrink-0 text-zinc-600 transition-colors group-hover:text-zinc-900" />
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-white/80 group-hover:text-white" style={{ fontFamily: "var(--font-cinematic)" }}>
+              <p className="text-[11px] font-semibold text-zinc-800 group-hover:text-zinc-900" style={{ fontFamily: "var(--font-cinematic)" }}>
                 Download Script
               </p>
-              <p className="text-[9px] text-white/40" style={{ fontFamily: "var(--font-screenplay)" }}>
+              <p className="text-[9px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
                 FLOWER — PDF
               </p>
             </div>
@@ -323,7 +323,7 @@ export function ScriptDraft1Workspace({
           <div className="flex flex-col gap-1 px-1">
             <div className="flex items-center gap-2">
               <span
-                className="text-xl font-bold tabular-nums text-white"
+                className="text-xl font-bold tabular-nums text-zinc-900"
                 style={{ fontFamily: "var(--font-screenplay)" }}
               >
                 {String(page + 1).padStart(2, "0")}
@@ -331,34 +331,34 @@ export function ScriptDraft1Workspace({
               <div className="flex flex-col justify-center gap-0.5">
                 <div className="h-px w-6 bg-white/20" />
                 <span
-                  className="text-[10px] tabular-nums text-white/35"
+                  className="text-[10px] tabular-nums text-zinc-400"
                   style={{ fontFamily: "var(--font-screenplay)" }}
                 >
                   {String(total).padStart(2, "0")}
                 </span>
               </div>
               <span
-                className="ml-1 text-[9px] uppercase tracking-[0.3em] text-white/30"
+                className="ml-1 text-[9px] uppercase tracking-[0.3em] text-zinc-400"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 Scene
               </span>
             </div>
             <p
-              className="text-[9px] text-white/30"
+              className="text-[9px] text-zinc-400"
               style={{ fontFamily: "var(--font-screenplay)" }}
             >
               p.{String(currentScreenplayPage).padStart(2, "0")} / {String(totalScreenplayPages).padStart(2, "0")}
             </p>
           </div>
 
-          <div className="h-px bg-white/8" />
+          <div className="h-px bg-zinc-50" />
 
           {/* Cast */}
           {pageCharacters.length > 0 && (
             <div>
               <p
-                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 Cast
@@ -369,16 +369,16 @@ export function ScriptDraft1Workspace({
                     key={char.id}
                     type="button"
                     onClick={() => openCharacter(char.id)}
-                    className="group flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-1.5 text-left transition-all hover:border-white/15 hover:bg-white/5"
+                    className="group flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-1.5 text-left transition-all hover:border-zinc-300 hover:bg-zinc-50"
                   >
                     <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-1 ring-white/15">
                       <Image src={char.image} alt={char.name} fill className="object-cover object-top" sizes="32px" />
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate text-[11px] font-semibold text-white/90 group-hover:text-white" style={{ fontFamily: "var(--font-cinematic)" }}>
+                      <p className="truncate text-[11px] font-semibold text-zinc-900 group-hover:text-zinc-900" style={{ fontFamily: "var(--font-cinematic)" }}>
                         {char.name}
                       </p>
-                      <p className="truncate text-[9px] text-white/55">{char.role}</p>
+                      <p className="truncate text-[9px] text-zinc-600">{char.role}</p>
                     </div>
                   </button>
                 ))}
@@ -386,13 +386,13 @@ export function ScriptDraft1Workspace({
             </div>
           )}
 
-          {pageCharacters.length > 0 && pageSongs.length > 0 && <div className="h-px bg-white/8" />}
+          {pageCharacters.length > 0 && pageSongs.length > 0 && <div className="h-px bg-zinc-50" />}
 
           {/* Songs */}
           {pageSongs.length > 0 && (
             <div>
               <p
-                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 Songs
@@ -408,26 +408,26 @@ export function ScriptDraft1Workspace({
                       className={cn(
                         "group flex w-full items-center gap-2.5 rounded-xl border px-2 py-1.5 text-left transition-all duration-200",
                         isPlaying
-                          ? "border-white/30 bg-white/12"
-                          : "border-white/8 bg-white/4 hover:border-white/20 hover:bg-white/8"
+                          ? "border-red-400 bg-red-50"
+                          : "border-zinc-200/90 bg-zinc-50 hover:border-zinc-300 hover:bg-zinc-100"
                       )}
                     >
                       <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
                         <Image src={song.image} alt={song.title} fill className="object-cover object-top" sizes="32px" />
-                        <div className={cn("absolute inset-0 flex items-center justify-center bg-black/55 transition-opacity", isPlaying ? "opacity-100" : "opacity-0 group-hover:opacity-100")}>
-                          {isPlaying ? <Pause className="size-3 fill-white text-white" /> : <Play className="size-3 fill-white text-white" />}
+                        <div className={cn("absolute inset-0 flex items-center justify-center bg-zinc-100 transition-opacity", isPlaying ? "opacity-100" : "opacity-0 group-hover:opacity-100")}>
+                          {isPlaying ? <Pause className="size-3 fill-white text-zinc-900" /> : <Play className="size-3 fill-white text-zinc-900" />}
                         </div>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className={cn("truncate text-[11px] font-semibold leading-tight", isPlaying ? "text-white" : "text-white/85")} style={{ fontFamily: "var(--font-cinematic)" }}>
+                        <p className={cn("truncate text-[11px] font-semibold leading-tight", isPlaying ? "text-zinc-900" : "text-zinc-800")} style={{ fontFamily: "var(--font-cinematic)" }}>
                           {song.title}
                         </p>
                         <div className="flex items-center gap-1.5">
-                          <p className="truncate text-[9px] text-white/55">{song.singers}</p>
+                          <p className="truncate text-[9px] text-zinc-600">{song.singers}</p>
                           {isPlaying && (
                             <span className="flex items-end gap-px" style={{ height: "8px" }}>
                               {[0, 1, 2].map((b) => (
-                                <span key={b} className="w-px rounded-sm bg-white/60" style={{ height: "60%", animation: `waveBar 0.6s ease-in-out ${b * 0.12}s infinite alternate` }} />
+                                <span key={b} className="w-px rounded-sm bg-zinc-1000" style={{ height: "60%", animation: `waveBar 0.6s ease-in-out ${b * 0.12}s infinite alternate` }} />
                               ))}
                             </span>
                           )}
@@ -440,13 +440,13 @@ export function ScriptDraft1Workspace({
             </div>
           )}
 
-          {pageSongs.length > 0 && pageSets.length > 0 && <div className="h-px bg-white/8" />}
+          {pageSongs.length > 0 && pageSets.length > 0 && <div className="h-px bg-zinc-50" />}
 
           {/* Sets */}
           {pageSets.length > 0 && (
             <div>
               <p
-                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                className="mb-3 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 Location
@@ -457,20 +457,20 @@ export function ScriptDraft1Workspace({
                     key={set.id}
                     type="button"
                     onClick={() => openSet(set.id)}
-                    className="group flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-1.5 text-left transition-all hover:border-white/15 hover:bg-white/5"
+                    className="group flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-1.5 text-left transition-all hover:border-zinc-300 hover:bg-zinc-50"
                   >
                     <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg ring-1 ring-white/15">
                       <Image src={set.image} alt={set.name} fill className="object-cover" sizes="32px" />
                     </div>
                     <div className="min-w-0">
                       <p
-                        className="truncate text-[11px] font-semibold text-white/90 group-hover:text-white"
+                        className="truncate text-[11px] font-semibold text-zinc-900 group-hover:text-zinc-900"
                         style={{ fontFamily: "var(--font-cinematic)" }}
                       >
                         {set.name}
                       </p>
                       <p
-                        className="text-[9px] text-white/55"
+                        className="text-[9px] text-zinc-600"
                         style={{ fontFamily: "var(--font-screenplay)" }}
                       >
                         {set.slug}
@@ -487,22 +487,22 @@ export function ScriptDraft1Workspace({
             const writer = crew[0];
             return (
               <div>
-                <div className="h-px bg-white/8 mb-4" />
+                <div className="h-px bg-zinc-50 mb-4" />
                 <p
-                  className="mb-3 text-[9px] uppercase tracking-[0.28em] text-white/55"
+                  className="mb-3 text-[9px] uppercase tracking-[0.28em] text-zinc-600"
                   style={{ fontFamily: "var(--font-cinematic)" }}
                 >
                   Written By
                 </p>
                 <div className="flex items-center gap-2.5 rounded-xl p-1.5">
-                  <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20">
+                  <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-zinc-300">
                     <Image src={writer.image} alt={writer.name} fill className="object-cover object-top" sizes="36px" />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-[11px] font-medium text-white/85" style={{ fontFamily: "var(--font-cinematic)" }}>
+                    <p className="truncate text-[11px] font-medium text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
                       {writer.name}
                     </p>
-                    <p className="mt-0.5 truncate text-[9px] text-white/50" style={{ fontFamily: "var(--font-screenplay)" }}>
+                    <p className="mt-0.5 truncate text-[9px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
                       {writer.role}
                     </p>
                   </div>

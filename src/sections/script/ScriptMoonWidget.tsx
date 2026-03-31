@@ -152,7 +152,7 @@ export function MoonWidget({ scriptHour, scriptTimeLabel }: MoonWidgetProps) {
       className="mt-auto flex flex-col items-center gap-2 pb-2 pt-6"
       style={{ transition: "opacity 1s ease" }}
     >
-      <div className="mb-1 h-px w-full bg-white/8" />
+      <div className="mb-1 h-px w-full bg-zinc-50" />
       <div
         style={{
           filter: isNight ? `drop-shadow(0 0 ${6 + glow * 8}px rgba(255,235,130,${glow * 0.6}))` : "none",

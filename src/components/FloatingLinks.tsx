@@ -18,7 +18,7 @@ interface FloatingLinksProps {
 export function FloatingLinks({ goToSlide, currentSlide }: FloatingLinksProps) {
   return (
     <div
-      className="fixed left-1/2 z-[1001] flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-1 rounded-full border border-white/10 bg-black/70 px-2 py-1.5 backdrop-blur-md"
+      className="fixed left-1/2 z-[1001] flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-1 rounded-full border border-zinc-200/90 bg-white/90 px-2 py-1.5 shadow-lg shadow-zinc-900/10 backdrop-blur-md"
       style={{ bottom: "max(1.25rem, calc(env(safe-area-inset-bottom, 0px) + 4.25rem))" }}
     >
       {links.map(({ label, icon: Icon, slideIndex }) => (
@@ -29,8 +29,8 @@ export function FloatingLinks({ goToSlide, currentSlide }: FloatingLinksProps) {
           className={cn(
             "flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-all duration-200",
             currentSlide === slideIndex
-              ? "bg-white/15 text-white"
-              : "text-white/50 hover:text-white/80"
+              ? "bg-red-100 text-red-900 shadow-sm ring-1 ring-red-200/80"
+              : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
           )}
           style={{ fontFamily: "var(--font-cinematic)" }}
         >
