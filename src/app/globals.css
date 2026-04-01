@@ -140,11 +140,11 @@ body {
   min-height: 100dvh;
 }
 
-/* Credits: reserve bottom for pill nav + transport bar — transport sits in flow above this inset */
+/* Credits: same bottom inset as other slides; controls live inside the player, not below the section */
 .slideshow-container > section#credits {
   height: 100dvh;
   min-height: 100dvh;
-  padding-bottom: calc(var(--floating-nav-clearance) + 3.75rem);
+  padding-bottom: var(--floating-nav-clearance);
 }
 
 /* ─── Section heading rule ────────────────────────── */

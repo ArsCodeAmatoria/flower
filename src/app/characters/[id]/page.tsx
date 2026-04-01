@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { CharacterPortraitCard } from "@/components/CharacterPortraitCard";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { characters } from "@/data/characters";
 import { buildAllyThreadForProfile } from "@/data/character-chats";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
@@ -41,195 +46,157 @@ export default async function CharacterPage({
   const allyThread = buildAllyThreadForProfile(character);
 
   return (
-    <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50 text-zinc-900">
-      {/* Portrait — matches Characters slide */}
-      <div className="relative h-full min-h-0 w-[40%] shrink-0 self-stretch overflow-hidden border-r border-zinc-200 bg-zinc-100">
-        <Image
-          src={character.image}
-          alt={character.name}
-          fill
-          className="object-cover object-center"
-          sizes="40vw"
-          priority
-        />
+    <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50/80 text-zinc-900">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <header className="z-30 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-zinc-200/90 bg-white/95 px-4 py-3 backdrop-blur-md sm:px-6">
+          <Button variant="outline" size="sm" className="h-9 rounded-full border-zinc-200 bg-white shadow-sm" asChild>
+            <Link href="/" className="gap-2">
+              <ArrowLeft className="size-3 opacity-70" aria-hidden />
+              <span
+                className="text-[9px] uppercase tracking-[0.28em]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
+              >
+                Home
+              </span>
+            </Link>
+          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline" size="sm" className="h-9 rounded-full shadow-sm" asChild>
+              <Link
+                href="/#characters"
+                className="text-[9px] uppercase tracking-[0.18em]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
+              >
+                Slideshow
+              </Link>
+            </Button>
+            <Button variant="secondary" size="sm" className="h-9 rounded-full shadow-sm" asChild>
+              <Link
+                href="/"
+                className="text-[9px] uppercase tracking-[0.18em]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
+              >
+                Flower
+              </Link>
+            </Button>
+          </div>
+        </header>
+
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-6 overflow-hidden p-4 md:p-6 lg:flex-row lg:items-stretch lg:gap-8 lg:pl-8 lg:pr-4 lg:py-6">
+          <CharacterPortraitCard
+            src={character.image}
+            alt={character.name}
+            priority
+          />
+
+          <Card className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-zinc-200/90 shadow-md">
+            <CardHeader className="flex flex-row flex-wrap items-center gap-2 space-y-0 border-b border-zinc-100 pb-4 pt-5">
+              {prev ? (
+                <Button variant="outline" size="icon" className="rounded-full shadow-sm" asChild>
+                  <Link href={`/characters/${prev.id}`} aria-label={`Previous: ${prev.name}`}>
+                    <ChevronLeft className="size-5 stroke-[1.5]" />
+                  </Link>
+                </Button>
+              ) : (
+                <span className="inline-flex h-10 w-10" aria-hidden />
+              )}
+              {next ? (
+                <Button variant="outline" size="icon" className="rounded-full shadow-sm" asChild>
+                  <Link href={`/characters/${next.id}`} aria-label={`Next: ${next.name}`}>
+                    <ChevronRight className="size-5 stroke-[1.5]" />
+                  </Link>
+                </Button>
+              ) : (
+                <span className="inline-flex h-10 w-10" aria-hidden />
+              )}
+              <div className="ml-auto flex items-center gap-2">
+                <Badge variant="outline" className="font-normal tracking-wider">
+                  {String(index + 1).padStart(2, "0")} / {String(characters.length).padStart(2, "0")}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent
+              className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-5 pb-8 pt-6 sm:px-7"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <CharacterIdentityHeader
+                name={character.name}
+                role={character.role}
+                dossier={dossier}
+                heading="h1"
+                uppercaseTitle={false}
+                showCharactersLabel={false}
+              />
+              <Separator />
+              <CharacterPublicProfile
+                description={character.description}
+                traits={character.personalityTraits}
+                dossier={dossier}
+                characterSongs={characterSongs}
+                profileVariant="feature"
+                allyThread={allyThread}
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      {/* Copy + profile */}
-      <div
-        className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-zinc-50 pl-8 pr-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] md:pl-10 md:pr-6 xl:pl-12 xl:pr-10"
-        key={character.id}
-      >
-        <div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-zinc-200 pb-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.32em] text-zinc-500 transition-colors hover:text-zinc-900"
-            style={{ fontFamily: "var(--font-cinematic)" }}
-          >
-            <ArrowLeft className="size-3 shrink-0 opacity-70" aria-hidden />
-            Home
-          </Link>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/#characters"
-              className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-900"
-              style={{ fontFamily: "var(--font-cinematic)" }}
-            >
-              Slideshow
-            </Link>
-            <Link
-              href="/"
-              className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-900"
-              style={{ fontFamily: "var(--font-cinematic)" }}
-            >
-              Flower
-            </Link>
-          </div>
-        </div>
-
-        <p
-          className="mb-3 shrink-0 text-xs text-zinc-400"
-          style={{ fontFamily: "var(--font-screenplay)" }}
-        >
-          {String(index + 1).padStart(2, "0")} / {String(characters.length).padStart(2, "0")}
-        </p>
-
-        <div className="shrink-0 border-b border-zinc-200 pb-5">
-          <CharacterIdentityHeader
-            name={character.name}
-            role={character.role}
-            dossier={dossier}
-            heading="h1"
-            uppercaseTitle={false}
-          />
-        </div>
-
+      <Card className="flex w-[11.5rem] shrink-0 flex-col overflow-hidden rounded-none border-y-0 border-l border-r-0 border-zinc-200/90 bg-white py-0 shadow-none sm:w-52">
         <div
-          className="min-h-0 flex-1 overflow-y-auto pr-2 pt-5"
-          style={{ scrollbarWidth: "none" }}
+          className="shrink-0 border-b border-zinc-100 px-3 pb-3 pt-4 sm:pt-5"
+          style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))" }}
         >
-          <CharacterPublicProfile
-            description={character.description}
-            traits={character.personalityTraits}
-            dossier={dossier}
-            characterSongs={characterSongs}
-            profileVariant="feature"
-            allyThread={allyThread}
-          />
-        </div>
-
-        <nav
-          className="mt-3 flex shrink-0 items-stretch gap-2 border-t border-zinc-200 pt-4"
-          aria-label="Previous and next character"
-        >
-          <div className="min-w-0 flex-1">
-            {prev ? (
-              <Link
-                href={`/characters/${prev.id}`}
-                className="group flex h-full min-h-[3rem] items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 transition-all hover:border-red-300 hover:bg-red-50/80"
-                style={{ fontFamily: "var(--font-cinematic)" }}
-              >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors group-hover:border-red-400 group-hover:text-red-900">
-                  <ChevronLeft className="size-4 stroke-[1.5]" aria-hidden />
-                </span>
-                <div className="min-w-0 text-left">
-                  <p className="text-[9px] uppercase tracking-[0.22em] text-red-700">Previous</p>
-                  <p className="truncate text-sm font-medium tracking-wide text-zinc-900">{prev.name}</p>
-                </div>
-              </Link>
-            ) : (
-              <span className="block min-h-[3rem]" aria-hidden />
-            )}
-          </div>
-          <div className="min-w-0 flex-1">
-            {next ? (
-              <Link
-                href={`/characters/${next.id}`}
-                className="group flex h-full min-h-[3rem] items-center justify-end gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-right transition-all hover:border-red-300 hover:bg-red-50/80"
-                style={{ fontFamily: "var(--font-cinematic)" }}
-              >
-                <div className="min-w-0 text-right">
-                  <p className="text-[9px] uppercase tracking-[0.22em] text-red-700">Next</p>
-                  <p className="truncate text-sm font-medium tracking-wide text-zinc-900">{next.name}</p>
-                </div>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors group-hover:border-red-400 group-hover:text-red-900">
-                  <ChevronRight className="size-4 stroke-[1.5]" aria-hidden />
-                </span>
-              </Link>
-            ) : null}
-          </div>
-        </nav>
-      </div>
-
-      {/* Cast — same language as home Characters slide */}
-      <aside
-        className="flex w-52 shrink-0 flex-col overflow-hidden border-l border-zinc-200 bg-white/90 backdrop-blur-sm sm:w-56"
-        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
-      >
-        <div className="shrink-0 px-3 pb-3 pl-3 pr-4 pt-[max(3.5rem,env(safe-area-inset-top,0px))] sm:pt-20">
           <p
-            className="text-[10px] uppercase tracking-[0.3em] text-zinc-500"
+            className="text-[9px] uppercase tracking-[0.3em] text-zinc-500"
             style={{ fontFamily: "var(--font-cinematic)" }}
           >
             Cast
           </p>
         </div>
         <div
-          className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto pb-4 pl-2 pr-4"
-          style={{ scrollbarWidth: "none" }}
+          className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2"
+          style={{ scrollbarWidth: "none", paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
         >
           {characters.map((c, i) => {
             const active = c.id === character.id;
             return (
-              <Link
+              <Button
                 key={c.id}
-                href={`/characters/${c.id}`}
+                variant={active ? "secondary" : "ghost"}
                 className={cn(
-                  "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200",
-                  active
-                    ? "bg-red-50 text-zinc-900 ring-1 ring-red-200"
-                    : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900",
+                  "h-auto w-full justify-start gap-2 rounded-lg px-2 py-2 font-normal",
+                  active && "ring-1 ring-red-200/80",
                 )}
+                asChild
               >
-                <span
-                  className="w-6 shrink-0 tabular-nums text-[10px] text-zinc-400"
-                  style={{ fontFamily: "var(--font-screenplay)" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-zinc-200">
-                  <Image
-                    src={c.image}
-                    alt=""
-                    fill
-                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                    sizes="40px"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p
-                    className="truncate text-xs font-medium leading-tight"
-                    style={{ fontFamily: "var(--font-cinematic)" }}
-                  >
-                    {c.name}
-                  </p>
-                  <p
-                    className="mt-0.5 truncate text-[10px] text-zinc-600"
+                <Link href={`/characters/${c.id}`}>
+                  <span
+                    className="w-5 shrink-0 tabular-nums text-[9px] text-zinc-400"
                     style={{ fontFamily: "var(--font-screenplay)" }}
                   >
-                    {c.role}
-                  </p>
-                </div>
-                {active ? (
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
-                    aria-hidden
-                  />
-                ) : null}
-              </Link>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md ring-1 ring-zinc-200/90">
+                    <Image src={c.image} alt="" fill className="object-cover object-top" sizes="36px" />
+                  </div>
+                  <div className="min-w-0 flex-1 text-left">
+                    <p
+                      className="truncate text-[10px] font-medium"
+                      style={{ fontFamily: "var(--font-cinematic)" }}
+                    >
+                      {c.name}
+                    </p>
+                    <p className="truncate text-[9px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
+                      {c.role}
+                    </p>
+                  </div>
+                  {active ? <ArrowUpRight className="size-3 shrink-0 text-red-700 opacity-80" aria-hidden /> : null}
+                </Link>
+              </Button>
             );
           })}
         </div>
-      </aside>
+      </Card>
     </div>
   );
 }

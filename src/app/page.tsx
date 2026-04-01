@@ -65,7 +65,7 @@ function HomeInner() {
         style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
       >
         <TitleSlide />
-        <CharactersSection openCharacter={openCharacter} />
+        <CharactersSection />
         <SetsSection />
         <ScriptSection openCharacter={openCharacter} />
         <LyricsSection openCharacter={openCharacter} />

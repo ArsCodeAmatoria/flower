@@ -5,9 +5,9 @@ import Image from "next/image";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { songs } from "@/data/songs";
 import { crew } from "@/data/crew";
-import { scriptPages } from "@/data/script";
 import { characters } from "@/data/characters";
 import type { Character } from "@/data/characters";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 function subscribeReducedMotion(cb: () => void) {
@@ -130,39 +130,65 @@ function FilmCorners({ darkStage }: { darkStage?: boolean }) {
   );
 }
 
-function CreatorPortrait({
-  label,
+function SidebarSectionTitle({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div
+      className={cn("mb-2 shrink-0 text-[8px] uppercase tracking-[0.36em] text-red-700", className)}
+      style={{ fontFamily: "var(--font-cinematic)" }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function SidebarBillingRow({
+  category,
   name,
-  imageSrc,
+  detail,
 }: {
-  label: string;
+  category: string;
   name: string;
-  imageSrc: string;
+  detail?: string;
 }) {
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="border-b border-zinc-200/75 py-2.5 first:pt-0 last:border-b-0">
       <p
-        className="text-[7px] uppercase leading-tight tracking-[0.32em] text-red-700 md:text-[8px] md:tracking-[0.38em]"
+        className="text-[7px] uppercase leading-tight tracking-[0.3em] text-zinc-500"
         style={{ fontFamily: "var(--font-cinematic)" }}
       >
-        {label}
+        {category}
       </p>
-      <div className="relative mt-1.5 h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-zinc-200 shadow-md md:h-10 md:w-10">
-        <Image src={imageSrc} alt="" fill className="object-cover object-top" sizes="40px" />
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-zinc-900/35 via-transparent to-zinc-50/10" />
-      </div>
       <p
-        className="mt-1.5 max-w-[9rem] text-center text-[9px] uppercase leading-snug tracking-[0.14em] text-zinc-900 md:text-[10px] md:tracking-[0.16em]"
+        className="mt-1 text-[10px] uppercase leading-snug tracking-[0.1em] text-zinc-900"
         style={{ fontFamily: "var(--font-credits-ornate)" }}
       >
         {name}
       </p>
+      {detail ? (
+        <p
+          className="mt-0.5 text-[9px] leading-snug text-zinc-600"
+          style={{ fontFamily: "var(--font-screenplay)" }}
+        >
+          {detail}
+        </p>
+      ) : null}
     </div>
   );
 }
 
 /** More title cards = shorter slices per track = snappier credits. */
 const CARD_COUNT = 19;
+
+const PRODUCTION_BILLING = [
+  "Executive Producer — in development",
+  "Producer — in development",
+  "Director — TBD",
+  "Production Designer — TBD",
+  "Editorial & storyboarding — in development",
+  "Animation pipeline — TBD",
+  "Music supervision & vocal production — TBD",
+  "Sound design & re-recording mix — TBD",
+] as const;
 
 export function CreditsSection() {
   const creditsSong = songs.find((s) => s.id === "red-magic")!;
@@ -462,190 +488,218 @@ export function CreditsSection() {
     </>
   );
 
-  return (
-    <section
-      id="credits"
-      className="relative flex h-full min-h-0 w-screen shrink-0 flex-col overflow-hidden bg-zinc-50 pt-5 sm:pt-6"
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_42%,rgba(239,68,68,0.06)_0%,transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(244,244,245,0.92)_100%)]" />
-
-      <div className="relative shrink-0 px-4 sm:px-6 lg:px-8">
-        <p className="text-[9px] uppercase tracking-[0.45em] text-red-800" style={{ fontFamily: "var(--font-cinematic)" }}>
-          End credits
-        </p>
-        <h1 className="section-heading mt-0.5 text-xl sm:text-2xl">Credits</h1>
-        <p className="mt-0.5 text-[10px] text-zinc-500 md:hidden" style={{ fontFamily: "var(--font-screenplay)" }}>
-          {creator.name}
-          {leigh && ` · ${leigh.name}`}
-        </p>
-        <p className="mt-0.5 max-w-xl text-[10px] leading-snug text-zinc-500 md:mt-0.5" style={{ fontFamily: "var(--font-screenplay)" }}>
-          In time with <span className="font-medium text-red-800">{creditsSong.title}</span>
-          {creditsSong.writtenBy ? ` · ${creditsSong.writtenBy}` : ""}.
-        </p>
-      </div>
-
-      <div className="relative flex min-h-0 flex-1 gap-2 px-2 pt-1 sm:gap-4 sm:px-3 sm:pt-1.5 lg:gap-5 lg:px-5">
-        <aside className="hidden min-h-0 w-[8.5rem] shrink-0 flex-col items-center gap-4 overflow-y-auto border-r border-zinc-200 pr-2 pt-0 md:flex lg:w-36">
-          <CreatorPortrait label="Created by" name={creator.name} imageSrc={creator.image} />
-          {leigh && <CreatorPortrait label="Co-written · Songs" name={leigh.name} imageSrc={leigh.image} />}
-        </aside>
-
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          {!reduceMotion ? (
-            <div
-              className="relative min-h-0 flex-1 overflow-hidden rounded-sm border border-zinc-800 bg-black shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_48px_rgba(0,0,0,0.35)]"
-              role="region"
-              aria-label="Credits sequence"
-              aria-live="polite"
-            >
-              {reelChrome}
-              <div className="relative flex h-full min-h-0 items-center justify-center px-2 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4">
-                {Array.from({ length: CARD_COUNT }, (_, idx) => {
-                  const op = chunkOpacity(idx, currentTime, duration, CARD_COUNT, idleAtStart, audioEnded);
-                  if (op < 0.003) return null;
-                  return (
-                    <div
-                      key={idx}
-                      className="absolute inset-0 flex items-center justify-center overflow-hidden px-1 sm:px-2"
-                      style={{ opacity: op, pointerEvents: "none" }}
-                    >
-                      <div className="max-h-full w-full overflow-y-auto overflow-x-hidden [overflow-wrap:anywhere]" style={{ scrollbarWidth: "none" }}>
-                        {renderMovieCard(idx)}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <div
-              className="min-h-0 flex-1 overflow-y-auto rounded-sm border border-zinc-800 bg-black px-3 py-4 sm:px-5"
-              style={{ scrollbarWidth: "none" }}
-            >
-              <p className="mb-5 text-[11px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                Reduced motion: static list. Play below for {creditsSong.title}.
-              </p>
-              <div className="space-y-14">
-                {Array.from({ length: CARD_COUNT }, (_, idx) => (
-                  <div key={idx} className="border-b border-white/10 pb-12 text-white last:border-0">
-                    {renderMovieCard(idx)}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <aside className="hidden min-h-0 w-[10.5rem] shrink-0 flex-col gap-2 overflow-y-auto border-l border-zinc-200 pl-3 pt-0 md:flex lg:w-48 lg:gap-2.5 lg:pl-4">
-          <div className="rounded-sm border border-zinc-200 bg-white p-2.5 shadow-sm">
-            <p className="mb-1.5 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
-              Playback
-            </p>
-            <p className="text-[9px] leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
-              Play syncs cards to the track. Pause holds picture and sound. Restart from the top.
-            </p>
-          </div>
-          <div className="rounded-sm border border-zinc-200 bg-white p-2.5 shadow-sm">
-            <p className="mb-1.5 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
-              Picture bible
-            </p>
-            <dl className="space-y-2 text-[9px]">
-              <div>
-                <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                  Format
-                </dt>
-                <dd className="text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
-                  Animated musical (in development)
-                </dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                  Beat scaffold pages
-                </dt>
-                <dd className="text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
-                  {scriptPages.length}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                  Songs
-                </dt>
-                <dd className="text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
-                  {songs.length}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                  Story roles
-                </dt>
-                <dd className="text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
-                  {characters.length}
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </aside>
-      </div>
-
-      <div className="relative mt-1 shrink-0 px-2 pb-0 pt-0.5 sm:mt-1.5 sm:px-4 lg:px-6">
-        <div className="mx-auto flex max-w-5xl items-center gap-2 rounded-sm border border-zinc-300 bg-white px-2.5 py-2 shadow-lg shadow-zinc-900/10 sm:gap-3 sm:px-4 sm:py-2.5">
+  const playerChrome = (
+    <div className="border-t border-white/10 bg-zinc-950 px-3 py-2 sm:px-4 sm:py-2.5">
+      <div className="flex flex-col gap-2">
+        <button
+          type="button"
+          className="group relative h-1 w-full cursor-pointer overflow-hidden rounded-full bg-white/15"
+          onClick={(e) => {
+            const audio = audioRef.current;
+            if (!audio || duration <= 0) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            audio.currentTime = x * duration;
+            setCurrentTime(audio.currentTime);
+          }}
+          aria-label="Seek credits track"
+        >
           <span
-            className="shrink-0 text-[8px] tabular-nums tracking-[0.12em] text-zinc-500 sm:text-[9px]"
-            style={{ fontFamily: "var(--font-screenplay)" }}
-          >
-            Reel {visibleIndex + 1}/{CARD_COUNT}
-          </span>
-          <span className="h-8 w-px shrink-0 bg-zinc-200" aria-hidden />
-          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-sm ring-1 ring-zinc-200 sm:h-14 sm:w-14">
-            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="56px" />
+            className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-red-600 transition-[width] duration-150 ease-out group-hover:bg-red-500"
+            style={{ width: `${progress}%` }}
+          />
+        </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md ring-1 ring-white/10 sm:h-10 sm:w-10">
+            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="40px" />
           </div>
           <div className="min-w-0 flex-1">
-            <p
-              className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-900 sm:text-xs"
-              style={{ fontFamily: "var(--font-cinematic)" }}
-            >
-              {creditsSong.title}
-            </p>
-            <p className="mt-0.5 truncate text-[9px] text-zinc-600 sm:text-[10px]" style={{ fontFamily: "var(--font-screenplay)" }}>
-              {creditsSong.singers}
-              {creditsSong.writtenBy && ` · ${creditsSong.writtenBy}`}
-            </p>
-            <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-zinc-100 sm:h-1.5">
-              <div
-                className="h-full rounded-full bg-linear-to-r from-red-500 to-red-400 transition-none"
-                style={{ width: `${progress}%` }}
-              />
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+              <p
+                className="truncate text-[10px] font-medium uppercase tracking-[0.14em] text-white sm:text-[11px]"
+                style={{ fontFamily: "var(--font-cinematic)" }}
+              >
+                {creditsSong.title}
+              </p>
+              <span
+                className="text-[8px] tabular-nums text-zinc-500 sm:text-[9px]"
+                style={{ fontFamily: "var(--font-screenplay)" }}
+              >
+                Reel {visibleIndex + 1}/{CARD_COUNT}
+              </span>
             </div>
+            <p className="truncate text-[9px] text-zinc-400 sm:text-[10px]" style={{ fontFamily: "var(--font-screenplay)" }}>
+              {creditsSong.singers}
+              {creditsSong.writtenBy ? ` · ${creditsSong.writtenBy}` : ""}
+            </p>
           </div>
           <span
-            className="hidden shrink-0 text-[9px] tabular-nums tracking-wider text-red-800 sm:inline"
+            className="hidden shrink-0 text-[9px] tabular-nums tracking-wide text-zinc-400 sm:inline"
             style={{ fontFamily: "var(--font-screenplay)" }}
           >
             {fmt(currentTime)} / {fmt(duration || 0)}
           </span>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 shrink-0 rounded-full text-zinc-300 hover:bg-white/10 hover:text-white"
             onClick={replay}
             aria-label="Restart song and credits"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all hover:border-red-400 hover:bg-red-50 hover:text-red-900 sm:h-11 sm:w-11"
           >
-            <RotateCcw className="size-4 sm:size-[1.125rem]" />
-          </button>
-          <button
+            <RotateCcw className="size-4" />
+          </Button>
+          <Button
             type="button"
-            onClick={togglePlay}
+            size="icon"
             className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all sm:h-11 sm:w-11",
-              playing
-                ? "border-red-600 bg-red-600 text-white shadow-md"
-                : "border-zinc-200 bg-white text-red-800 hover:border-red-400 hover:bg-red-50",
+              "h-9 w-9 shrink-0 rounded-full border-0 shadow-md sm:h-10 sm:w-10",
+              playing ? "bg-white text-zinc-900 hover:bg-zinc-100" : "bg-red-600 text-white hover:bg-red-500",
             )}
+            onClick={togglePlay}
             aria-label={playing ? "Pause" : "Play"}
           >
-            {playing ? <Pause className="size-4 fill-current sm:size-[1.125rem]" /> : <Play className="ml-0.5 size-4 fill-current sm:size-[1.125rem]" />}
-          </button>
+            {playing ? (
+              <Pause className="size-4 fill-current" />
+            ) : (
+              <Play className="ml-0.5 size-4 fill-current" />
+            )}
+          </Button>
         </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <section
+      id="credits"
+      className="relative flex h-full min-h-0 w-screen shrink-0 flex-col overflow-hidden bg-white text-zinc-900"
+    >
+      <header className="relative z-10 shrink-0 border-b border-zinc-200/80 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+        <p
+          className="text-[8px] uppercase tracking-[0.42em] text-red-700"
+          style={{ fontFamily: "var(--font-cinematic)" }}
+        >
+          End credits
+        </p>
+        <h1 className="section-heading mt-1 text-xl sm:text-2xl">Credits</h1>
+        <p className="mt-1 max-w-2xl text-[10px] leading-relaxed text-zinc-600 sm:text-[11px]" style={{ fontFamily: "var(--font-screenplay)" }}>
+          Roll timed to <span className="font-medium text-red-700">{creditsSong.title}</span>
+          {creditsSong.writtenBy ? ` · ${creditsSong.writtenBy}` : ""}.
+        </p>
+      </header>
+
+      <div className="relative z-10 flex min-h-0 flex-1 overflow-hidden">
+        {/* Left rail — principal & production billing */}
+        <aside className="hidden min-h-0 w-44 shrink-0 flex-col border-r border-zinc-200/90 bg-zinc-50/40 px-3 py-4 md:flex md:flex-col lg:w-52">
+          <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]">
+            <SidebarSectionTitle>Principal credits</SidebarSectionTitle>
+            <SidebarBillingRow category={creator.role} name={creator.name} />
+            {leigh ? (
+              <>
+                <SidebarBillingRow category={leigh.role} name={leigh.name} />
+                <SidebarBillingRow
+                  category="Words & music"
+                  name="Leigh Akin"
+                  detail="Original songs for the feature"
+                />
+              </>
+            ) : null}
+            <SidebarSectionTitle className="mt-5">In development</SidebarSectionTitle>
+            <ul
+              className="mt-1 list-none space-y-1.5 text-[9px] leading-snug text-zinc-600"
+              style={{ fontFamily: "var(--font-screenplay)" }}
+            >
+              {PRODUCTION_BILLING.map((line) => (
+                <li key={line} className="border-b border-zinc-200/60 pb-1.5 last:border-0">
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        {/* Center — 21:9 player + transport; width capped so the stack fits without vertical scroll */}
+        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden px-3 py-2 sm:px-4 sm:py-3 lg:px-6">
+          <div className="mx-auto w-[min(100%,1100px,calc((100dvh-17.5rem)*21/9))] max-w-full shrink-0">
+            <div className="overflow-hidden rounded-2xl bg-black shadow-[0_12px_48px_-16px_rgba(0,0,0,0.4)] ring-1 ring-black/25">
+              <div className="relative aspect-[21/9] w-full bg-black">
+                {!reduceMotion ? (
+                  <div
+                    className="absolute inset-0 overflow-hidden"
+                    role="region"
+                    aria-label="Credits sequence"
+                    aria-live="polite"
+                  >
+                    {reelChrome}
+                    <div className="absolute inset-0 flex items-center justify-center px-2 py-2 sm:px-5 sm:py-3 md:px-8 md:py-4">
+                      {Array.from({ length: CARD_COUNT }, (_, idx) => {
+                        const op = chunkOpacity(idx, currentTime, duration, CARD_COUNT, idleAtStart, audioEnded);
+                        if (op < 0.003) return null;
+                        return (
+                          <div
+                            key={idx}
+                            className="absolute inset-0 flex items-center justify-center overflow-hidden px-1 sm:px-3"
+                            style={{ opacity: op, pointerEvents: "none" }}
+                          >
+                            <div
+                              className="max-h-full w-full overflow-y-auto overflow-x-hidden wrap-anywhere"
+                              style={{ scrollbarWidth: "none" }}
+                            >
+                              {renderMovieCard(idx)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="absolute inset-0 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6"
+                    style={{ scrollbarWidth: "none" }}
+                  >
+                    <p className="mb-5 text-[11px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
+                      Reduced motion: static list. Use the player below for {creditsSong.title}.
+                    </p>
+                    <div className="space-y-14">
+                      {Array.from({ length: CARD_COUNT }, (_, idx) => (
+                        <div key={idx} className="border-b border-white/10 pb-12 text-white last:border-0">
+                          {renderMovieCard(idx)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {playerChrome}
+            </div>
+          </div>
+        </div>
+
+        {/* Right rail — cast & song billing */}
+        <aside className="hidden min-h-0 w-44 shrink-0 flex-col border-l border-zinc-200/90 bg-zinc-50/40 px-3 py-4 md:flex md:flex-col lg:w-52">
+          <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]">
+            <SidebarSectionTitle>Cast of characters</SidebarSectionTitle>
+            {characters.map((c) => (
+              <SidebarBillingRow key={c.id} category={c.role} name={c.name} />
+            ))}
+            <SidebarSectionTitle className="mt-5">Original songs</SidebarSectionTitle>
+            {songs.map((s) => (
+              <SidebarBillingRow
+                key={s.id}
+                category={s.title}
+                name={s.singers}
+                detail={s.writtenBy ? `Words & music · ${s.writtenBy}` : undefined}
+              />
+            ))}
+            <p
+              className="mt-4 text-[8px] leading-relaxed text-zinc-500"
+              style={{ fontFamily: "var(--font-screenplay)" }}
+            >
+              End-credits roll uses &ldquo;{creditsSong.title}.&rdquo;
+            </p>
+          </div>
+        </aside>
       </div>
     </section>
   );

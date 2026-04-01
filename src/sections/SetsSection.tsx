@@ -1,20 +1,26 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ArrowUpRight } from "lucide-react";
+import { ChevronLeft, ArrowUpRight, Maximize2 } from "lucide-react";
+import { SetImageLightbox } from "@/components/SetImageLightbox";
 import { sets } from "@/data/sets";
 import { cn } from "@/lib/utils";
 
 export function SetsSection() {
   const [index, setIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const total = sets.length;
   const set = sets[index];
 
   const switchSet = useCallback((i: number) => {
     setIndex(i);
   }, []);
+
+  useEffect(() => {
+    setLightboxOpen(false);
+  }, [index]);
 
   const prev = useCallback(
     (e: React.MouseEvent) => {
@@ -33,10 +39,7 @@ export function SetsSection() {
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <div className="relative flex min-h-0 flex-1 flex-col px-3 pt-3 sm:px-5 sm:pt-5">
           <div className="relative min-h-0 w-full flex-1">
-            <Link
-              href={`/sets/${set.id}`}
-              className="group absolute inset-0 block overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200/90 shadow-sm [animation:fadeIn_0.4s_ease-out_both]"
-            >
+            <div className="group absolute inset-0 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200/90 shadow-sm [animation:fadeIn_0.4s_ease-out_both]">
               <Image
                 key={set.id}
                 src={set.image}
@@ -46,12 +49,18 @@ export function SetsSection() {
                 sizes="(min-width: 768px) calc(100vw - 13rem - 2.5rem), calc(100vw - 11rem - 1.5rem)"
                 priority={index === 0}
               />
-              <div className="pointer-events-none absolute right-3 top-3 sm:right-4 sm:top-4 md:opacity-0 md:transition-opacity md:group-hover:opacity-100">
+              <button
+                type="button"
+                className="absolute inset-0 z-10 cursor-zoom-in rounded-2xl border-0 bg-transparent p-0"
+                aria-label="Open full image"
+                onClick={() => setLightboxOpen(true)}
+              />
+              <div className="pointer-events-none absolute right-3 top-3 z-[15] sm:right-4 sm:top-4 md:opacity-0 md:transition-opacity md:group-hover:opacity-100">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200/90 bg-white/95 text-zinc-700 shadow-sm backdrop-blur-sm">
-                  <ArrowUpRight className="size-4" />
+                  <Maximize2 className="size-4" aria-hidden />
                 </span>
               </div>
-            </Link>
+            </div>
             <button
               type="button"
               onClick={prev}
@@ -112,6 +121,13 @@ export function SetsSection() {
           </Link>
         </div>
       </div>
+
+      <SetImageLightbox
+        src={set.image}
+        alt={set.name}
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
 
       <div className="flex w-[11rem] shrink-0 flex-col overflow-hidden border-l border-zinc-200 bg-white pb-[var(--floating-nav-clearance)] sm:w-48">
         <div className="shrink-0 px-3 pb-2 pt-20 sm:pt-16">
