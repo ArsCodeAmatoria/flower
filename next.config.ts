@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/", permanent: false },
       { source: "/script", destination: "/", permanent: false },
       { source: "/credits", destination: "/", permanent: false },
-      { source: "/sets", destination: "/", permanent: false },
+      { source: "/sets", destination: "/#sets", permanent: false },
       { source: "/lyrics", destination: "/", permanent: false },
       {
         source: "/characters",

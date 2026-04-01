@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { characters } from "@/data/characters";
+import { buildAllyThreadForProfile } from "@/data/character-chats";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
 import { songs } from "@/data/songs";
 import { CharacterPublicProfile } from "@/sections/characters/CharacterPublicProfile";
@@ -37,6 +38,7 @@ export default async function CharacterPage({
   const prev = index > 0 ? characters[index - 1] : null;
   const next = index < characters.length - 1 ? characters[index + 1] : null;
   const characterSongs = songs.filter((s) => character.songIds.includes(s.id));
+  const allyThread = buildAllyThreadForProfile(character);
 
   return (
     <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50 text-zinc-900">
@@ -111,6 +113,7 @@ export default async function CharacterPage({
             dossier={dossier}
             characterSongs={characterSongs}
             profileVariant="feature"
+            allyThread={allyThread}
           />
         </div>
 

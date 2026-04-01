@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { ChevronLeft, ArrowUpRight } from "lucide-react";
 import { characters } from "@/data/characters";
+import { buildAllyThreadForProfile } from "@/data/character-chats";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
 import { songs } from "@/data/songs";
 import { CharacterIdentityHeader } from "@/sections/characters/CharacterIdentityChrome";
@@ -24,6 +25,8 @@ export function CharactersSection({ openCharacter }: Props) {
     () => songs.filter((s) => character.songIds.includes(s.id)),
     [character]
   );
+
+  const allyThread = useMemo(() => buildAllyThreadForProfile(character), [character]);
 
   const switchCharacter = useCallback((i: number) => {
     setIndex(i);
@@ -98,6 +101,7 @@ export function CharactersSection({ openCharacter }: Props) {
             traits={character.personalityTraits}
             dossier={dossier}
             characterSongs={characterSongs}
+            allyThread={allyThread}
           />
 
           <button

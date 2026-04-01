@@ -99,6 +99,10 @@ export type ParsedScene = {
   beatComplete?: boolean;
   promiseOfPremise?: boolean;
   valueShift?: string;
+  /** Positive / cling pole of the scene’s value (“greater”). */
+  valueGreater?: string;
+  /** Negative / loss pole of the scene’s value (“lesser”). */
+  valueLesser?: string;
   emotionalTurn?: string;
 
   revisionPriority?: "low" | "medium" | "high" | "critical";

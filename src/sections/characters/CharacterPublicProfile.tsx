@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ChevronDown, Music, Play, Pause } from "lucide-react";
+import { Music, Play, Pause } from "lucide-react";
 import type { CharacterDossier } from "@/data/character-dossiers";
+import type { CharacterChatTheme } from "@/data/characters";
 import type { Song } from "@/data/songs";
-import { CharacterCoreArcBlock } from "@/sections/characters/CharacterIdentityChrome";
-import { CharacterDossierCollapsibles } from "@/sections/characters/CharacterDossierCollapsibles";
+import type { CharacterChatLine } from "@/data/character-chats";
+import { CharacterAllyThread, type AllyThreadParticipant } from "@/sections/characters/CharacterAllyThread";
 import { cn } from "@/lib/utils";
 
 const sectionLabel =
@@ -16,20 +17,27 @@ const mono = "var(--font-industrial)";
 const indLabel =
   "mb-1.5 flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.2em] text-emerald-800 sm:mb-2 sm:text-[10px] sm:tracking-[0.22em]";
 
+type AllyThreadConfig = {
+  viewerId: string;
+  theme: CharacterChatTheme;
+  lines: CharacterChatLine[];
+  participants: AllyThreadParticipant[];
+};
+
 export function CharacterPublicProfile({
   description,
   traits,
   dossier,
   characterSongs,
-  showWriterDossier = true,
   profileVariant = "inline",
+  allyThread,
 }: {
   description: string;
   traits: string[];
   dossier: CharacterDossier;
   characterSongs: Song[];
-  showWriterDossier?: boolean;
   profileVariant?: "inline" | "feature" | "industrial";
+  allyThread: AllyThreadConfig;
 }) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -143,28 +151,25 @@ export function CharacterPublicProfile({
           </section>
         ) : null}
 
-        {showWriterDossier ? (
-          <details className="writer-dossier-details mt-auto shrink-0 rounded-lg border border-zinc-200 bg-zinc-50 [&_summary::-webkit-details-marker]:hidden">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-1 px-2 py-2 text-left transition-colors hover:bg-zinc-100 sm:gap-2 sm:px-3 sm:py-2.5">
-              <span className="text-[8px] font-medium uppercase tracking-[0.15em] text-emerald-800 sm:text-[9px] sm:tracking-[0.2em]">
-                ▶ appendix — writer file
-              </span>
-              <ChevronDown className="writer-dossier-chevron size-3 shrink-0 text-zinc-400 transition-transform duration-200 sm:size-4" />
-            </summary>
-            <div className="max-h-[40vh] overflow-y-auto border-t border-zinc-200 px-2 py-3 sm:max-h-[min(50vh,24rem)] sm:px-4 sm:py-4">
-              <CharacterCoreArcBlock dossier={dossier} className="mb-6 border-b border-zinc-200 pb-6 sm:mb-8 sm:pb-8" industrial />
-              <CharacterDossierCollapsibles dossier={dossier} />
-            </div>
-          </details>
-        ) : null}
+        <section className="mt-auto min-h-0 shrink pt-1">
+          <p className={cn(indLabel, "!mb-1")}>
+            <span className="text-zinc-500">{characterSongs.length > 0 ? "04" : "03"}</span>
+            <span className="h-px w-10 bg-emerald-400/50 sm:w-16" aria-hidden />
+            allies — thread
+          </p>
+          <CharacterAllyThread
+            viewerId={allyThread.viewerId}
+            theme={allyThread.theme}
+            lines={allyThread.lines}
+            participants={allyThread.participants}
+            compact
+          />
+        </section>
 
         <style>{`
           @keyframes charWaveBar {
             from { transform: scaleY(0.2); }
             to   { transform: scaleY(1); }
-          }
-          details.writer-dossier-details[open] .writer-dossier-chevron {
-            transform: rotate(180deg);
           }
         `}</style>
       </div>
@@ -239,6 +244,19 @@ export function CharacterPublicProfile({
         </div>
       )}
 
+      <div>
+        <p className={cn(sectionLabel, "mb-3")} style={{ fontFamily: "var(--font-cinematic)" }}>
+          <span className="h-px w-6 bg-red-400/50" aria-hidden />
+          Allies — group chat
+        </p>
+        <CharacterAllyThread
+          viewerId={allyThread.viewerId}
+          theme={allyThread.theme}
+          lines={allyThread.lines}
+          participants={allyThread.participants}
+        />
+      </div>
+
       {characterSongs.length > 0 && (
         <div>
           <p className={cn(sectionLabel, "mb-3")} style={{ fontFamily: "var(--font-cinematic)" }}>
@@ -303,31 +321,10 @@ export function CharacterPublicProfile({
         </div>
       )}
 
-      {showWriterDossier && (
-        <details className="writer-dossier-details mt-6 rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-50 to-white [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-4 text-left transition-colors hover:bg-zinc-100/80">
-            <span
-              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-red-800"
-              style={{ fontFamily: "var(--font-cinematic)" }}
-            >
-              Writer&apos;s dossier · STC &amp; McKee notes
-            </span>
-            <ChevronDown className="writer-dossier-chevron size-4 shrink-0 text-zinc-400 transition-transform duration-200" />
-          </summary>
-          <div className="border-t border-zinc-200 px-4 py-5">
-            <CharacterCoreArcBlock dossier={dossier} className="mb-8 border-b border-zinc-200 pb-8" />
-            <CharacterDossierCollapsibles dossier={dossier} />
-          </div>
-        </details>
-      )}
-
       <style>{`
         @keyframes charWaveBar {
           from { transform: scaleY(0.2); }
           to { transform: scaleY(1); }
-        }
-        details.writer-dossier-details[open] .writer-dossier-chevron {
-          transform: rotate(180deg);
         }
       `}</style>
     </div>

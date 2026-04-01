@@ -1,13 +1,14 @@
 "use client";
 
-import { Users, BookOpen, Mic2, Star } from "lucide-react";
+import { Users, Landmark, BookOpen, Mic2, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { label: "Characters", icon: Users, slideIndex: 1 },
-  { label: "Script", icon: BookOpen, slideIndex: 2 },
-  { label: "Lyrics", icon: Mic2, slideIndex: 3 },
-  { label: "Credits", icon: Star, slideIndex: 4 },
+  { label: "Sets", icon: Landmark, slideIndex: 2 },
+  { label: "Script", icon: BookOpen, slideIndex: 3 },
+  { label: "Lyrics", icon: Mic2, slideIndex: 4 },
+  { label: "Credits", icon: Star, slideIndex: 5 },
 ];
 
 interface FloatingLinksProps {
@@ -30,7 +31,7 @@ export function FloatingLinks({ goToSlide, currentSlide }: FloatingLinksProps) {
             "flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-all duration-200",
             currentSlide === slideIndex
               ? "bg-red-100 text-red-900 shadow-sm ring-1 ring-red-200/80"
-              : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+              : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800",
           )}
           style={{ fontFamily: "var(--font-cinematic)" }}
         >

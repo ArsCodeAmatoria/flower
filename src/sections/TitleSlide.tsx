@@ -11,7 +11,7 @@ const heroSong = songs.find((s) => s.id === "see-it-my-way")!;
 const creator = crew[0];
 const coWriter = crew.find((m) => m.id === "leigh-akin");
 
-const HOME_HEADER_SRC = "/images/header1.png";
+const HOME_HEADER_SRC = "/images/header3.png";
 
 /** Add `public/images/logo.png` (or .svg via img) for the lockup; falls back to type if missing. */
 const HOME_LOGO_SRC = "/images/logo.png";

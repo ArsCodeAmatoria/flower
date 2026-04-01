@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import {
   saveTheCatBeats,
   sceneRules,
+  greaterLesserSceneRules,
+  valueShiftExamples,
   dialogueRules,
   characterRules,
   themeRules,
@@ -86,7 +88,7 @@ export function WritingRulesSidebar({ scriptAnchors }: { scriptAnchors?: ScriptM
         Writing rules
       </p>
       <p className="mb-4 px-1 text-[9px] leading-relaxed text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-        Blueprint for Cursor and the writer — Save the Cat beats, scene craft, dialogue (McKee-style checks), character, theme, pacing.
+        Blueprint for Cursor and the writer — beat sheet, scene craft, dialogue checks, character, theme, pacing.
       </p>
 
       {hasAnchors && (
@@ -107,7 +109,7 @@ export function WritingRulesSidebar({ scriptAnchors }: { scriptAnchors?: ScriptM
       )}
 
       <Section id="story_structure_rules" title="Story structure" defaultOpen>
-        <p className="mb-2 text-[9px] text-zinc-500">Save the Cat — what each beat must do + target pages.</p>
+        <p className="mb-2 text-[9px] text-zinc-500">What each beat must do + target pages.</p>
         <div className="flex max-h-[min(40vh,320px)] flex-col gap-2 overflow-y-auto pr-1" style={{ scrollbarWidth: "none" }}>
           {saveTheCatBeats.map((b) => (
             <div key={b.id} className="rounded-lg border border-zinc-200/90 bg-zinc-100 px-2.5 py-2">
@@ -117,9 +119,27 @@ export function WritingRulesSidebar({ scriptAnchors }: { scriptAnchors?: ScriptM
               </p>
               <p className="mt-1 text-[9px] leading-snug text-zinc-600">{b.purpose}</p>
               <p className="mt-1 text-[9px] italic text-red-700">Must do: {b.mustDo}</p>
+              <p className="mt-1.5 border-t border-zinc-200/80 pt-1.5 text-[9px] leading-snug text-zinc-600">
+                <span className="font-semibold text-zinc-700">Greater / lesser: </span>
+                {b.greaterLesser}
+              </p>
             </div>
           ))}
         </div>
+      </Section>
+
+      <Section id="greater_lesser_rules" title="Greater / lesser">
+        <ul className="space-y-2">
+          {greaterLesserSceneRules.map((r) => (
+            <li key={r.id} className="rounded-lg border border-zinc-200/90 bg-zinc-100 px-2 py-1.5">
+              <p className="text-[10px] font-medium text-zinc-800">{r.headline}</p>
+              <p className="mt-0.5 text-[9px] text-zinc-600">{r.detail}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-2 text-[8px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
+          Examples: {valueShiftExamples.slice(0, 4).join(" · ")}
+        </p>
       </Section>
 
       <Section id="scene_rules" title="Scene rules">

@@ -29,11 +29,7 @@ function smoothstep01(t: number) {
   return x * x * (3 - 2 * x);
 }
 
-/**
- * One chunk at a time: fade in, hold, fade out within its slice of the track.
- * Chunks do not overlap the next — brief black between slices.
- */
-const CHUNK_FADE_FRAC = 0.2; // fraction of each chunk's window for fade-in / fade-out
+const CHUNK_FADE_FRAC = 0.2;
 
 function chunkOpacity(
   chunkIndex: number,
@@ -59,38 +55,51 @@ function chunkOpacity(
   return 1;
 }
 
-function CreditCardLabel({ children }: { children: ReactNode }) {
+function CreditCardLabel({ children, darkStage }: { children: ReactNode; darkStage?: boolean }) {
+  const lineFrom = darkStage ? "from-white/25" : "from-red-400/45";
+  const lineTo = darkStage ? "to-transparent" : "to-transparent";
+  const dots = darkStage ? "text-zinc-500" : "text-red-800";
+  const label = darkStage ? "text-zinc-400" : "text-red-700";
   return (
     <div className="mb-5 flex w-full flex-col items-center">
       <div className="mb-3 flex w-full max-w-xs items-center justify-center gap-3">
-        <span className="h-px min-w-[2rem] flex-1 bg-linear-to-l from-red-400/45 to-transparent" aria-hidden />
+        <span className={cn("h-px min-w-[2rem] flex-1 bg-linear-to-l", lineFrom, lineTo)} aria-hidden />
         <span
-          className="shrink-0 px-1 text-[10px] leading-none tracking-[0.4em] text-red-800"
+          className={cn("shrink-0 px-1 text-[10px] leading-none tracking-[0.4em]", dots)}
           style={{ fontFamily: "var(--font-credits-ornate)" }}
           aria-hidden
         >
           ···
         </span>
-        <span className="h-px min-w-[2rem] flex-1 bg-linear-to-r from-red-400/45 to-transparent" aria-hidden />
+        <span className={cn("h-px min-w-[2rem] flex-1 bg-linear-to-r", lineFrom, lineTo)} aria-hidden />
       </div>
-      <p className="text-center text-[9px] uppercase tracking-[0.38em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+      <p
+        className={cn("text-center text-[9px] uppercase tracking-[0.38em]", label)}
+        style={{ fontFamily: "var(--font-cinematic)" }}
+      >
         {children}
       </p>
     </div>
   );
 }
 
-function CastPair({ c }: { c: Character }) {
+function CastPair({ c, darkStage }: { c: Character; darkStage?: boolean }) {
   return (
     <div className="min-w-[42%] text-center">
       <p
-        className="text-xl uppercase tracking-[0.14em] text-zinc-900 sm:text-2xl"
+        className={cn(
+          "text-xl uppercase tracking-[0.14em] sm:text-2xl",
+          darkStage ? "text-white" : "text-zinc-900",
+        )}
         style={{ fontFamily: "var(--font-credits-ornate)" }}
       >
         {c.name}
       </p>
       <p
-        className="mt-3 text-[13px] italic leading-snug text-zinc-600 sm:text-sm"
+        className={cn(
+          "mt-3 text-[13px] italic leading-snug sm:text-sm",
+          darkStage ? "text-zinc-400" : "text-zinc-600",
+        )}
         style={{ fontFamily: "var(--font-credits)" }}
       >
         {c.role}
@@ -99,15 +108,15 @@ function CastPair({ c }: { c: Character }) {
   );
 }
 
-function FilmCorners({ className }: { className?: string }) {
-  const line = "1px solid rgba(14, 116, 144, 0.35)";
+function FilmCorners({ darkStage }: { darkStage?: boolean }) {
+  const line = darkStage ? "1px solid rgba(255,255,255,0.22)" : "1px solid rgba(14, 116, 144, 0.35)";
   const corners = ["top-4 left-4", "top-4 right-4", "bottom-4 left-4", "bottom-4 right-4"] as const;
   return (
     <>
       {corners.map((pos, i) => (
         <div
           key={i}
-          className={cn("pointer-events-none absolute z-[1] h-5 w-5", pos, className)}
+          className={cn("pointer-events-none absolute z-[1] h-5 w-5", pos)}
           style={{
             borderTop: i < 2 ? line : "none",
             borderBottom: i >= 2 ? line : "none",
@@ -132,7 +141,10 @@ function CreatorPortrait({
 }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <p className="text-[7px] uppercase leading-tight tracking-[0.32em] text-red-700 md:text-[8px] md:tracking-[0.38em]" style={{ fontFamily: "var(--font-cinematic)" }}>
+      <p
+        className="text-[7px] uppercase leading-tight tracking-[0.32em] text-red-700 md:text-[8px] md:tracking-[0.38em]"
+        style={{ fontFamily: "var(--font-cinematic)" }}
+      >
         {label}
       </p>
       <div className="relative mt-1.5 h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-zinc-200 shadow-md md:h-10 md:w-10">
@@ -149,7 +161,8 @@ function CreatorPortrait({
   );
 }
 
-const CARD_COUNT = 10;
+/** More title cards = shorter slices per track = snappier credits. */
+const CARD_COUNT = 19;
 
 export function CreditsSection() {
   const creditsSong = songs.find((s) => s.id === "red-magic")!;
@@ -162,10 +175,6 @@ export function CreditsSection() {
     characters.slice(2, 4),
     characters.slice(4, 7),
   ];
-
-  const midSong = Math.ceil(songs.length / 2);
-  const songsA = songs.slice(0, midSong);
-  const songsB = songs.slice(midSong);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -230,25 +239,25 @@ export function CreditsSection() {
         )
       : 0;
 
+  const body = "var(--font-credits)";
+  const ornate = "var(--font-credits-ornate)";
+
   const renderMovieCard = (i: number) => {
     switch (i) {
       case 0:
         return (
           <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-4xl text-zinc-900 sm:text-5xl md:text-6xl" style={{ fontFamily: "var(--font-title)", letterSpacing: "0.02em" }}>
+            <p className="text-4xl text-white sm:text-5xl md:text-6xl" style={{ fontFamily: "var(--font-title)", letterSpacing: "0.02em" }}>
               Flower
             </p>
-            <p
-              className="mt-5 text-[15px] font-medium italic leading-relaxed text-zinc-600 sm:text-base"
-              style={{ fontFamily: "var(--font-credits)" }}
-            >
+            <p className="mt-5 text-[15px] font-medium italic leading-relaxed text-zinc-400 sm:text-base" style={{ fontFamily: body }}>
               An animated musical feature
             </p>
             <div className="mt-10 flex flex-col items-center">
-              <p className="text-[9px] uppercase tracking-[0.36em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+              <p className="text-[9px] uppercase tracking-[0.36em] text-zinc-500" style={{ fontFamily: "var(--font-cinematic)" }}>
                 Created by
               </p>
-              <p className="mt-3 text-lg uppercase tracking-[0.2em] text-zinc-900 sm:text-xl" style={{ fontFamily: "var(--font-credits-ornate)" }}>
+              <p className="mt-3 text-lg uppercase tracking-[0.2em] text-white sm:text-xl" style={{ fontFamily: ornate }}>
                 {creator.name}
               </p>
             </div>
@@ -257,11 +266,8 @@ export function CreditsSection() {
       case 1:
         return (
           <div className="mx-auto flex max-w-md flex-col items-center px-2 text-center">
-            <CreditCardLabel>Screen story</CreditCardLabel>
-            <p
-              className="text-[16px] font-normal leading-[1.8] text-zinc-800 sm:text-lg"
-              style={{ fontFamily: "var(--font-credits)" }}
-            >
+            <CreditCardLabel darkStage>Screen story</CreditCardLabel>
+            <p className="text-[16px] font-normal leading-[1.8] text-zinc-200 sm:text-lg" style={{ fontFamily: body }}>
               A scentless teen arrives at a beauty-obsessed high school and learns her gift isn&apos;t fragrance—it&apos;s
               presence. Who gets to say what “blooming” means when rank, performance, and lies are louder than truth?
             </p>
@@ -272,22 +278,26 @@ export function CreditsSection() {
           <div className="mx-auto flex max-w-md flex-col items-center px-2 text-center">
             {leigh && (
               <>
-                <CreditCardLabel>Writing &amp; music</CreditCardLabel>
-                <p className="text-[15px] leading-relaxed text-zinc-800" style={{ fontFamily: "var(--font-credits)" }}>
-                  <span className="block text-[10px] uppercase tracking-[0.28em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+                <CreditCardLabel darkStage>Writing &amp; music</CreditCardLabel>
+                <p className="text-[15px] leading-relaxed text-zinc-200" style={{ fontFamily: body }}>
+                  <span className="block text-[10px] uppercase tracking-[0.28em] text-zinc-500" style={{ fontFamily: "var(--font-cinematic)" }}>
                     Co-written by
                   </span>
-                  <span className="mt-2 block text-lg uppercase tracking-[0.16em] text-zinc-900" style={{ fontFamily: "var(--font-credits-ornate)" }}>
+                  <span className="mt-2 block text-lg uppercase tracking-[0.16em] text-white" style={{ fontFamily: ornate }}>
                     {leigh.name}
                   </span>
                 </p>
-                <p className="mt-8 text-[15px] leading-relaxed text-zinc-800" style={{ fontFamily: "var(--font-credits)" }}>
-                  <span className="block text-[10px] uppercase tracking-[0.28em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+                <p className="mt-8 text-[15px] leading-relaxed text-zinc-200" style={{ fontFamily: body }}>
+                  <span className="block text-[10px] uppercase tracking-[0.28em] text-zinc-500" style={{ fontFamily: "var(--font-cinematic)" }}>
                     Original songs by
                   </span>
-                  <span className="mt-2 block text-lg uppercase tracking-[0.16em] text-zinc-900" style={{ fontFamily: "var(--font-credits-ornate)" }}>
+                  <span className="mt-2 block text-lg uppercase tracking-[0.16em] text-white" style={{ fontFamily: ornate }}>
                     {leigh.name}
                   </span>
+                </p>
+                <p className="mt-8 text-[13px] leading-relaxed text-zinc-400" style={{ fontFamily: body }}>
+                  Lyrics &amp; story shaped in draft with the creative team; arrangements and orchestration to follow for
+                  production.
                 </p>
               </>
             )}
@@ -299,10 +309,10 @@ export function CreditsSection() {
         const group = castTriples[i - 3];
         return (
           <div className="mx-auto w-full max-w-lg px-2">
-            <CreditCardLabel>Cast of characters</CreditCardLabel>
+            <CreditCardLabel darkStage>Cast of characters</CreditCardLabel>
             <div className={cn("flex flex-wrap justify-center gap-x-8 gap-y-10", group.length === 3 && "gap-y-8")}>
               {group.map((c) => (
-                <CastPair key={c.id} c={c} />
+                <CastPair key={c.id} c={c} darkStage />
               ))}
             </div>
           </div>
@@ -311,70 +321,131 @@ export function CreditsSection() {
       case 6:
         return (
           <div className="mx-auto max-w-md px-2 text-center">
-            <CreditCardLabel>Where it happens</CreditCardLabel>
-            <p
-              className="text-[16px] font-normal leading-[1.75] text-zinc-800 sm:text-lg"
-              style={{ fontFamily: "var(--font-credits)" }}
-            >
+            <CreditCardLabel darkStage>Where it happens</CreditCardLabel>
+            <p className="text-[16px] font-normal leading-[1.75] text-zinc-200 sm:text-lg" style={{ fontFamily: body }}>
               Flower High — where flowers are identity, scent is status, and beauty is scored and displayed until the
               story cracks the illusion.
             </p>
+            <p className="mt-6 text-[14px] leading-relaxed text-zinc-400" style={{ fontFamily: body }}>
+              Additional environments include the glowing woods, the Bloom Ceremony hall, and corridors where hierarchy
+              is enforced in whispers and glances.
+            </p>
           </div>
         );
-      case 7:
-        return (
-          <div className="mx-auto w-full max-w-md px-2">
-            <CreditCardLabel>Music in the story</CreditCardLabel>
-            <ul className="space-y-5">
-              {songsA.map((s) => (
-                <li key={s.id} className="text-center">
-                  <p className="text-base uppercase tracking-[0.12em] text-zinc-900 sm:text-lg" style={{ fontFamily: "var(--font-credits-ornate)" }}>
-                    {s.title}
+      default: {
+        const songIdx = i - 7;
+        if (songIdx >= 0 && songIdx < songs.length) {
+          const s = songs[songIdx];
+          return (
+            <div className="mx-auto w-full max-w-md px-2">
+              <CreditCardLabel darkStage>Music in the story</CreditCardLabel>
+              <div className="text-center">
+                <p className="text-base uppercase tracking-[0.12em] text-white sm:text-lg" style={{ fontFamily: ornate }}>
+                  {s.title}
+                </p>
+                <p className="mt-1.5 text-[13px] italic text-zinc-400" style={{ fontFamily: body }}>
+                  {s.singers}
+                </p>
+                {s.placement ? (
+                  <p className="mt-4 text-[12px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
+                    {s.placement}
                   </p>
-                  <p className="mt-1.5 text-[13px] italic text-zinc-600" style={{ fontFamily: "var(--font-credits)" }}>
-                    {s.singers}
+                ) : null}
+                {s.writtenBy ? (
+                  <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-zinc-500" style={{ fontFamily: "var(--font-cinematic)" }}>
+                    Words &amp; music · {s.writtenBy}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          );
+        }
+      }
+    }
+
+    switch (i) {
+      case 14:
+        return (
+          <div className="mx-auto max-w-lg px-3 text-center">
+            <CreditCardLabel darkStage>Production</CreditCardLabel>
+            <ul className="space-y-2.5 text-[13px] leading-snug text-zinc-300 sm:text-[14px]" style={{ fontFamily: body }}>
+              <li>Executive Producer — in development</li>
+              <li>Producer — in development</li>
+              <li>Director — TBD</li>
+              <li>Production Designer — TBD</li>
+              <li>Editorial &amp; storyboarding — in development</li>
+              <li>Animation pipeline — TBD</li>
+              <li>Music supervision &amp; vocal production — TBD</li>
+              <li>Sound design &amp; re-recording mix — TBD</li>
+            </ul>
+          </div>
+        );
+      case 15:
+        return (
+          <div className="mx-auto max-w-lg px-3 text-center">
+            <CreditCardLabel darkStage>Creative contributors</CreditCardLabel>
+            <p className="text-[14px] leading-[1.75] text-zinc-300" style={{ fontFamily: body }}>
+              Story consultants, development executives, and design collaborators to be named as the feature moves into
+              greenlight and crewing. Thank you to everyone who weighed in on tone, clarity, and heart in early reads.
+            </p>
+            <p className="mt-5 text-[13px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
+              Special thanks to teachers, classmates, and musicians who offered feedback on drafts, demos, and pitch
+              materials.
+            </p>
+          </div>
+        );
+      case 16:
+        return (
+          <div className="mx-auto max-w-lg px-3 text-center">
+            <CreditCardLabel darkStage>Development</CreditCardLabel>
+            <p className="text-[14px] leading-[1.75] text-zinc-300" style={{ fontFamily: body }}>
+              Presented as a proof-of-concept animated musical. Screenplay scaffold, song bible, and character materials
+              continue in active revision. Scene count and pacing targets follow a fifteen-beat beat sheet aligned to a
+              ~ninety-five to one-hundred-ten page feature.
+            </p>
+            <p className="mt-5 text-[12px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
+              This sequence timed to “{creditsSong.title}.” On-screen text and timing are a presentation mock-up, not a
+              final master.
+            </p>
+          </div>
+        );
+      case 17:
+        return (
+          <div className="mx-auto max-w-md px-2">
+            <CreditCardLabel darkStage>Core team</CreditCardLabel>
+            <ul className="space-y-6">
+              {crew.map((m) => (
+                <li key={m.id} className="text-center">
+                  <p className="text-base uppercase tracking-[0.12em] text-white sm:text-lg" style={{ fontFamily: ornate }}>
+                    {m.name}
+                  </p>
+                  <p className="mt-2 text-[13px] text-zinc-400" style={{ fontFamily: body }}>
+                    {m.role}
+                  </p>
+                  <p className="mt-2 text-[12px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
+                    {m.description}
                   </p>
                 </li>
               ))}
             </ul>
           </div>
         );
-      case 8:
-        return (
-          <div className="mx-auto w-full max-w-md px-2">
-            <CreditCardLabel>Music in the story</CreditCardLabel>
-            <ul className="space-y-5">
-              {songsB.map((s) => (
-                <li key={s.id} className="text-center">
-                  <p className="text-base uppercase tracking-[0.12em] text-zinc-900 sm:text-lg" style={{ fontFamily: "var(--font-credits-ornate)" }}>
-                    {s.title}
-                  </p>
-                  <p className="mt-1.5 text-[13px] italic text-zinc-600" style={{ fontFamily: "var(--font-credits)" }}>
-                    {s.singers}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      case 9:
+      case 18:
         return (
           <div className="mx-auto flex max-w-md flex-col items-center px-2 text-center">
-            <CreditCardLabel>Thank you</CreditCardLabel>
-            <p
-              className="mt-2 text-[16px] font-normal leading-[1.75] text-zinc-700 sm:text-lg"
-              style={{ fontFamily: "var(--font-credits)" }}
-            >
-              To everyone who read early drafts, listened to demos, and helped this world take shape.
+            <CreditCardLabel darkStage>Thank you</CreditCardLabel>
+            <p className="mt-2 text-[16px] font-normal leading-[1.75] text-zinc-300 sm:text-lg" style={{ fontFamily: body }}>
+              To everyone who read early drafts, listened to demos, shared notes in margins, and helped this world take
+              shape—gratitude doesn&apos;t need a scent to linger.
             </p>
-            <p
-              className="mt-12 text-xs uppercase tracking-[0.32em] text-red-700"
-              style={{ fontFamily: "var(--font-credits-ornate)" }}
-            >
-              FLOWER
+            <p className="mt-6 text-[13px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
+              No association with any school or organization is implied. Names and places are fictitious.
             </p>
-            <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-400" style={{ fontFamily: "var(--font-cinematic)" }}>
-              All rights reserved
+            <p className="mt-10 text-xs uppercase tracking-[0.32em] text-zinc-400" style={{ fontFamily: ornate }}>
+              F&nbsp;L&nbsp;O&nbsp;W&nbsp;E&nbsp;R
+            </p>
+            <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-600" style={{ fontFamily: "var(--font-cinematic)" }}>
+              All rights reserved · {new Date().getFullYear()}
             </p>
           </div>
         );
@@ -383,63 +454,64 @@ export function CreditsSection() {
     }
   };
 
+  const reelChrome = (
+    <>
+      <FilmCorners darkStage />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[10%] bg-linear-to-b from-black via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[12%] bg-linear-to-t from-black via-transparent to-transparent" />
+    </>
+  );
+
   return (
     <section
       id="credits"
-      className="relative flex w-screen shrink-0 flex-col overflow-hidden bg-zinc-50 pt-10 sm:pt-11 md:pt-12"
+      className="relative flex h-full min-h-0 w-screen shrink-0 flex-col overflow-hidden bg-zinc-50 pt-5 sm:pt-6"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_42%,rgba(239,68,68,0.08)_0%,transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(244,244,245,0.95)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_42%,rgba(239,68,68,0.06)_0%,transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(244,244,245,0.92)_100%)]" />
 
       <div className="relative shrink-0 px-4 sm:px-6 lg:px-8">
         <p className="text-[9px] uppercase tracking-[0.45em] text-red-800" style={{ fontFamily: "var(--font-cinematic)" }}>
           End credits
         </p>
-        <h1 className="section-heading mt-0.5 text-2xl sm:text-3xl">Credits</h1>
-        <p
-          className="mt-1.5 text-[10px] text-zinc-500 md:hidden"
-          style={{ fontFamily: "var(--font-screenplay)" }}
-        >
+        <h1 className="section-heading mt-0.5 text-xl sm:text-2xl">Credits</h1>
+        <p className="mt-0.5 text-[10px] text-zinc-500 md:hidden" style={{ fontFamily: "var(--font-screenplay)" }}>
           {creator.name}
           {leigh && ` · ${leigh.name}`}
         </p>
-        <p className="mt-1 max-w-xl text-[11px] leading-relaxed text-zinc-500 md:mt-1" style={{ fontFamily: "var(--font-screenplay)" }}>
+        <p className="mt-0.5 max-w-xl text-[10px] leading-snug text-zinc-500 md:mt-0.5" style={{ fontFamily: "var(--font-screenplay)" }}>
           In time with <span className="font-medium text-red-800">{creditsSong.title}</span>
           {creditsSong.writtenBy ? ` · ${creditsSong.writtenBy}` : ""}.
         </p>
       </div>
 
-      <div className="relative flex min-h-0 flex-1 gap-3 px-3 pt-1.5 sm:gap-5 sm:px-4 sm:pt-2 lg:gap-6 lg:px-6">
-        <aside className="hidden min-h-0 w-[9.25rem] shrink-0 flex-col items-center gap-5 overflow-y-auto border-r border-zinc-200 pr-3 pt-0 md:flex lg:w-40 lg:gap-6">
+      <div className="relative flex min-h-0 flex-1 gap-2 px-2 pt-1 sm:gap-4 sm:px-3 sm:pt-1.5 lg:gap-5 lg:px-5">
+        <aside className="hidden min-h-0 w-[8.5rem] shrink-0 flex-col items-center gap-4 overflow-y-auto border-r border-zinc-200 pr-2 pt-0 md:flex lg:w-36">
           <CreatorPortrait label="Created by" name={creator.name} imageSrc={creator.image} />
           {leigh && <CreatorPortrait label="Co-written · Songs" name={leigh.name} imageSrc={leigh.image} />}
         </aside>
 
-        {/* Center — sequential fade stage (flex-1 must shrink: min-w-0) */}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           {!reduceMotion ? (
             <div
-              className="relative min-h-0 flex-1 overflow-hidden rounded-sm border border-zinc-200 bg-[#fefdfb] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_8px_40px_rgba(0,0,0,0.06)]"
+              className="relative min-h-0 flex-1 overflow-hidden rounded-sm border border-zinc-800 bg-black shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_48px_rgba(0,0,0,0.35)]"
               role="region"
               aria-label="Credits sequence"
               aria-live="polite"
             >
-              <FilmCorners />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,transparent_60%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[12%] bg-linear-to-b from-zinc-100/90 via-transparent to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%] bg-linear-to-t from-zinc-100/90 via-transparent to-transparent" />
-              <div className="relative flex h-full min-h-0 items-center justify-center px-2 py-4 sm:px-8 sm:py-6 md:px-10 md:py-8">
-                {Array.from({ length: CARD_COUNT }, (_, i) => {
-                  const op = chunkOpacity(i, currentTime, duration, CARD_COUNT, idleAtStart, audioEnded);
+              {reelChrome}
+              <div className="relative flex h-full min-h-0 items-center justify-center px-2 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4">
+                {Array.from({ length: CARD_COUNT }, (_, idx) => {
+                  const op = chunkOpacity(idx, currentTime, duration, CARD_COUNT, idleAtStart, audioEnded);
                   if (op < 0.003) return null;
                   return (
                     <div
-                      key={i}
+                      key={idx}
                       className="absolute inset-0 flex items-center justify-center overflow-hidden px-1 sm:px-2"
                       style={{ opacity: op, pointerEvents: "none" }}
                     >
-                      <div className="max-h-full w-full overflow-hidden [overflow-wrap:anywhere]">
-                        {renderMovieCard(i)}
+                      <div className="max-h-full w-full overflow-y-auto overflow-x-hidden [overflow-wrap:anywhere]" style={{ scrollbarWidth: "none" }}>
+                        {renderMovieCard(idx)}
                       </div>
                     </div>
                   );
@@ -448,51 +520,37 @@ export function CreditsSection() {
             </div>
           ) : (
             <div
-              className="min-h-[36vh] flex-1 overflow-y-auto rounded-sm border border-zinc-200 bg-[#fefdfb] px-4 py-5 sm:px-6"
+              className="min-h-0 flex-1 overflow-y-auto rounded-sm border border-zinc-800 bg-black px-3 py-4 sm:px-5"
               style={{ scrollbarWidth: "none" }}
             >
-              <p className="mb-6 text-[11px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
+              <p className="mb-5 text-[11px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
                 Reduced motion: static list. Play below for {creditsSong.title}.
               </p>
-              <div className="space-y-16">
-                {Array.from({ length: CARD_COUNT }, (_, i) => (
-                  <div key={i} className="border-b border-zinc-200/90 pb-12 last:border-0">
-                    {renderMovieCard(i)}
+              <div className="space-y-14">
+                {Array.from({ length: CARD_COUNT }, (_, idx) => (
+                  <div key={idx} className="border-b border-white/10 pb-12 text-white last:border-0">
+                    {renderMovieCard(idx)}
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          <div
-            className="mt-2 mb-2 flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1 px-2 text-center text-[10px] tabular-nums tracking-[0.12em] text-red-600 sm:gap-x-5 sm:mb-2 md:gap-x-6"
-            style={{ fontFamily: "var(--font-screenplay)" }}
-          >
-            <span className="whitespace-nowrap">
-              Reel {visibleIndex + 1} / {CARD_COUNT}
-            </span>
-            <span className="hidden h-3 w-px shrink-0 bg-zinc-200 sm:block" aria-hidden />
-            <span className="whitespace-nowrap text-zinc-500">
-              {fmt(currentTime)} / {fmt(duration || 0)}
-            </span>
-          </div>
         </div>
 
-        <aside className="hidden min-h-0 w-[11.5rem] shrink-0 flex-col gap-3 overflow-y-auto border-l border-zinc-200 pl-4 pt-0 md:flex lg:w-52 lg:gap-3.5 lg:pl-5">
-          <div className="rounded-sm border border-zinc-200 bg-white p-3 shadow-sm backdrop-blur-[2px]">
-            <p className="mb-2 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+        <aside className="hidden min-h-0 w-[10.5rem] shrink-0 flex-col gap-2 overflow-y-auto border-l border-zinc-200 pl-3 pt-0 md:flex lg:w-48 lg:gap-2.5 lg:pl-4">
+          <div className="rounded-sm border border-zinc-200 bg-white p-2.5 shadow-sm">
+            <p className="mb-1.5 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
               Playback
             </p>
-            <p className="text-[10px] leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
-              Play syncs each title card to {creditsSong.title}: fade in, hold, fade out to black. Pause holds picture and
-              sound. Restart from frame one.
+            <p className="text-[9px] leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
+              Play syncs cards to the track. Pause holds picture and sound. Restart from the top.
             </p>
           </div>
-          <div className="rounded-sm border border-zinc-200 bg-white p-3 shadow-sm backdrop-blur-[2px]">
-            <p className="mb-2 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
+          <div className="rounded-sm border border-zinc-200 bg-white p-2.5 shadow-sm">
+            <p className="mb-1.5 text-[8px] uppercase tracking-[0.32em] text-red-700" style={{ fontFamily: "var(--font-cinematic)" }}>
               Picture bible
             </p>
-            <dl className="space-y-2.5 text-[10px]">
+            <dl className="space-y-2 text-[9px]">
               <div>
                 <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
                   Format
@@ -503,7 +561,7 @@ export function CreditsSection() {
               </div>
               <div>
                 <dt className="text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
-                  Scenes in draft
+                  Beat scaffold pages
                 </dt>
                 <dd className="text-zinc-800" style={{ fontFamily: "var(--font-cinematic)" }}>
                   {scriptPages.length}
@@ -530,50 +588,62 @@ export function CreditsSection() {
         </aside>
       </div>
 
-      {/* Player above #credits bottom padding (globals); modest top gap keeps reel from crowding transport */}
-      <div className="relative shrink-0 px-4 pt-3 pb-1.5 sm:px-6 sm:pt-4 sm:pb-2 lg:px-8">
-        <div className="mx-auto flex max-w-4xl items-center gap-3 rounded-sm border border-zinc-200 bg-white px-4 py-3 sm:gap-4 sm:px-5 shadow-lg shadow-zinc-900/10 backdrop-blur-md">
-          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-sm ring-1 ring-zinc-200">
-            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="44px" />
+      <div className="relative mt-1 shrink-0 px-2 pb-0 pt-0.5 sm:mt-1.5 sm:px-4 lg:px-6">
+        <div className="mx-auto flex max-w-5xl items-center gap-2 rounded-sm border border-zinc-300 bg-white px-2.5 py-2 shadow-lg shadow-zinc-900/10 sm:gap-3 sm:px-4 sm:py-2.5">
+          <span
+            className="shrink-0 text-[8px] tabular-nums tracking-[0.12em] text-zinc-500 sm:text-[9px]"
+            style={{ fontFamily: "var(--font-screenplay)" }}
+          >
+            Reel {visibleIndex + 1}/{CARD_COUNT}
+          </span>
+          <span className="h-8 w-px shrink-0 bg-zinc-200" aria-hidden />
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-sm ring-1 ring-zinc-200 sm:h-14 sm:w-14">
+            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="56px" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold uppercase tracking-[0.12em] text-zinc-900" style={{ fontFamily: "var(--font-cinematic)" }}>
+            <p
+              className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-zinc-900 sm:text-xs"
+              style={{ fontFamily: "var(--font-cinematic)" }}
+            >
               {creditsSong.title}
             </p>
-            <p className="mt-0.5 truncate text-[10px] text-zinc-600" style={{ fontFamily: "var(--font-screenplay)" }}>
+            <p className="mt-0.5 truncate text-[9px] text-zinc-600 sm:text-[10px]" style={{ fontFamily: "var(--font-screenplay)" }}>
               {creditsSong.singers}
               {creditsSong.writtenBy && ` · ${creditsSong.writtenBy}`}
             </p>
-            <div className="mt-2 h-px w-full overflow-hidden bg-zinc-100">
+            <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-zinc-100 sm:h-1.5">
               <div
-                className="h-full bg-linear-to-r from-red-500 to-red-400 transition-none"
+                className="h-full rounded-full bg-linear-to-r from-red-500 to-red-400 transition-none"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
-          <span className="shrink-0 text-[10px] tabular-nums tracking-wider text-red-800" style={{ fontFamily: "var(--font-screenplay)" }}>
+          <span
+            className="hidden shrink-0 text-[9px] tabular-nums tracking-wider text-red-800 sm:inline"
+            style={{ fontFamily: "var(--font-screenplay)" }}
+          >
             {fmt(currentTime)} / {fmt(duration || 0)}
           </span>
           <button
             type="button"
             onClick={replay}
             aria-label="Restart song and credits"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all hover:border-red-400 hover:bg-red-50 hover:text-red-900"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 transition-all hover:border-red-400 hover:bg-red-50 hover:text-red-900 sm:h-11 sm:w-11"
           >
-            <RotateCcw className="size-4" />
+            <RotateCcw className="size-4 sm:size-[1.125rem]" />
           </button>
           <button
             type="button"
             onClick={togglePlay}
             className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all",
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all sm:h-11 sm:w-11",
               playing
                 ? "border-red-600 bg-red-600 text-white shadow-md"
-                : "border-zinc-200 bg-white text-red-800 hover:border-red-400 hover:bg-red-50"
+                : "border-zinc-200 bg-white text-red-800 hover:border-red-400 hover:bg-red-50",
             )}
             aria-label={playing ? "Pause" : "Play"}
           >
-            {playing ? <Pause className="size-4 fill-current" /> : <Play className="ml-0.5 size-4 fill-current" />}
+            {playing ? <Pause className="size-4 fill-current sm:size-[1.125rem]" /> : <Play className="ml-0.5 size-4 fill-current sm:size-[1.125rem]" />}
           </button>
         </div>
       </div>

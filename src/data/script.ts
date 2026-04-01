@@ -2,7 +2,7 @@
  * Screenplay + shared types/utilities.
  *
  * Active pages: `script-beat-pages.ts` (15 beats). Full draft replaces scaffold data.
- * Beat spine: `flower-beats-final.ts` (shown under Script → Structure).
+ * Beat spine: `flower-beats-final.ts` (nav alignment in the script cockpit).
  *
  * Run `npm run script-index` to regenerate SCRIPT_INDEX.md.
  */

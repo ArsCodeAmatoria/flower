@@ -225,6 +225,14 @@ export function applySceneMetadata(
         lastWinWarn(key, lineNumber, seen, issues);
         scene.valueShift = value;
         break;
+      case "scene.value_greater":
+        lastWinWarn(key, lineNumber, seen, issues);
+        scene.valueGreater = value;
+        break;
+      case "scene.value_lesser":
+        lastWinWarn(key, lineNumber, seen, issues);
+        scene.valueLesser = value;
+        break;
       case "scene.emotional_turn":
         lastWinWarn(key, lineNumber, seen, issues);
         scene.emotionalTurn = value;

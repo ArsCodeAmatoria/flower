@@ -24,24 +24,26 @@ export interface SaveTheCatBeat {
   targetRange: string;
   purpose: string;
   mustDo: string;
+  /** How scenes in this beat should move *value* (greater ↔ lesser pole) — spine-healthy scenecraft. */
+  greaterLesser: string;
 }
 
 export const saveTheCatBeats: SaveTheCatBeat[] = [
-  { id: "opening_image", label: "Opening Image", targetRange: "p.1", purpose: "Snapshot of the \"before\" world.", mustDo: "Show tone, genre, hero’s life as-is — a visual thesis." },
-  { id: "theme_stated", label: "Theme Stated", targetRange: "p.1–5", purpose: "What the story will argue.", mustDo: "Someone states the theme (hero often rejects it)." },
-  { id: "setup", label: "Setup", targetRange: "p.1–10", purpose: "Establish stakes, relationships, flaws, countdown clocks.", mustDo: "Every setup pays off later; load the board." },
-  { id: "catalyst", label: "Catalyst", targetRange: "p.10–12", purpose: "Inciting incident — life can’t continue unchanged.", mustDo: "Forces a choice; story problem becomes unavoidable." },
-  { id: "debate", label: "Debate", targetRange: "p.12–25", purpose: "Hero resists the journey.", mustDo: "Internal/external reasons; highest stakes for refusing." },
-  { id: "break_into_two", label: "Break Into Two", targetRange: "~p.25", purpose: "Hero chooses Act Two world — proactive decision.", mustDo: "Commitment to new world/method; point of no return." },
-  { id: "b_story", label: "B Story", targetRange: "Act Two A", purpose: "Relationship/mentor track that carries theme.", mustDo: "B story helps solve A story by the finale." },
-  { id: "fun_and_games", label: "Fun and Games", targetRange: "p.30–55", purpose: "Promise of the premise — trailer moments.", mustDo: "Deliver genre pleasures; core conceit played out." },
-  { id: "midpoint", label: "Midpoint", targetRange: "p.50–60", purpose: "False victory or false defeat; stakes escalate.", mustDo: "Time clock tightens; game changes." },
-  { id: "bad_guys_close_in", label: "Bad Guys Close In", targetRange: "p.55–75", purpose: "External pressure + internal rot.", mustDo: "Forces splinter; tactics fail or victory is hollow." },
-  { id: "all_is_lost", label: "All Is Lost", targetRange: "~p.75", purpose: "Apparent defeat; death of old world/identity.", mustDo: "Whiff of death; darkest hour." },
-  { id: "dark_night_of_the_soul", label: "Dark Night of the Soul", targetRange: "p.75–80", purpose: "Hero sits in the wreckage.", mustDo: "Process loss; theme/WHY matters surfaces." },
-  { id: "break_into_three", label: "Break Into Three", targetRange: "~p.80", purpose: "Synthesis — A + B story insight sparks solution.", mustDo: "Hero knows what to do; charges into finale." },
-  { id: "finale", label: "Finale", targetRange: "p.80–110", purpose: "Hero executes plan; theme proved.", mustDo: "Old world vs new skills; villains/antagonists resolved." },
-  { id: "final_image", label: "Final Image", targetRange: "p.110+", purpose: "Opposite of opening image — proof of change.", mustDo: "Mirror opening; show transformation visually." },
+  { id: "opening_image", label: "Opening Image", targetRange: "p.1", purpose: "Snapshot of the \"before\" world.", mustDo: "Show tone, genre, hero’s life as-is — a visual thesis.", greaterLesser: "Start from a greater illusion (belonging, order, hope in the old world); end the beat with a lesser crack — cost, irony, or wrongness visible in the image itself." },
+  { id: "theme_stated", label: "Theme Stated", targetRange: "p.1–5", purpose: "What the story will argue.", mustDo: "Someone states the theme (hero often rejects it).", greaterLesser: "Greater pole: moral truth offered plainly. Lesser pole: the hero’s denial, joke, or deflection — theme rejected so the story can prove it later." },
+  { id: "setup", label: "Setup", targetRange: "p.1–10", purpose: "Establish stakes, relationships, flaws, countdown clocks.", mustDo: "Every setup pays off later; load the board.", greaterLesser: "Scenes feel greater when coping seems to work; each should slide lesser under pressure — small losses that foreshadow the system snapping." },
+  { id: "catalyst", label: "Catalyst", targetRange: "p.10–12", purpose: "Inciting incident — life can’t continue unchanged.", mustDo: "Forces a choice; story problem becomes unavoidable.", greaterLesser: "Open on greater normal defenses; slam to lesser — public failure, rule broken, identity exposed — the old strategy stops working." },
+  { id: "debate", label: "Debate", targetRange: "p.12–25", purpose: "Hero resists the journey.", mustDo: "Internal/external reasons; highest stakes for refusing.", greaterLesser: "Alternate greater safety (old tribe, known pain) with lesser dread of the call — each scene should raise the price of both staying and leaving." },
+  { id: "break_into_two", label: "Break Into Two", targetRange: "~p.25", purpose: "Hero chooses Act Two world — proactive decision.", mustDo: "Commitment to new world/method; point of no return.", greaterLesser: "Cross from greater attachment to the old self into lesser certainty — choice costs comfort; commit on page, not in voice-over." },
+  { id: "b_story", label: "B Story", targetRange: "Act Two A", purpose: "Relationship/mentor track that carries theme.", mustDo: "B story helps solve A story by the finale.", greaterLesser: "Greater moments: connection, being seen. Lesser: fear of needing someone — intimacy tests the same lie the A story protects." },
+  { id: "fun_and_games", label: "Fun and Games", targetRange: "p.30–55", purpose: "Promise of the premise — trailer moments.", mustDo: "Deliver genre pleasures; core conceit played out.", greaterLesser: "Peak greater: premise delight. Weave lesser seeds — hubris, blind spot, or stakes creeping so Fun doesn’t flatten into filler." },
+  { id: "midpoint", label: "Midpoint", targetRange: "p.50–60", purpose: "False victory or false defeat; stakes escalate.", mustDo: "Time clock tightens; game changes.", greaterLesser: "False win: greater peak then reveal lesser rot. False loss: lesser floor then uncover a greater weapon or truth. The clock must feel different after." },
+  { id: "bad_guys_close_in", label: "Bad Guys Close In", targetRange: "p.55–75", purpose: "External pressure + internal rot.", mustDo: "Forces splinter; tactics fail or victory is hollow.", greaterLesser: "Antagonism grows greater; the hero’s position turns lesser — tighten screws scene by scene; allies doubt, tactics hollow, lie gets expensive." },
+  { id: "all_is_lost", label: "All Is Lost", targetRange: "~p.75", purpose: "Apparent defeat; death of old world/identity.", mustDo: "Whiff of death; darkest hour.", greaterLesser: "Strip from last greater hope to lesser ruin — whiff of death is a value collapse, not only a plot beat." },
+  { id: "dark_night_of_the_soul", label: "Dark Night of the Soul", targetRange: "p.75–80", purpose: "Hero sits in the wreckage.", mustDo: "Process loss; theme/WHY matters surfaces.", greaterLesser: "Sit in lesser grief until greater truth (theme or B story) surfaces — stillness should flip the charge, not stall the script." },
+  { id: "break_into_three", label: "Break Into Three", targetRange: "~p.80", purpose: "Synthesis — A + B story insight sparks solution.", mustDo: "Hero knows what to do; charges into finale.", greaterLesser: "From lesser wreckage to greater fused insight — old method dead, new plan emotional and tactical." },
+  { id: "finale", label: "Finale", targetRange: "p.80–110", purpose: "Hero executes plan; theme proved.", mustDo: "Old world vs new skills; villains/antagonists resolved.", greaterLesser: "Execute set-pieces that test a greater new self against lesser temptation to revert; each movement should prove the theme on the value level." },
+  { id: "final_image", label: "Final Image", targetRange: "p.110+", purpose: "Opposite of opening image — proof of change.", mustDo: "Mirror opening; show transformation visually.", greaterLesser: "Mirror the opening frame: show greater earned life or honest cost; an optional lesser echo keeps the win from feeling cheap — change reads visually." },
 ];
 
 export interface SceneRule {
@@ -56,6 +58,30 @@ export const sceneRules: SceneRule[] = [
   { id: "scene_turn", headline: "Every scene should turn", detail: "Power, emotion, or information shifts by the end." },
   { id: "scene_outcome", headline: "Every scene needs an outcome", detail: "Win, loss, or unclear — but the story moves." },
   { id: "scene_formula", headline: "Core formula", detail: "Goal → obstacle → escalation → turn → outcome. Or: intent → resistance → change." },
+];
+
+/** Value charge for scenes: greater vs lesser poles of the same stake. */
+export const greaterLesserSceneRules: SceneRule[] = [
+  {
+    id: "gl_value_poles",
+    headline: "Greater vs lesser = value at stake",
+    detail: "Name the human value under pressure (love, justice, belonging, status). Greater = the pole the character fights toward or clings to; lesser = the pole that wins or looms if they lose. Same stake, opposite charges.",
+  },
+  {
+    id: "gl_turn_per_scene",
+    headline: "Every scene turns the charge",
+    detail: "By the out, something about that value should flip or deepen — greater to lesser (defeat) or lesser to greater (tiny win). Flat scenes often forgot which pole moved.",
+  },
+  {
+    id: "gl_beat_alignment",
+    headline: "Align with the beat you’re in",
+    detail: "A beat isn’t one scene — it’s a span. Greater set-pieces deliver the beat’s promise; lesser connector scenes carry cost, irony, or pressure so the spine doesn’t read as montage.",
+  },
+  {
+    id: "gl_metadata",
+    headline: "Tag it in metadata (optional)",
+    detail: "Use `[[scene.value_greater: …]]` and `[[scene.value_lesser: …]]` for the poles, and/or `[[scene.value_shift: greater → lesser]]` for the move. Keeps beat intent and scene craft on the same page.",
+  },
 ];
 
 export interface DialogueRule {
@@ -134,6 +160,7 @@ export const pacingRules: PacingRule[] = [
 export const WRITING_RULE_SECTION_IDS = [
   "story_structure_rules",
   "scene_rules",
+  "greater_lesser_rules",
   "dialogue_rules",
   "character_rules",
   "theme_rules",

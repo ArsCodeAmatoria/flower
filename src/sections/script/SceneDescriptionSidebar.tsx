@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { flattenFlowerBeatsForNav } from "@/data/flower-beats-final";
 import { getSceneCountStats } from "@/data/script";
+import { saveTheCatBeats } from "@/data/writing-rules";
 import {
   countElementScreenplayLines,
   LINES_PER_SCREENPLAY_PAGE,
@@ -41,6 +42,10 @@ export function SceneDescriptionSidebar({
   }
 
   const slug = pages[activePageIndex]?.elements.find((e) => e.type === "scene")?.text ?? "";
+  const stcBeat =
+    current.beat.num >= 1 && current.beat.num <= saveTheCatBeats.length
+      ? saveTheCatBeats[current.beat.num - 1]
+      : undefined;
 
   return (
     <aside className="w-[300px] shrink-0 overflow-y-auto border-l border-zinc-200 py-2 pl-3 pr-5 pb-24 pt-2">
@@ -70,6 +75,19 @@ export function SceneDescriptionSidebar({
         <p className="mt-2 text-[10px] leading-relaxed text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
           {slug}
         </p>
+      ) : null}
+      {stcBeat ? (
+        <div className="mt-4 rounded-lg border border-red-200/80 bg-red-50/50 px-2.5 py-2">
+          <p
+            className="text-[8px] font-bold uppercase tracking-[0.2em] text-red-800"
+            style={{ fontFamily: "var(--font-cinematic)" }}
+          >
+            Greater / lesser
+          </p>
+          <p className="mt-1.5 text-[10px] leading-snug text-zinc-700" style={{ fontFamily: "var(--font-screenplay)" }}>
+            {stcBeat.greaterLesser}
+          </p>
+        </div>
       ) : null}
       <div
         className="mt-4 space-y-2 border-t border-zinc-200/90 pt-4 text-[12px] leading-relaxed text-zinc-700"

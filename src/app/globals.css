@@ -78,14 +78,6 @@ body {
   color: var(--foreground);
 }
 
-/* Structure view: custom disclosure (chevron in summaries) */
-.structure-details-view details > summary {
-  list-style: none;
-}
-.structure-details-view details > summary::-webkit-details-marker {
-  display: none;
-}
-
 /* Scroll still works; bars hidden (Firefox, legacy Edge, WebKit) */
 .overflow-auto,
 .overflow-scroll,
@@ -139,19 +131,20 @@ body {
   scroll-snap-stop: always;
 }
 
-/* Title + Characters: full viewport; content clears nav via its own padding */
+/* Title + Characters + Sets: full viewport; content clears nav via its own padding */
 .slideshow-container > section#title,
-.slideshow-container > section#characters {
+.slideshow-container > section#characters,
+.slideshow-container > section#sets {
   padding-bottom: 0;
   height: 100dvh;
   min-height: 100dvh;
 }
 
-/* Credits: reserve bottom for pill nav + transport bar — tight but keeps overlap off */
+/* Credits: reserve bottom for pill nav + transport bar — transport sits in flow above this inset */
 .slideshow-container > section#credits {
   height: 100dvh;
   min-height: 100dvh;
-  padding-bottom: calc(var(--floating-nav-clearance) + 4.5rem);
+  padding-bottom: calc(var(--floating-nav-clearance) + 3.75rem);
 }
 
 /* ─── Section heading rule ────────────────────────── */
