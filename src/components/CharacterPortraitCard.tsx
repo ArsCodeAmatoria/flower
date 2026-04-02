@@ -23,7 +23,7 @@ export function CharacterPortraitCard({
     <>
       <Card
         className={cn(
-          "relative h-[min(50dvh,520px)] w-full shrink-0 overflow-hidden rounded-xl border border-zinc-200/90 p-0 shadow-md",
+          "relative h-[min(40dvh,320px)] w-full shrink-0 overflow-hidden rounded-xl border border-zinc-200/90 p-0 shadow-md",
           "lg:h-full lg:min-h-0 lg:w-[min(40%,420px)] lg:max-w-none",
           className,
         )}

@@ -101,7 +101,7 @@ export function TitleSlide() {
           </p>
 
           <p
-            className="order-3 max-w-md justify-self-center px-2 text-center text-[12px] leading-relaxed text-neutral-950 sm:text-[13px] lg:order-none lg:col-start-1 lg:row-start-2 lg:max-w-sm lg:justify-self-end lg:self-center lg:pr-4 lg:text-right xl:pr-6"
+            className="order-3 max-w-md justify-self-center px-2 text-center text-[12px] leading-relaxed text-neutral-950 sm:text-[13px] lg:order-none lg:col-start-1 lg:row-start-2 lg:max-w-sm lg:-translate-y-6 lg:justify-self-end lg:self-start lg:pr-4 lg:text-right xl:pr-6"
             style={{
               fontFamily: "var(--font-cinematic)",
               animation: "fadeIn 1.5s ease both",

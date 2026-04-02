@@ -9,7 +9,6 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CharacterPortraitCard } from "@/components/CharacterPortraitCard";
 import { characters } from "@/data/characters";
-import { buildAllyThreadForProfile } from "@/data/character-chats";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
 import { songs } from "@/data/songs";
 import { CharacterPublicProfile } from "@/sections/characters/CharacterPublicProfile";
@@ -25,7 +24,6 @@ export function CharactersSection() {
     () => songs.filter((s) => character.songIds.includes(s.id)),
     [character],
   );
-  const allyThread = useMemo(() => buildAllyThreadForProfile(character), [character]);
 
   const switchCharacter = useCallback((i: number) => {
     setIndex(i);
@@ -92,7 +90,7 @@ export function CharactersSection() {
             </Badge>
           </header>
 
-          <div className="flex min-h-0 flex-1 flex-col gap-6 pt-6">
+          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden pt-4">
             <CharacterIdentityHeader
               name={character.name}
               role={character.role}
@@ -100,15 +98,15 @@ export function CharactersSection() {
               heading="h1"
               uppercaseTitle={false}
               showCharactersLabel={false}
+              compact
             />
-            <Separator className="bg-zinc-200" />
+            <Separator className="shrink-0 bg-zinc-200" />
             <CharacterPublicProfile
               description={character.description}
               traits={character.personalityTraits}
               dossier={dossier}
               characterSongs={characterSongs}
               profileVariant="feature"
-              allyThread={allyThread}
             />
           </div>
         </div>

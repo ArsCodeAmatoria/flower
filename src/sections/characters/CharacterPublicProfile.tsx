@@ -4,25 +4,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Music, Play, Pause } from "lucide-react";
 import type { CharacterDossier } from "@/data/character-dossiers";
-import type { CharacterChatTheme } from "@/data/characters";
 import type { Song } from "@/data/songs";
-import type { CharacterChatLine } from "@/data/character-chats";
-import { CharacterAllyThread, type AllyThreadParticipant } from "@/sections/characters/CharacterAllyThread";
 import { cn } from "@/lib/utils";
 
 const sectionLabel =
-  "mb-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-red-800/80";
+  "mb-2 flex items-center gap-2 text-[9px] uppercase tracking-[0.26em] text-red-800/80";
 
 const mono = "var(--font-industrial)";
 const indLabel =
   "mb-1.5 flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.2em] text-emerald-800 sm:mb-2 sm:text-[10px] sm:tracking-[0.22em]";
-
-type AllyThreadConfig = {
-  viewerId: string;
-  theme: CharacterChatTheme;
-  lines: CharacterChatLine[];
-  participants: AllyThreadParticipant[];
-};
 
 export function CharacterPublicProfile({
   description,
@@ -30,14 +20,12 @@ export function CharacterPublicProfile({
   dossier,
   characterSongs,
   profileVariant = "inline",
-  allyThread,
 }: {
   description: string;
   traits: string[];
   dossier: CharacterDossier;
   characterSongs: Song[];
   profileVariant?: "inline" | "feature" | "industrial";
-  allyThread: AllyThreadConfig;
 }) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -151,21 +139,6 @@ export function CharacterPublicProfile({
           </section>
         ) : null}
 
-        <section className="mt-auto min-h-0 shrink pt-1">
-          <p className={cn(indLabel, "!mb-1")}>
-            <span className="text-zinc-500">{characterSongs.length > 0 ? "04" : "03"}</span>
-            <span className="h-px w-10 bg-emerald-400/50 sm:w-16" aria-hidden />
-            allies — thread
-          </p>
-          <CharacterAllyThread
-            viewerId={allyThread.viewerId}
-            theme={allyThread.theme}
-            lines={allyThread.lines}
-            participants={allyThread.participants}
-            compact
-          />
-        </section>
-
         <style>{`
           @keyframes charWaveBar {
             from { transform: scaleY(0.2); }
@@ -177,10 +150,15 @@ export function CharacterPublicProfile({
   }
 
   return (
-    <div className={cn("space-y-8 pb-16 pr-1", profileVariant === "feature" && "space-y-10")}>
-      <div>
+    <div
+      className={cn(
+        "flex min-h-0 flex-1 flex-col gap-2 overflow-hidden pr-1",
+        profileVariant === "feature" && "gap-2.5",
+      )}
+    >
+      <div className="min-h-0 shrink">
         <p
-          className="mb-3 text-[9px] uppercase tracking-[0.35em] text-zinc-500"
+          className="mb-1 text-[9px] uppercase tracking-[0.35em] text-zinc-500"
           style={{ fontFamily: "var(--font-cinematic)" }}
         >
           About
@@ -188,7 +166,7 @@ export function CharacterPublicProfile({
         <p
           className={cn(
             profileVariant === "feature"
-              ? "max-w-2xl text-[16px] leading-[1.75] text-zinc-800"
+              ? "max-w-2xl text-[13px] leading-snug text-zinc-800 line-clamp-4"
               : "max-w-xl text-[15px] leading-[1.7] text-zinc-800",
           )}
           style={{ fontFamily: "var(--font-screenplay)" }}
@@ -197,9 +175,9 @@ export function CharacterPublicProfile({
         </p>
       </div>
 
-      <div>
+      <div className="min-h-0 shrink">
         <p
-          className="mb-3 text-[9px] uppercase tracking-[0.35em] text-zinc-500"
+          className="mb-1 text-[9px] uppercase tracking-[0.35em] text-zinc-500"
           style={{ fontFamily: "var(--font-cinematic)" }}
         >
           Their journey in FLOWER
@@ -207,17 +185,17 @@ export function CharacterPublicProfile({
         <p
           className={cn(
             profileVariant === "feature"
-              ? "max-w-2xl text-[15px] leading-[1.72] text-zinc-700"
+              ? "max-w-2xl text-[12px] leading-snug text-zinc-700 line-clamp-3"
               : "max-w-xl text-sm leading-relaxed text-zinc-700",
           )}
           style={{ fontFamily: "var(--font-screenplay)" }}
         >
           {dossier.arcSummary.start}
-          <span className="mx-2 text-red-600/60" aria-hidden>
+          <span className="mx-1.5 text-red-600/60" aria-hidden>
             →
           </span>
           {dossier.arcSummary.middle}
-          <span className="mx-2 text-red-600/60" aria-hidden>
+          <span className="mx-1.5 text-red-600/60" aria-hidden>
             →
           </span>
           {dossier.arcSummary.end}
@@ -225,16 +203,16 @@ export function CharacterPublicProfile({
       </div>
 
       {traits.length > 0 && (
-        <div>
-          <p className={sectionLabel} style={{ fontFamily: "var(--font-cinematic)" }}>
+        <div className="shrink-0">
+          <p className={cn(sectionLabel, "!mb-1")} style={{ fontFamily: "var(--font-cinematic)" }}>
             <span className="h-px w-6 bg-red-400/50" aria-hidden />
             In a phrase
           </p>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-1.5">
             {traits.map((trait) => (
               <span
                 key={trait}
-                className="rounded-full border border-zinc-200 bg-white px-4 py-1.5 text-xs tracking-wide text-zinc-800 shadow-sm"
+                className="rounded-full border border-zinc-200 bg-white px-2 py-0.5 text-[10px] tracking-wide text-zinc-800"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 {trait}
@@ -244,26 +222,13 @@ export function CharacterPublicProfile({
         </div>
       )}
 
-      <div>
-        <p className={cn(sectionLabel, "mb-3")} style={{ fontFamily: "var(--font-cinematic)" }}>
-          <span className="h-px w-6 bg-red-400/50" aria-hidden />
-          Allies — group chat
-        </p>
-        <CharacterAllyThread
-          viewerId={allyThread.viewerId}
-          theme={allyThread.theme}
-          lines={allyThread.lines}
-          participants={allyThread.participants}
-        />
-      </div>
-
       {characterSongs.length > 0 && (
-        <div>
-          <p className={cn(sectionLabel, "mb-3")} style={{ fontFamily: "var(--font-cinematic)" }}>
+        <div className="min-h-0 shrink-0">
+          <p className={cn(sectionLabel, "!mb-1")} style={{ fontFamily: "var(--font-cinematic)" }}>
             <Music className="size-3 text-red-700" />
             Featured songs
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {characterSongs.map((song) => {
               const isPlaying = playingId === song.id;
               return (
@@ -272,7 +237,7 @@ export function CharacterPublicProfile({
                   type="button"
                   onClick={(e) => togglePlay(e, song)}
                   className={cn(
-                    "group flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-200",
+                    "group flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-left transition-all duration-200",
                     isPlaying
                       ? "border-red-500 bg-red-50 ring-1 ring-red-200"
                       : "border-zinc-200 bg-white hover:border-red-300 hover:bg-red-50/80",
@@ -295,7 +260,10 @@ export function CharacterPublicProfile({
                     </div>
                   </div>
                   <span
-                    className={cn("text-xs transition-colors", isPlaying ? "text-red-900" : "text-zinc-800")}
+                    className={cn(
+                      "max-w-[9rem] truncate text-[10px] transition-colors sm:max-w-none sm:text-xs",
+                      isPlaying ? "text-red-900" : "text-zinc-800",
+                    )}
                     style={{ fontFamily: "var(--font-cinematic)" }}
                   >
                     {song.title}

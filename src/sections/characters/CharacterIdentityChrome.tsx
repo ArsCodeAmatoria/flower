@@ -38,7 +38,7 @@ export function CoreField({
   );
 }
 
-/** Fixed strip: “Characters”, name, role, one-liner only — everything below scrolls. */
+/** Fixed strip: “Characters”, name, role, one-liner. Use `compact` on profile pages to avoid scrolling. */
 export function CharacterIdentityHeader({
   name,
   role,
@@ -47,6 +47,7 @@ export function CharacterIdentityHeader({
   showCharactersLabel = true,
   className = "",
   uppercaseTitle = true,
+  compact = false,
 }: {
   name: string;
   role: string;
@@ -56,21 +57,28 @@ export function CharacterIdentityHeader({
   className?: string;
   /** False for dedicated profile pages — title case reads more cinematic. */
   uppercaseTitle?: boolean;
+  /** Tighter typography so the hero + profile fits one viewport without scrolling. */
+  compact?: boolean;
 }) {
   const TitleTag = heading;
   const titleClasses =
     heading === "h1"
-      ? cn(
-          "mb-1 text-[clamp(2.75rem,6vw,4.75rem)] font-semibold leading-[0.95] tracking-[0.04em] text-zinc-900 sm:mb-2 sm:tracking-[0.06em]",
-          uppercaseTitle && "uppercase",
-        )
+      ? compact
+        ? cn(
+            "mb-0.5 text-[clamp(1.35rem,4.2vw,2.35rem)] font-semibold leading-[0.98] tracking-[0.04em] text-zinc-900",
+            uppercaseTitle && "uppercase",
+          )
+        : cn(
+            "mb-1 text-[clamp(2.75rem,6vw,4.75rem)] font-semibold leading-[0.95] tracking-[0.04em] text-zinc-900 sm:mb-2 sm:tracking-[0.06em]",
+            uppercaseTitle && "uppercase",
+          )
       : cn(
           "mb-2 text-5xl font-extrabold leading-none text-zinc-900 xl:text-6xl",
           uppercaseTitle && "uppercase",
         );
 
   return (
-    <div className={className}>
+    <div className={cn(className, compact && "shrink-0")}>
       {showCharactersLabel && (
         <p
           className="mb-3 text-[10px] uppercase tracking-[0.35em] text-zinc-500 xl:mb-3"
@@ -84,7 +92,9 @@ export function CharacterIdentityHeader({
         style={{
           fontFamily: "var(--font-cinematic)",
           textShadow:
-            heading === "h1" ? "0 1px 0 rgba(255,255,255,0.9), 0 2px 20px rgba(0,0,0,0.06)" : undefined,
+            heading === "h1" && !compact
+              ? "0 1px 0 rgba(255,255,255,0.9), 0 2px 20px rgba(0,0,0,0.06)"
+              : undefined,
         }}
       >
         {name}
@@ -92,7 +102,9 @@ export function CharacterIdentityHeader({
       <p
         className={
           heading === "h1"
-            ? "mb-4 text-xs uppercase tracking-[0.2em] text-zinc-600 sm:text-sm"
+            ? compact
+              ? "mb-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-600"
+              : "mb-4 text-xs uppercase tracking-[0.2em] text-zinc-600 sm:text-sm"
             : "mb-4 text-sm uppercase tracking-[0.2em] text-zinc-600"
         }
         style={{ fontFamily: "var(--font-cinematic)" }}
@@ -102,7 +114,9 @@ export function CharacterIdentityHeader({
       <blockquote
         className={
           heading === "h1"
-            ? "mb-0 max-w-2xl border-l-2 border-red-400/70 pl-5 text-base italic leading-relaxed text-zinc-700"
+            ? compact
+              ? "mb-0 max-w-2xl border-l-2 border-red-400/70 pl-3 text-[11px] italic leading-snug text-zinc-700 line-clamp-2"
+              : "mb-0 max-w-2xl border-l-2 border-red-400/70 pl-5 text-base italic leading-relaxed text-zinc-700"
             : "mb-0 max-w-xl border-l-2 border-red-400/60 pl-3 text-xs italic leading-relaxed text-zinc-700 sm:text-sm"
         }
         style={{ fontFamily: "var(--font-screenplay)" }}

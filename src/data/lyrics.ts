@@ -292,5 +292,6 @@ export const allLyrics: SongLyrics[] = [
   { songId: "look-at-me", lines: stubVerse("Look At Me") },
   { songId: "own-the-light", lines: stubVerse("Own the Light") },
   { songId: "red-magic", lines: redMagicLines },
+  { songId: "flower", lines: stubVerse("Flower (3)") },
   { songId: "flower-finale", lines: stubVerse("Flower — finale") },
 ];

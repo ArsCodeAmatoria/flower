@@ -7,6 +7,7 @@ import { songs } from "@/data/songs";
 import { crew } from "@/data/crew";
 import { characters } from "@/data/characters";
 import type { Character } from "@/data/characters";
+import { creditsSidebarLeft, creditsSidebarRight } from "@/data/credits-sidebar-copy";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -130,48 +131,46 @@ function FilmCorners({ darkStage }: { darkStage?: boolean }) {
   );
 }
 
-function SidebarSectionTitle({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <div
-      className={cn("mb-2 shrink-0 text-[8px] uppercase tracking-[0.36em] text-red-700", className)}
-      style={{ fontFamily: "var(--font-cinematic)" }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function SidebarBillingRow({
-  category,
-  name,
-  detail,
+function CreditsSidebarInk({
+  quote,
+  thankYou,
+  quoteRotate,
+  thanksRotate,
+  children,
 }: {
-  category: string;
-  name: string;
-  detail?: string;
+  quote: string;
+  thankYou: string;
+  quoteRotate?: string;
+  thanksRotate?: string;
+  children?: ReactNode;
 }) {
   return (
-    <div className="border-b border-zinc-200/75 py-2.5 first:pt-0 last:border-b-0">
-      <p
-        className="text-[7px] uppercase leading-tight tracking-[0.3em] text-zinc-500"
-        style={{ fontFamily: "var(--font-cinematic)" }}
-      >
-        {category}
-      </p>
-      <p
-        className="mt-1 text-[10px] uppercase leading-snug tracking-[0.1em] text-zinc-900"
-        style={{ fontFamily: "var(--font-credits-ornate)" }}
-      >
-        {name}
-      </p>
-      {detail ? (
+    <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]">
+      <div className="border-b border-red-200/80 pb-4">
         <p
-          className="mt-0.5 text-[9px] leading-snug text-zinc-600"
-          style={{ fontFamily: "var(--font-screenplay)" }}
+          className="text-[0.95rem] leading-[1.35] text-zinc-900 sm:text-[1.05rem]"
+          style={{
+            fontFamily: "var(--font-logo-script)",
+            fontWeight: 700,
+            transform: quoteRotate,
+            textShadow: "0 1px 0 rgba(255,255,255,0.9)",
+          }}
         >
-          {detail}
+          {quote}
         </p>
-      ) : null}
+        <p
+          className="mt-2 text-[1.05rem] leading-[1.25] text-red-800/95 sm:text-[1.15rem]"
+          style={{
+            fontFamily: "var(--font-logo-script)",
+            fontWeight: 700,
+            transform: thanksRotate,
+            letterSpacing: "0.01em",
+          }}
+        >
+          {thankYou}
+        </p>
+      </div>
+      {children}
     </div>
   );
 }
@@ -179,19 +178,8 @@ function SidebarBillingRow({
 /** More title cards = shorter slices per track = snappier credits. */
 const CARD_COUNT = 19;
 
-const PRODUCTION_BILLING = [
-  "Executive Producer — in development",
-  "Producer — in development",
-  "Director — TBD",
-  "Production Designer — TBD",
-  "Editorial & storyboarding — in development",
-  "Animation pipeline — TBD",
-  "Music supervision & vocal production — TBD",
-  "Sound design & re-recording mix — TBD",
-] as const;
-
 export function CreditsSection() {
-  const creditsSong = songs.find((s) => s.id === "red-magic")!;
+  const creditsSong = songs.find((s) => s.id === "flower")!;
   const creator = crew[0];
   const leigh = crew.find((m) => m.id === "leigh-akin");
   const reduceMotion = usePrefersReducedMotion();
@@ -590,33 +578,14 @@ export function CreditsSection() {
       </header>
 
       <div className="relative z-10 flex min-h-0 flex-1 overflow-hidden">
-        {/* Left rail — principal & production billing */}
+        {/* Left rail — quote + thanks in logo script */}
         <aside className="hidden min-h-0 w-44 shrink-0 flex-col border-r border-zinc-200/90 bg-zinc-50/40 px-3 py-4 md:flex md:flex-col lg:w-52">
-          <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]">
-            <SidebarSectionTitle>Principal credits</SidebarSectionTitle>
-            <SidebarBillingRow category={creator.role} name={creator.name} />
-            {leigh ? (
-              <>
-                <SidebarBillingRow category={leigh.role} name={leigh.name} />
-                <SidebarBillingRow
-                  category="Words & music"
-                  name="Leigh Akin"
-                  detail="Original songs for the feature"
-                />
-              </>
-            ) : null}
-            <SidebarSectionTitle className="mt-5">In development</SidebarSectionTitle>
-            <ul
-              className="mt-1 list-none space-y-1.5 text-[9px] leading-snug text-zinc-600"
-              style={{ fontFamily: "var(--font-screenplay)" }}
-            >
-              {PRODUCTION_BILLING.map((line) => (
-                <li key={line} className="border-b border-zinc-200/60 pb-1.5 last:border-0">
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <CreditsSidebarInk
+            quote={creditsSidebarLeft.quote}
+            thankYou={creditsSidebarLeft.thankYou}
+            quoteRotate="rotate(-0.65deg)"
+            thanksRotate="rotate(0.5deg)"
+          />
         </aside>
 
         {/* Center — 21:9 player + transport; width capped so the stack fits without vertical scroll */}
@@ -676,29 +645,21 @@ export function CreditsSection() {
           </div>
         </div>
 
-        {/* Right rail — cast & song billing */}
+        {/* Right rail — quote + thanks in logo script */}
         <aside className="hidden min-h-0 w-44 shrink-0 flex-col border-l border-zinc-200/90 bg-zinc-50/40 px-3 py-4 md:flex md:flex-col lg:w-52">
-          <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]">
-            <SidebarSectionTitle>Cast of characters</SidebarSectionTitle>
-            {characters.map((c) => (
-              <SidebarBillingRow key={c.id} category={c.role} name={c.name} />
-            ))}
-            <SidebarSectionTitle className="mt-5">Original songs</SidebarSectionTitle>
-            {songs.map((s) => (
-              <SidebarBillingRow
-                key={s.id}
-                category={s.title}
-                name={s.singers}
-                detail={s.writtenBy ? `Words & music · ${s.writtenBy}` : undefined}
-              />
-            ))}
+          <CreditsSidebarInk
+            quote={creditsSidebarRight.quote}
+            thankYou={creditsSidebarRight.thankYou}
+            quoteRotate="rotate(0.55deg)"
+            thanksRotate="rotate(-0.55deg)"
+          >
             <p
               className="mt-4 text-[8px] leading-relaxed text-zinc-500"
               style={{ fontFamily: "var(--font-screenplay)" }}
             >
               End-credits roll uses &ldquo;{creditsSong.title}.&rdquo;
             </p>
-          </div>
+          </CreditsSidebarInk>
         </aside>
       </div>
     </section>

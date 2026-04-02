@@ -84,6 +84,18 @@ export const songs: Song[] = [
     audioSrc: "/songs/RED MAGIC.wav",
   },
   {
+    id: "flower",
+    title: "Flower (3)",
+    singers: "Ensemble",
+    description:
+      "Finale / curtain — company awakening; motifs return as the school and Rose choose truth over performance.",
+    placement: "End credits roll",
+    styleNotes: "Full lift; emotional close before the lights come up.",
+    image: "/characters/rose.png",
+    writtenBy: "Leigh Akin",
+    audioSrc: "/songs/Flower (3).wav",
+  },
+  {
     id: "flower-finale",
     title: "Flower (finale ensemble)",
     singers: "Ensemble",

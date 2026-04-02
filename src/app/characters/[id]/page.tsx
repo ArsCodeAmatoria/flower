@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { characters } from "@/data/characters";
-import { buildAllyThreadForProfile } from "@/data/character-chats";
 import { getResolvedCharacterDossier } from "@/data/character-dossiers";
 import { songs } from "@/data/songs";
 import { CharacterPublicProfile } from "@/sections/characters/CharacterPublicProfile";
@@ -43,7 +42,6 @@ export default async function CharacterPage({
   const prev = index > 0 ? characters[index - 1] : null;
   const next = index < characters.length - 1 ? characters[index + 1] : null;
   const characterSongs = songs.filter((s) => character.songIds.includes(s.id));
-  const allyThread = buildAllyThreadForProfile(character);
 
   return (
     <div className="relative flex h-[100dvh] min-h-[100dvh] w-screen shrink-0 overflow-hidden bg-zinc-50/80 text-zinc-900">
@@ -90,7 +88,7 @@ export default async function CharacterPage({
           />
 
           <Card className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-zinc-200/90 shadow-md">
-            <CardHeader className="flex flex-row flex-wrap items-center gap-2 space-y-0 border-b border-zinc-100 pb-4 pt-5">
+            <CardHeader className="flex shrink-0 flex-row flex-wrap items-center gap-2 space-y-0 border-b border-zinc-100 pb-3 pt-4">
               {prev ? (
                 <Button variant="outline" size="icon" className="rounded-full shadow-sm" asChild>
                   <Link href={`/characters/${prev.id}`} aria-label={`Previous: ${prev.name}`}>
@@ -115,10 +113,7 @@ export default async function CharacterPage({
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent
-              className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-5 pb-8 pt-6 sm:px-7"
-              style={{ scrollbarWidth: "none" }}
-            >
+            <CardContent className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden px-5 pb-4 pt-4 sm:px-7 sm:pb-5 sm:pt-5">
               <CharacterIdentityHeader
                 name={character.name}
                 role={character.role}
@@ -126,15 +121,15 @@ export default async function CharacterPage({
                 heading="h1"
                 uppercaseTitle={false}
                 showCharactersLabel={false}
+                compact
               />
-              <Separator />
+              <Separator className="shrink-0" />
               <CharacterPublicProfile
                 description={character.description}
                 traits={character.personalityTraits}
                 dossier={dossier}
                 characterSongs={characterSongs}
                 profileVariant="feature"
-                allyThread={allyThread}
               />
             </CardContent>
           </Card>

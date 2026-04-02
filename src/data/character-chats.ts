@@ -69,7 +69,7 @@ export function getAllyThreadParticipants(profileCharacter: Character): Characte
   return list;
 }
 
-/** Serialized shape for `CharacterPublicProfile` / `CharacterAllyThread`. */
+/** Serialized shape for `CharacterAllyThread` (standalone / future use). */
 export function buildAllyThreadForProfile(character: Character) {
   return {
     viewerId: character.id,
