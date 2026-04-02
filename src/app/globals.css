@@ -51,6 +51,52 @@
   100% { transform: translate(0,    0); }
 }
 
+/* Credits reel — playful “feature animation” theatre energy */
+@keyframes creditsStarTwinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.65);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes creditsAurora {
+  0% {
+    background-position: 0% 40%;
+  }
+  50% {
+    background-position: 100% 60%;
+  }
+  100% {
+    background-position: 0% 40%;
+  }
+}
+
+@keyframes creditsSparkleDrift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-6px) rotate(8deg);
+    opacity: 0.85;
+  }
+}
+
+@keyframes creditsPlayerShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* ─── Paper texture (subtle on light) ─────────────── */
 
 body::before {

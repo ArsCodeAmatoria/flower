@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback, useSyncExternalStore, type ReactNode } from "react";
 import Image from "next/image";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Sparkles } from "lucide-react";
 import { songs } from "@/data/songs";
 import { crew } from "@/data/crew";
 import { characters } from "@/data/characters";
@@ -57,10 +57,10 @@ function chunkOpacity(
 }
 
 function CreditCardLabel({ children, darkStage }: { children: ReactNode; darkStage?: boolean }) {
-  const lineFrom = darkStage ? "from-white/25" : "from-red-400/45";
+  const lineFrom = darkStage ? "from-amber-400/55" : "from-red-400/45";
   const lineTo = darkStage ? "to-transparent" : "to-transparent";
-  const dots = darkStage ? "text-zinc-500" : "text-red-800";
-  const label = darkStage ? "text-zinc-400" : "text-red-700";
+  const dots = darkStage ? "text-amber-300/80" : "text-red-800";
+  const label = darkStage ? "text-amber-100/90" : "text-red-700";
   return (
     <div className="mb-5 flex w-full flex-col items-center">
       <div className="mb-3 flex w-full max-w-xs items-center justify-center gap-3">
@@ -109,8 +109,88 @@ function CastPair({ c, darkStage }: { c: Character; darkStage?: boolean }) {
   );
 }
 
+/** Fixed positions for SSR-stable “night sky” stars (Disney-style twinkle). */
+const CREDITS_STAR_FIELD: { l: number; t: number; r: number; delay: number }[] = [
+  { l: 5, t: 12, r: 1.1, delay: 0 },
+  { l: 14, t: 28, r: 0.7, delay: 0.4 },
+  { l: 22, t: 8, r: 0.9, delay: 0.2 },
+  { l: 31, t: 44, r: 0.6, delay: 0.9 },
+  { l: 38, t: 18, r: 1.2, delay: 0.1 },
+  { l: 48, t: 52, r: 0.55, delay: 0.55 },
+  { l: 56, t: 11, r: 0.85, delay: 0.35 },
+  { l: 64, t: 36, r: 0.7, delay: 0.75 },
+  { l: 72, t: 58, r: 1.0, delay: 0.15 },
+  { l: 81, t: 22, r: 0.65, delay: 0.65 },
+  { l: 88, t: 41, r: 0.5, delay: 0.45 },
+  { l: 93, t: 14, r: 0.95, delay: 0.85 },
+  { l: 11, t: 62, r: 0.6, delay: 0.25 },
+  { l: 77, t: 68, r: 0.72, delay: 0.5 },
+  { l: 42, t: 72, r: 0.58, delay: 0.3 },
+  { l: 59, t: 78, r: 0.88, delay: 0.7 },
+];
+
+function DisneyCreditsBackdrop({ reducedMotion }: { reducedMotion: boolean }) {
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "linear-gradient(155deg, #0b1020 0%, #1a1040 28%, #2d1b69 52%, #0f172a 78%, #020617 100%)",
+          backgroundSize: reducedMotion ? "100% 100%" : "220% 220%",
+          animation: reducedMotion ? undefined : "creditsAurora 22s ease-in-out infinite",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.14]"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 120%, rgba(251, 191, 36, 0.35), transparent 55%), radial-gradient(ellipse 50% 40% at 15% 20%, rgba(147, 197, 253, 0.2), transparent 50%)",
+        }}
+        aria-hidden
+      />
+      {CREDITS_STAR_FIELD.map((star, i) => (
+        <span
+          key={i}
+          className="pointer-events-none absolute rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]"
+          style={{
+            left: `${star.l}%`,
+            top: `${star.t}%`,
+            width: `${star.r * 5}px`,
+            height: `${star.r * 5}px`,
+            opacity: reducedMotion ? 0.55 : undefined,
+            animation: reducedMotion
+              ? undefined
+              : `creditsStarTwinkle ${2.1 + (i % 5) * 0.35}s ease-in-out infinite`,
+            animationDelay: reducedMotion ? undefined : `${star.delay}s`,
+          }}
+          aria-hidden
+        />
+      ))}
+      {!reducedMotion ? (
+        <span
+          className="pointer-events-none absolute right-[8%] top-[18%] text-2xl opacity-40"
+          style={{ animation: "creditsSparkleDrift 4s ease-in-out infinite" }}
+          aria-hidden
+        >
+          ✦
+        </span>
+      ) : null}
+      {!reducedMotion ? (
+        <span
+          className="pointer-events-none absolute bottom-[22%] left-[10%] text-xl opacity-30"
+          style={{ animation: "creditsSparkleDrift 5.2s ease-in-out infinite 0.8s" }}
+          aria-hidden
+        >
+          ✧
+        </span>
+      ) : null}
+    </>
+  );
+}
+
 function FilmCorners({ darkStage }: { darkStage?: boolean }) {
-  const line = darkStage ? "1px solid rgba(255,255,255,0.22)" : "1px solid rgba(14, 116, 144, 0.35)";
+  const line = darkStage ? "1px solid rgba(234, 179, 8, 0.38)" : "1px solid rgba(14, 116, 144, 0.35)";
   const corners = ["top-4 left-4", "top-4 right-4", "bottom-4 left-4", "bottom-4 right-4"] as const;
   return (
     <>
@@ -260,11 +340,14 @@ export function CreditsSection() {
     switch (i) {
       case 0:
         return (
-          <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-4xl text-white sm:text-5xl md:text-6xl" style={{ fontFamily: "var(--font-title)", letterSpacing: "0.02em" }}>
+          <div className="flex flex-col items-center justify-center px-2 text-center">
+            <p
+              className="text-5xl text-white drop-shadow-[0_4px_32px_rgba(234,179,8,0.22)] sm:text-6xl md:text-7xl"
+              style={{ fontFamily: "var(--font-title)", letterSpacing: "0.02em" }}
+            >
               Flower
             </p>
-            <p className="mt-5 text-[15px] font-medium italic leading-relaxed text-zinc-400 sm:text-base" style={{ fontFamily: body }}>
+            <p className="mt-6 text-[14px] font-medium italic leading-relaxed text-zinc-300/95 sm:text-[15px]" style={{ fontFamily: body }}>
               An animated musical feature
             </p>
             <div className="mt-10 flex flex-col items-center">
@@ -418,8 +501,8 @@ export function CreditsSection() {
               ~ninety-five to one-hundred-ten page feature.
             </p>
             <p className="mt-5 text-[12px] leading-relaxed text-zinc-500" style={{ fontFamily: body }}>
-              This sequence timed to “{creditsSong.title}.” On-screen text and timing are a presentation mock-up, not a
-              final master.
+              This sequence timed to “{creditsSong.title}.” On-screen text and timing are a presentation
+              mock-up, not a final master.
             </p>
           </div>
         );
@@ -471,17 +554,29 @@ export function CreditsSection() {
   const reelChrome = (
     <>
       <FilmCorners darkStage />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[10%] bg-linear-to-b from-black via-transparent to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[12%] bg-linear-to-t from-black via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[12%] bg-linear-to-b from-black/75 via-black/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[14%] bg-linear-to-t from-black/80 via-amber-950/10 to-transparent" />
     </>
   );
 
   const playerChrome = (
-    <div className="border-t border-white/10 bg-zinc-950 px-3 py-2 sm:px-4 sm:py-2.5">
-      <div className="flex flex-col gap-2">
+    <div className="relative overflow-hidden border-t border-amber-400/30 bg-gradient-to-b from-[#1a0a2e] via-[#12081c] to-[#07040c] px-3 py-2.5 sm:px-4 sm:py-3">
+      {!reduceMotion ? (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.14]"
+          style={{
+            background:
+              "linear-gradient(105deg, transparent 35%, rgba(253, 230, 138, 0.45) 50%, transparent 65%)",
+            backgroundSize: "200% 100%",
+            animation: "creditsPlayerShimmer 4s ease-in-out infinite",
+          }}
+          aria-hidden
+        />
+      ) : null}
+      <div className="relative flex flex-col gap-2">
         <button
           type="button"
-          className="group relative h-1 w-full cursor-pointer overflow-hidden rounded-full bg-white/15"
+          className="group relative h-1.5 w-full cursor-pointer overflow-hidden rounded-full bg-white/12 shadow-inner shadow-black/40"
           onClick={(e) => {
             const audio = audioRef.current;
             if (!audio || duration <= 0) return;
@@ -493,24 +588,25 @@ export function CreditsSection() {
           aria-label="Seek credits track"
         >
           <span
-            className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-red-600 transition-[width] duration-150 ease-out group-hover:bg-red-500"
+            className="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-amber-400 via-rose-400 to-amber-300 transition-[width] duration-150 ease-out shadow-[0_0_12px_rgba(251,191,36,0.55)] group-hover:brightness-110"
             style={{ width: `${progress}%` }}
           />
         </button>
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md ring-1 ring-white/10 sm:h-10 sm:w-10">
-            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="40px" />
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl ring-2 ring-amber-400/35 ring-offset-2 ring-offset-[#12081c] sm:h-11 sm:w-11">
+            <Image src={creditsSong.image} alt="" fill className="object-cover object-top" sizes="44px" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+              <Sparkles className="size-3 shrink-0 text-amber-300/90 sm:size-3.5" aria-hidden />
               <p
-                className="truncate text-[10px] font-medium uppercase tracking-[0.14em] text-white sm:text-[11px]"
+                className="min-w-0 flex-1 truncate text-[9px] font-semibold uppercase tracking-[0.13em] text-amber-100/95 sm:text-[10px]"
                 style={{ fontFamily: "var(--font-cinematic)" }}
               >
                 {creditsSong.title}
               </p>
               <span
-                className="text-[8px] tabular-nums text-zinc-500 sm:text-[9px]"
+                className="shrink-0 text-[8px] tabular-nums text-zinc-500 sm:text-[9px]"
                 style={{ fontFamily: "var(--font-screenplay)" }}
               >
                 Reel {visibleIndex + 1}/{CARD_COUNT}
@@ -522,7 +618,7 @@ export function CreditsSection() {
             </p>
           </div>
           <span
-            className="hidden shrink-0 text-[9px] tabular-nums tracking-wide text-zinc-400 sm:inline"
+            className="hidden shrink-0 text-[9px] tabular-nums tracking-wide text-amber-200/70 sm:inline"
             style={{ fontFamily: "var(--font-screenplay)" }}
           >
             {fmt(currentTime)} / {fmt(duration || 0)}
@@ -531,7 +627,7 @@ export function CreditsSection() {
             type="button"
             variant="ghost"
             size="icon"
-            className="h-9 w-9 shrink-0 rounded-full text-zinc-300 hover:bg-white/10 hover:text-white"
+            className="h-9 w-9 shrink-0 rounded-full text-amber-200/80 hover:bg-white/10 hover:text-amber-50"
             onClick={replay}
             aria-label="Restart song and credits"
           >
@@ -541,8 +637,10 @@ export function CreditsSection() {
             type="button"
             size="icon"
             className={cn(
-              "h-9 w-9 shrink-0 rounded-full border-0 shadow-md sm:h-10 sm:w-10",
-              playing ? "bg-white text-zinc-900 hover:bg-zinc-100" : "bg-red-600 text-white hover:bg-red-500",
+              "h-9 w-9 shrink-0 rounded-full border-0 shadow-lg shadow-amber-900/40 sm:h-10 sm:w-10",
+              playing
+                ? "bg-amber-50 text-violet-950 hover:bg-white"
+                : "bg-gradient-to-b from-amber-400 to-rose-600 text-white hover:brightness-110",
             )}
             onClick={togglePlay}
             aria-label={playing ? "Pause" : "Play"}
@@ -572,7 +670,8 @@ export function CreditsSection() {
         </p>
         <h1 className="section-heading mt-1 text-xl sm:text-2xl">Credits</h1>
         <p className="mt-1 max-w-2xl text-[10px] leading-relaxed text-zinc-600 sm:text-[11px]" style={{ fontFamily: "var(--font-screenplay)" }}>
-          Roll timed to <span className="font-medium text-red-700">{creditsSong.title}</span>
+          Roll timed to{" "}
+          <span className="font-medium text-red-800">{creditsSong.title}</span>
           {creditsSong.writtenBy ? ` · ${creditsSong.writtenBy}` : ""}.
         </p>
       </header>
@@ -591,17 +690,18 @@ export function CreditsSection() {
         {/* Center — 21:9 player + transport; width capped so the stack fits without vertical scroll */}
         <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden px-3 py-2 sm:px-4 sm:py-3 lg:px-6">
           <div className="mx-auto w-[min(100%,1100px,calc((100dvh-17.5rem)*21/9))] max-w-full shrink-0">
-            <div className="overflow-hidden rounded-2xl bg-black shadow-[0_12px_48px_-16px_rgba(0,0,0,0.4)] ring-1 ring-black/25">
-              <div className="relative aspect-[21/9] w-full bg-black">
+            <div className="overflow-hidden rounded-2xl bg-black shadow-[0_12px_48px_-16px_rgba(234,179,8,0.12)] ring-1 ring-amber-900/40">
+              <div className="relative aspect-[21/9] w-full overflow-hidden bg-black">
+                <DisneyCreditsBackdrop reducedMotion={reduceMotion} />
                 {!reduceMotion ? (
                   <div
-                    className="absolute inset-0 overflow-hidden"
+                    className="absolute inset-0 z-[1] overflow-hidden"
                     role="region"
                     aria-label="Credits sequence"
                     aria-live="polite"
                   >
                     {reelChrome}
-                    <div className="absolute inset-0 flex items-center justify-center px-2 py-2 sm:px-5 sm:py-3 md:px-8 md:py-4">
+                    <div className="absolute inset-0 z-[2] flex items-center justify-center px-2 py-2 sm:px-5 sm:py-3 md:px-8 md:py-4">
                       {Array.from({ length: CARD_COUNT }, (_, idx) => {
                         const op = chunkOpacity(idx, currentTime, duration, CARD_COUNT, idleAtStart, audioEnded);
                         if (op < 0.003) return null;
@@ -624,10 +724,10 @@ export function CreditsSection() {
                   </div>
                 ) : (
                   <div
-                    className="absolute inset-0 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6"
+                    className="absolute inset-0 z-[1] overflow-y-auto px-3 py-4 sm:px-6 sm:py-6"
                     style={{ scrollbarWidth: "none" }}
                   >
-                    <p className="mb-5 text-[11px] text-zinc-500" style={{ fontFamily: "var(--font-screenplay)" }}>
+                    <p className="mb-5 text-[11px] text-zinc-400" style={{ fontFamily: "var(--font-screenplay)" }}>
                       Reduced motion: static list. Use the player below for {creditsSong.title}.
                     </p>
                     <div className="space-y-14">

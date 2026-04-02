@@ -85,7 +85,7 @@ export const songs: Song[] = [
   },
   {
     id: "flower",
-    title: "Flower (3)",
+    title: "Flower",
     singers: "Ensemble",
     description:
       "Finale / curtain — company awakening; motifs return as the school and Rose choose truth over performance.",
